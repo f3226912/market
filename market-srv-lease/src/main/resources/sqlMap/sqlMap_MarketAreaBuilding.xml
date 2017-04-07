@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="MarketAreaBuilding">
+	<!-- 根据条件查询 -->
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+	  	 SELECT b.id ,b.name AS name, b.code AS code,
+	  	    b.nature AS builNature,a.code AS areaCode,a.id AS areaId
+             FROM  market_area_building b 
+               INNER JOIN market_area a 
+                 ON b.areaId=a.id
+                   WHERE a.marketId=:marketId  AND b.status=1 
+                    <#if areaId?exists && areaId != "" >
+					   AND b.areaId =:areaId 
+					</#if>
+                   order by b.createTime DESC
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询 -->
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		SELECT  b.id AS id,b.name , b.code,
+          (SELECT remark FROM sysdictionary WHERE TYPE = 'nature' AND VALUE= b.nature) AS builNature,
+            a.name AS areaCode ,a.id AS areaId
+              FROM  market_area_building b 
+                INNER JOIN market_area a 
+                   ON b.areaId=a.id
+                     WHERE a.marketId=:marketId  AND b.status=1  order by b.createTime DESC
+                         LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!-- 根据条件统计 -->
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT COUNT(1) FROM market_area_building b 
+		   INNER JOIN market_area a 
+            ON b.areaId = a.id  
+              WHERE b.status=1 and a.marketId=:marketId  order by b.createTime DESC
+			
+	   ]]>
+	</sql>
+	<!-- 查询楼栋详情信息 -->
+	<sql id="queryAreaById"> 
+	   <![CDATA[ 
+		 SELECT b.name,
+		  a.name AS areaName,b.code,b.areaId AS areaId,
+		   (SELECT value FROM sysdictionary WHERE TYPE = 'nature' AND VALUE= b.nature) AS builNature
+              FROM market_area a 
+                INNER JOIN market_area_building b 
+                   ON a.id=b.areaId 
+                     WHERE b.id=:id 
+
+	   ]]>
+	</sql>
+	
+	<!-- 新增楼栋信息 -->
+	<sql id="addBuilding"> 
+
+	   <![CDATA[ 
+		 INSERT INTO market_area_building
+		 (
+		 name,status,areaId,nature,
+		 code,updateTime,buildingImage,
+		 createUserId,createTime,updateUserId
+		 ) 
+		 VALUES(
+		 :name,:status,:areaId,:nature,
+		 :code,sysdate(),:buildingImage,
+		 :createUserId,sysdate(),:updateUserId
+		 )
+	   ]]>
+	</sql>
+		<!-- 楼栋详情   判断楼栋编码唯一性 -->
+	<sql id="queryBybuilDetailCode"> 
+	   <![CDATA[ 
+		SELECT count(1) FROM market_area_building b 
+		  INNER JOIN market_area a ON b.areaId=a.id
+             WHERE b.code=:code  AND a.marketId=:marketId AND b.status=1
+              <#if id?exists && id != "" >
+			   AND b.id !=:id
+			</#if>
+	   ]]>
+	</sql>
+		<!-- 楼栋详情   判断楼名称唯一性 -->
+	<sql id="queryBybuilDetailName"> 
+	   <![CDATA[ 
+		SELECT count(1) FROM market_area_building b 
+		  INNER JOIN market_area a ON b.areaId=a.id
+             WHERE  b.name=:name AND a.marketId=:marketId AND b.status=1
+               <#if id?exists && id != "" >
+			   AND b.id !=:id
+			</#if>
+	   ]]>
+	</sql>
+	<!-- 查询市场归属区域 -->
+	<sql id="queryArea"> 
+	    <![CDATA[ 
+	SELECT id,name 
+	FROM  market_area   
+	 WHERE  marketId=:marketId AND status=:status
+	   ]]>
+	</sql>
+	<!-- 查询数据字典的楼栋性质 -->
+	<sql id="queryNature"> 
+	    <![CDATA[ 
+	   SELECT value,remark FROM sysdictionary WHERE TYPE="nature"
+	   ]]>
+	</sql>
+	<!-- 查询map中的查询条件，查询building -->
+	<sql id="getBuilding"> 
+	    <![CDATA[ 
+		SELECT 
+			id,
+			areaId,
+			name,
+			code,
+			nature,
+			buildingImage,
+			status,
+			createUserId,
+			createTime,
+			updateUserId,
+			updateTime
+		from 
+			market_area_building
+		WHERE 
+			1=1 and status=1
+		<#if name?exists && name != "" >
+		   AND name=:name
+		</#if>
+		<#if code?exists && code != "" >
+		   AND code=:code
+		</#if>
+		<#if nature?exists && nature != "" >
+		   AND nature=:nature
+		</#if>
+		<#if areaId?exists && areaId != "" >
+		   AND areaId=:areaId
+		</#if>
+	   ]]>
+	</sql>
+
+	<!-- 楼栋资源信息统计 -->
+	<sql id="getResourceStatistics">
+	<![CDATA[
+      select
+         a.cnt as total, 
+         b.cnt as ineffectiveCnt, 
+         c.cnt as forRentCnt, 
+         d.cnt as alreadyRentedCnt,
+         e.cor as coordinate
+      from 
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.status = 1 and mr.originOperate = 0
+         ) a,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 1 and mr.status = 1 and mr.originOperate = 0
+         ) b,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 2 and mr.status = 1 and mr.originOperate = 0
+         ) c,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 3 and mr.status = 1 and mr.originOperate = 0
+         ) d,
+         (select mi.coordinate as cor from market_image_setting mi 
+           join market_area_building ma 
+          on 
+           ma.id = mi.buildingId and ma.id=:budingId and mi.imageType = 2) e
+          
+	]]>
+	</sql>
+
+	<!-- 删除的时候 查询改楼栋是否存在资源 -->
+	<sql id="querybuildingRes"> 
+	<![CDATA[ SELECT count(1) 
+		FROM market_resource where budingId=:buildingId  AND status=1]]> </sql> 
+	<!-- 删除楼栋对应的楼层-->
+	 <sql id="delFloor"> 
+	 <![CDATA[ UPDATE market_unit_floor SET 
+		STATUS="0" WHERE buildingId=:buildingId ]]> </sql> 
+	<!-- 删除楼栋对应的楼层 --> <sql id="delUnit">
+	 <![CDATA[ UPDATE market_building_unit 
+		SET STATUS="0" WHERE buildingId=:buildingId ]]> 
+		</sql>
+	<!--根据条件，查询楼栋数 -->
+	<sql id="getTotal">
+	<![CDATA[
+	SELECT count(*) FROM market_area_building WHERE 1=1
+	<#if marketId?exists && marketId != "" >
+	   	AND marketId=:marketId
+	</#if>
+	<#if areaId?exists && areaId != "" >
+	   AND areaId=:areaId
+	</#if>
+	<#if name?exists && name != "" >
+	   AND name=:name
+	</#if>
+	<#if code?exists && code != "" >
+	   AND code=:code
+	</#if>
+	<#if nature?exists && nature != "" >
+	   AND nature=:nature
+	</#if>
+	<#if status?exists && status != "" >
+	   AND status=:status
+	</#if>
+	<#if areaId?exists && areaId != "" >
+	   AND areaId=:areaId
+	</#if>
+	]]>
+	</sql>
+	
+	<sql id = "queryBuildingById">
+		<![CDATA[
+			SELECT id, name, code, nature, buildingImage, status
+               FROM  market_area_building
+			      WHERE id = :id
+		]]>
+	</sql>
+	
+	
+	<sql id="queryBuildingDotByCondition"> 
+	    <![CDATA[ 
+		SELECT 
+			mab.id,
+			mab.areaId,
+			mab.name,
+			mab.code,
+			mab.nature,
+			mab.buildingImage,
+			mab.status,
+			mis.coordinate
+		from 
+			market_area_building mab
+		join
+		    market_image_setting mis
+		on
+		    mab.id = mis.buildingId    
+		WHERE 
+			mab.status=1 and mis.imageType = 2 and mis.coordinate != ""
+		<#if name?exists && name != "" >
+		   AND mab.name=:name
+		</#if>
+		<#if code?exists && code != "" >
+		   AND mab.code=:code
+		</#if>
+		<#if nature?exists && nature != "" >
+		   AND mab.nature=:nature
+		</#if>
+		<#if areaId?exists && areaId != "" >
+		   AND mab.areaId=:areaId
+		</#if>
+	   ]]>
+	</sql>
+	
+	<sql id="getNoDotByCondition"> 
+	    <![CDATA[ 
+		SELECT 
+			mab.id,
+			mab.name
+		from 
+			market_area_building mab
+		WHERE 
+			mab.status=1 and mab.areaId=:areaId and mab.id not in (select buildingId from market_image_setting where areaId=:areaId and imageType = 2 and buildingId is not NULL)
+	   ]]>
+	</sql>
+	
+	<!-- 楼栋资源信息统计 -->
+	<sql id="getBuildingResourceStatistics">
+	<![CDATA[
+      select
+         a.cnt as total, 
+         b.cnt as ineffectiveCnt, 
+         c.cnt as forRentCnt, 
+         d.cnt as alreadyRentedCnt
+      from 
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.status = 1 and mr.originOperate = 0
+         ) a,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 1 and mr.status = 1 and mr.originOperate = 0
+         ) b,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 2 and mr.status = 1 and mr.originOperate = 0
+         ) c,
+         (select 
+            count(mr.id) as cnt from market_area_building mab 
+          join 
+            market_resource mr 
+          on 
+            mr.areaId = mab.areaId and mr.areaId=:areaId and mab.id = mr.budingId and mab.id=:budingId and mr.resourceTypeId=:resourceTypeId and mr.leaseStatus = 3 and mr.status = 1 and mr.originOperate = 0
+         ) d
+          
+	]]>
+	</sql>
+</sqlMap>

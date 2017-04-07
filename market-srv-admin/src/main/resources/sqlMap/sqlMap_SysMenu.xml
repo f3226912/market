@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysMenu"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,code,pid,url,createUserId,createTime,updateTime,
+			updateUserId,icons,sort,level
+		  FROM sys_menu t
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if pid?exists && pid != "" >
+			   AND pid=:pid
+			</#if>
+			<#if url?exists && url != "" >
+			   AND url=:url
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if icons?exists && icons != "" >
+			   AND icons=:icons
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+			ORDER BY
+			t.sort,
+			t.createTime DESC,
+			t.updateTime DESC
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,code,pid,url,createUserId,createTime,updateTime,
+			updateUserId,icons,sort,level
+		  FROM sys_menu
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if pid?exists && pid != "" >
+			   AND pid=:pid
+			</#if>
+			<#if url?exists && url != "" >
+			   AND url=:url
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if icons?exists && icons != "" >
+			   AND icons=:icons
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_menu
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if pid?exists && pid != "" >
+			   AND pid=:pid
+			</#if>
+			<#if url?exists && url != "" >
+			   AND url=:url
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if icons?exists && icons != "" >
+			   AND icons=:icons
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

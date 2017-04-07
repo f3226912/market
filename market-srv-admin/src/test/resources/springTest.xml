@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<dubbo:application name="web-admin-con" owner="web-admin-con" />
+ 	<dubbo:registry address="zookeeper://10.17.1.215:2181?backup=10.17.1.216:2181,10.17.1.217:2181"/>
+ 	<dubbo:consumer retries="0"  init="false" 
+		group="market-group"
+		version="v1.0.2" 
+ 		timeout="3000"
+ 		check="false" />
+ 	
+ 	<!-- 系统管理 begin-->	
+ 	<dubbo:reference id="sysDictionaryService" interface="cn.gdeng.market.service.admin.SysDictionaryService" check="false" /> 
+ 	<dubbo:reference id="sysUserService" interface="cn.gdeng.market.service.admin.SysUserService" check="false"/> 
+ 	<dubbo:reference id="sysOrgService" interface="cn.gdeng.market.service.admin.SysOrgService" check="false" 
+ 		url="dubbo://localhost:22891" version="v1.0.2"/> 
+ 	<dubbo:reference id="sysUserPostService" interface="cn.gdeng.market.service.admin.SysUserPostService" check="false"/> 
+ 	<!-- 系统管理  end-->
+ 	
+</beans>

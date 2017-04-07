@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-lazy-init="false">
+	
+	<!-- snaker引擎配置 -->
+	<bean id="snakerEngine" class="org.snaker.engine.spring.SpringSnakerEngine">
+		<property name="processService" ref="processService"/>
+		<property name="orderService" ref="orderService"/>
+		<property name="taskService" ref="taskService"/>
+		<property name="queryService" ref="queryService"/>
+		<property name="managerService" ref="managerService"/>
+	</bean>
+	
+	<!-- snaker的五大服务配置 -->
+	<bean id="processService" class="org.snaker.engine.core.ProcessService">
+		<property name="access" ref="dbAccess"/>
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	<bean id="orderService" class="org.snaker.engine.core.OrderService">
+		<property name="access" ref="dbAccess"/>
+	</bean>
+	<bean id="taskService" class="org.snaker.engine.core.TaskService">
+		<property name="access" ref="dbAccess"/>
+	</bean>
+	<bean id="managerService" class="org.snaker.engine.core.ManagerService">
+		<property name="access" ref="dbAccess"/>
+	</bean>
+	<bean id="queryService" class="org.snaker.engine.core.QueryService">
+		<property name="access" ref="dbAccess"/>
+	</bean>
+	
+	<!-- 扩展的snaker服务 -->
+	<bean id="snakerFacadeService" class="cn.gdeng.market.service.workflow.core.impl.SnakerFacadeServiceImpl">
+		<property name="snakerEngine" ref="snakerEngine"/>
+	</bean>
+	
+	<bean id="snakerManagerService" class="cn.gdeng.market.service.workflow.core.impl.SnakerManagerServiceImpl">
+		<property name="managerService" ref="managerService"/>
+	</bean>
+	
+	<bean id="snakerOrderService" class="cn.gdeng.market.service.workflow.core.impl.SnakerOrderServiceImpl">
+		<property name="orderService" ref="orderService"/>
+	</bean>
+	
+	<bean id="snakerProcessService" class="cn.gdeng.market.service.workflow.core.impl.SnakerProcessServiceImpl">
+		<property name="processService" ref="processService"/>
+	</bean>
+	
+	<bean id="snakerQueryService" class="cn.gdeng.market.service.workflow.core.impl.SnakerQueryServiceImpl">
+		<property name="queryService" ref="queryService"/>
+	</bean>
+	
+	<bean id="snakerTaskService" class="cn.gdeng.market.service.workflow.core.impl.SnakerTaskServiceImpl">
+		<property name="taskService" ref="taskService"/>
+	</bean>
+	
+	
+	
+	
+	
+	<!-- 使用codis缓存。 -->
+ 	<bean id="cacheManager" class="org.snaker.engine.cache.codis.CodisManager">
+		<property name="cache" ref="jodisTemplate"/>
+	</bean>
+	
+	<!-- 手动配置数据库方言，避免snaker自定检测方言时失败 -->
+	<bean class="org.snaker.engine.access.dialect.MySqlDialect"/>
+	
+	
+	<!--  日志记录拦截拦截 -->
+	<bean class="org.snaker.engine.impl.LogInterceptor"/>
+	
+	<!-- 使用spring的EL表达式 -->
+	<bean class="org.snaker.engine.spring.SpelExpression"/>
+	
+	<!-- 暂时无需实现流程委托代理 -->
+	<!-- <bean class="org.snaker.engine.impl.SurrogateInterceptor"/> -->
+	
+	<!-- 配置全局的人员指派处理器。 -->
+	<bean class="cn.gdeng.market.extend.workflow.impl.BaseTypeAssignmentHandler" >
+		<property name="sysUserPostService"  ref="sysUserPostService"/>
+		<property name="sysMessageService"  ref="sysMessageService"/>
+		<property name="sysPostService"  ref="sysPostService"/>
+	</bean>
+	
+	<!-- 流程发起时的拦截器 -->
+	<bean class="cn.gdeng.market.extend.workflow.impl.GudengStartNodeInterceptor">
+		<property name="contractWorkflowService" ref="contractWorkflowService" />
+	</bean>
+	
+	<!-- 流程结束时的拦截器 -->
+	<bean class="cn.gdeng.market.extend.workflow.impl.GudengEndNodeInterceptor">
+		<property name="contractWorkflowService" ref="contractWorkflowService" />
+	</bean>
+	
+	<!-- 运行输出变迁非法时的处理器 -->
+	<bean class="cn.gdeng.market.extend.workflow.impl.GuDengRunOutTransitionIllegalHandler" />
+	
+	<!-- 配置任务访问策略。ps：snaker默认的就是GeneralAccessStrategy访问策略，
+		此处手动配置是为了解决Spring首次注册读取不成功的bug，注意要指定id。 -->
+	<bean id="generalAccessStrategy" class="org.snaker.engine.impl.GeneralAccessStrategy" />
+	
+
+</beans>

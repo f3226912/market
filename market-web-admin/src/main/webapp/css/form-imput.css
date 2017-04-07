@@ -1,0 +1,170 @@
+.form-inline .form-group {
+	margin-bottom: 15px;
+}
+
+.form-inline .form-group .icheck .checkbox,
+.form-inline .form-group .icheck .radio {
+	margin-bottom: 0;
+}
+
+.form-control {
+	height: 32px;
+	padding: 5px 10px;
+	border: 1px solid #D7D7D7;
+	font-size: 12px;
+	color: #999;
+}
+.btn.dropdown-toggle{
+	font-size: 12px;
+	color: #999;
+	height: 32px;
+}
+
+select.form-control {
+	padding-left: 8px;
+}
+
+.distForm .form-control{
+	width: 120px;
+	margin-right: 10px;
+	float: left;
+}
+.wid120{
+	width:120px;
+}
+.wid130{
+	width:130px;
+}
+.wid150 {
+	width: 150px !important;
+}
+.wid250{
+	width: 250px
+}
+.mb15{
+	margin-bottom: 15px !important;
+}
+.wid200 {
+	width: 200px !important;
+}
+
+.fl {
+	float: left;
+}
+
+.btn {
+	padding: 5px 10px;
+}
+.red-icon{
+	color: #EA785B;
+}
+
+.form-input .form-group {
+	float: left;
+	margin-right: 10px;
+}
+
+.border-none-right {
+	border-right: none;
+}
+
+.ml-icon{ margin-left: -2px;}
+.date-icon {
+	position: relative;
+}
+
+.date-icon .fa {
+	position: absolute;
+	font-size: 20px;
+	right: 6px;
+	top: 6px;
+	color: #ADADAD;
+	pointer-events: none;
+}
+.text-left{
+	text-align: left;
+}
+.form-horizontal .control-label{
+	font-weight: normal;
+}
+
+/*寮瑰嚭妗嗘牱寮�/
+
+/*鍗曢�鎸夐挳*/
+.payment-cycle label{ font-weight: normal;}
+.col-ft-bold{ color: #1a1a1a;}
+/* RADIO */
+
+.regular-radio ,.regular-radios ,.regular-rdi-cause{ display: none;}
+
+.regular-radio + span ,.regular-radios + span.radio-mtd ,.regular-rdi-cause + span.radio-mt-cause{
+	-webkit-appearance: none;
+	background-color: #fff;
+	border: 1px solid #cacece;
+	padding: 9px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+	top:5px
+}
+
+.regular-radio:checked + span:after ,.regular-radios:checked + span:after ,.regular-rdi-cause:checked + span:after{
+	content: ' ';
+	width: 12px;
+	height: 12px;
+	border-radius: 50px;
+	position: absolute;
+	top: 3px;
+	background: #53b279;
+	left: 3px;
+	font-size: 32px;
+}
+.radio-em{ padding-right:60px; padding-left:12px;font-style:normal; font-size: 12px; color: #1a1a1a;}
+.radio-ems{padding-left:12px;font-style:normal; font-size: 12px; color: #1a1a1a;}
+.payment-cycle-sp{ font-style: normal; color: #f30303; font-size: 12px; padding-right: 10px;}
+.charges-paid-btm{padding-top: 20px; margin-left: 49px; border-bottom:solid 1px #eee; float: left; width: 91%; padding-bottom: 10px; }
+#modalPopwin .modal-header{
+	padding: 12px 24px;
+	background-color: #F6F8F8;
+	border-bottom: none;
+}
+#modalPopwin .radio-em{
+	font-weight: normal;
+}
+#modalPopwin .modal-header h4{
+	font-size: 18px;
+	color: #000;
+}
+#modalPopwin .form-control-static{
+	text-align: left;
+}
+#modalPopwin .modal-content{
+	border-radius:0 ;
+}
+#modalPopwin .modal-body{
+	max-height: 500px;
+	overflow-y: auto;
+}
+#modalPopwin .modal-footer{
+	text-align: center;
+	padding-top: 0;
+	border-top: none;
+}
+#modalPopwin .form-group{
+	margin-bottom: 0;
+}
+#modalPopwin .form-group .btn{
+	font-size: 20px;
+	padding: 5px 39px;
+}
+#modalPopwin .modal-footer .btn+.btn{
+	margin-left: 15px;
+}
+.datepicker { z-index: 1050 !important;}
+#modalPopwin ::-webkit-scrollbar{width:5px;}
+
+#modalPopwin ::-webkit-scrollbar-thumb{background-color:#53B279;}
+/*#modalPopwin ::-webkit-scrollbar-track{background-color:#bee1eb;}
+ * #modalPopwin ::-webkit-scrollbar-thumb:hover {background-color:#9c3}
+#modalPopwin ::-webkit-scrollbar-thumb:active {background-color:#00aff0}*/
+.fontColor{color:blue; }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractFree"> 
+	<!-- --> 
+	<sql id="queryAll"> 
+	   <![CDATA[ 
+		  SELECT
+			  `id`,
+			  `startDay`,
+			  `endDay`,
+			  `freeMonths`,
+			  `freeDays`
+		  FROM `contract_free` WHERE contractId=:contractId AND isDeleted=0
+	   ]]>
+	</sql>
+	
+	<sql id="deleteAll"> 
+	   <![CDATA[ 
+		update   `contract_free` 
+          set   isDeleted=1
+		  WHERE contractId=:contractId
+		  and   isDeleted=0
+	   ]]>
+	</sql>
+	
+	<sql id="save">
+	     <![CDATA[ 
+	        INSERT INTO `contract_free`
+		            (
+		             `contractId`,
+		             `contractNo`,
+		             `startDay`,
+		             `endDay`,
+		             `freeMonths`,
+		             `freeDays`,
+		             `isDeleted`,
+		             `createUserId`,
+		             `createTime`
+		             )
+			VALUES 
+			<#list freeList as free>
+			      <#assign listSize = freeList?size />
+			      (
+			        ${free.contractId},
+			        ${free.contractNo},
+			        ${free.startDay},
+			        ${free.endDay},
+			        ${free.freeMonths},
+			        ${free.freeDays},
+			        ${free.isDeleted},
+			        ${free.createUserId},
+			        ${free.createTime}
+			        )
+			     <#if free_index != listSize-1>
+			       ,
+			     </#if>			     
+			 </#list>	        
+	     ]]>
+	</sql>
+
+</sqlMap>

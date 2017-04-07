@@ -1,0 +1,48 @@
+.alert{
+	display: inline;
+	position: fixed;
+	left:50%;
+	top:50%;
+	margin-top:-16px;
+	z-index: 999999;
+}
+
+.dialog{
+	margin:0;
+	font-family: "微软雅黑";
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left:-300px;
+	margin-top:-109px;
+}
+
+.modal-content{
+	border-radius:0px;
+}
+
+.modal-header{
+	padding:5px 15px;
+	background:#eee;
+}
+
+.modal-body{
+	padding:50px 15px;
+	text-align: center;
+}
+
+.modal-footer{
+	border:none;
+	text-align: center;
+}
+
+.demo-btn{
+	width:90px;
+}
+
+.bold{
+	font-weight:600;
+}
+
+
+

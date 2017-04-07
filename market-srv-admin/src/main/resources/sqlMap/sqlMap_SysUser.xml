@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="SysUser"> 
+
+	<!--根据Id查询--> 
+	<sql id="getById"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,name,code,pwd,pwdErrorTimes,lastErrorTime,createTime,
+			createUserId,updateTime,updateUserId,mobile,landline,mail,status,deptNo,groupId
+		  FROM sys_user
+		  WHERE id = :id
+	   ]]>
+	</sql>
+
+	<!--获取用户的详细信息，包含部门，公司，市场，岗位,关联表较多，该SQL最好不要用来分页，请通过getSourceUserListByPage进行分页，获取 IDS，再调用该SQL--> 
+	<sql id="getUserDetailList"> 
+	   <![CDATA[
+			select 
+			t.groupId,t.id  AS id,t.name AS name, t.code  AS code,t.mobile AS mobile,t.landline AS landline,t.mail AS mail,t.status AS status,t.type  AS type,
+			t1.id      companyId,   t1.fullName AS companyName,
+			t2.id      departmentId,t2.fullName departmentName,
+			t3.id      marketId,    t3.fullName marketName,
+			GROUP_CONCAT(t4.id) postId,GROUP_CONCAT(t4.name) postName,
+			t5.fullName groupName
+			from sys_user t
+			left JOIN sys_user_org s1 on t.id=s1.userId and s1.type=1
+			left join sys_org t1 on t1.id=s1.orgId 
+			left join sys_user_org s2 on t.id=s2.userId and s2.type=2
+			left join sys_org t2 on t2.id=s2.orgId 
+			left join sys_user_org s3 on t.id=s3.userId and s3.type=3
+			left join sys_org t3 on t3.id=s3.orgId
+			left join sys_user_post s4 on t.id=s4.userId
+			left join sys_post t4 on s4.postId=t4.id
+			left join sys_org t5 on t.groupId=t5.id
+			where 1=1 and t.status in (1,2,3)
+			<#if userIds??>
+				AND t.id in (
+
+					<#list userIds as userId>
+						<#if userId_index gt 0>
+							,${userId}
+						<#else>
+							${userId}
+						</#if>
+					</#list>
+				)
+			</#if>
+			group by t.id
+			order by t.code asc
+			
+	   ]]>
+	</sql>
+
+	<!--根据条件查询记录--> 
+	<sql id="getTotal"> 
+	   <![CDATA[ 
+		  SELECT 
+			count(1)
+		  FROM sys_user su
+		  <#if departmentId?exists && departmentId != "" >
+			   LEFT JOIN sys_user_org suo 
+		       ON su.`id` = suo.`userId`
+		  </#if>
+		  <#if departmentId?exists && departmentId != "" >
+			   LEFT JOIN sys_user_post sup
+		       ON su.`id` = sup.userid
+		  </#if>
+			<#if userIds??>
+				AND id in (
+
+					<#list userIds as userId>
+						<#if userId_index gt 0>
+							,${userId}
+						<#else>
+							${userId}
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!--根据条件查询记录--> 
+	<sql id="getSourceTotal"> 
+	   <![CDATA[ 
+		  SELECT 
+			count(1)
+		  FROM sys_user 
+		 where 1=1 and status in (1,2,3)
+		 	<#if groupId?exists && groupId != "" >
+			   and  groupId=:groupId
+			</#if>
+			<#if type?exists && type != "" >
+			  and  type=:type
+			</#if>
+			<#if code?exists && code != "" >
+			   and  code=:code
+			</#if>
+			<#if pwd?exists && pwd != "" >
+			  and  pwd=:pwd
+			</#if>
+			<#if name?exists && name != "" >
+			  and   name=:name
+			</#if>
+			<#if mobile?exists && mobile != "" >
+			 and  mobile=:mobile
+			</#if>
+			<#if likeCode?exists && likeCode != "" >
+			   and  code like '%${likeCode}%'
+			</#if>
+			<#if plat?exists && plat != "" >
+			  and type in (1,2)
+			</#if>
+			<#if likeName?exists && likeName != "" >
+			  and  name like '%${likeName}%'
+			</#if>
+			<#if userIds??>
+				AND id in (
+
+					<#list userIds as userId>
+						<#if userId_index gt 0>
+							,${userId}
+						<#else>
+							${userId}
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+
+	<sql id="getSourceUserListByPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,name,code,pwd,pwdErrorTimes,lastErrorTime,createTime,
+			createUserId,updateTime,updateUserId,mobile,landline,mail,status
+		  FROM sys_user
+		  WHERE 1 = 1 and status in (1,2,3)
+			<#if type?exists && type != "" >
+			   and  type=:type
+			</#if>
+			<#if groupId?exists && groupId != "" >
+			   and  groupId=:groupId
+			</#if>
+			<#if code?exists && code != "" >
+			  and   code=:code
+			</#if>
+			<#if pwd?exists && pwd != "" >
+			  and   pwd=:pwd
+			</#if>
+			<#if mobile?exists && mobile != "" >
+			 and  mobile=:mobile
+			</#if>
+			<#if name?exists && name != "" >
+			 and  name=:name
+			</#if>
+			<#if likeCode?exists && likeCode != "" >
+			  and   code like '%${likeCode}%'
+			</#if>
+			<#if plat?exists && plat != "" >
+			  and type in (1,2)
+			</#if>
+			<#if likeName?exists && likeName != "" >
+			  and   name like '%${likeName}%'
+			</#if>
+			<#if userIds??>
+				AND id in (
+
+					<#list userIds as userId>
+						<#if userId_index gt 0>
+							,${userId}
+						<#else>
+							${userId}
+						</#if>
+					</#list>
+				)
+			</#if>
+			order by code asc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询--> 
+	<sql id="getListPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			su.id                                                                   as id,
+			su.type                                                                 as type,
+			su.name                                                                 as name,
+			su.code                                                                 as code,
+			su.mobile                                                               as mobile,
+			su.landline                                                             as landline,
+			su.mail                                                                 as mail,
+			su.status                                                               as status
+		  FROM sys_user su
+		  <#if orgId?exists && orgId != "" >
+			   LEFT JOIN sys_user_org suo 
+		       ON su.`id` = suo.`userId`
+		  </#if>
+		  <#if postId?exists && postId != "" >
+			   LEFT JOIN sys_user_post sup
+		       ON su.`id` = sup.userid
+		  </#if>
+		  where 1 = 1
+		  <#if typeList??>
+		  	and su.type in(
+		  		<#list typeList as type>
+		  			<#if type_index gt 0>
+						,${type}
+					<#else>
+						${type}
+					</#if>
+		  		</#list>
+		  	)
+		  </#if>
+		  <#if statusList??>
+		  	and su.status in(
+		  		<#list statusList as status>
+		  			<#if status_index gt 0>
+						,${status}
+					<#else>
+						${status}
+					</#if>
+		  		</#list>
+		  	)
+		  </#if>
+		  <#if code?exists && code != "" >
+		  	and su.code = :code
+		  </#if>
+		  <#if name?exists && name != "" >
+		  	and su.name like "%":name"%"
+		  </#if>
+		  <#if orgId?exists && orgId != "" >
+		  	and suo.orgId = :orgId
+		  </#if>
+		  <#if postId?exists && postId != "" >
+		  	and sup.postId = :postId
+		  </#if>
+		  LIMIT :startRow,:endRow
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询--> 
+	<sql id="getListTotal"> 
+	   <![CDATA[ 
+		  SELECT 
+			count(1)
+		  FROM sys_user su
+		  <#if orgId?exists && orgId != "" >
+			   LEFT JOIN sys_user_org suo 
+		       ON su.`id` = suo.`userId`
+		  </#if>
+		  <#if postId?exists && postId != "" >
+			   LEFT JOIN sys_user_post sup
+		       ON su.`id` = sup.userid
+		  </#if>
+		  where 1 = 1
+		  <#if typeList??>
+		  	and su.type in(
+		  		<#list typeList as type>
+		  			<#if type_index gt 0>
+						,${type}
+					<#else>
+						${type}
+					</#if>
+		  		</#list>
+		  	)
+		  </#if>
+		  <#if statusList??>
+		  	and su.status in(
+		  		<#list statusList as status>
+		  			<#if status_index gt 0>
+						,${status}
+					<#else>
+						${status}
+					</#if>
+		  		</#list>
+		  	)
+		  </#if>
+		  <#if code?exists && code != "" >
+		  	and su.code = :code
+		  </#if>
+		  <#if name?exists && name != "" >
+		  	and su.name like "%":name"%"
+		  </#if>
+		  <#if orgId?exists && orgId != "" >
+		  	and suo.orgId = :orgId
+		  </#if>
+		  <#if postId?exists && postId != "" >
+		  	and sup.postId = :postId
+		  </#if>
+	   ]]>
+	</sql>
+
+	<!--根据用户Id获取用户组织信息--> 
+	<sql id="getUserOrgInfo"> 
+	   <![CDATA[ 
+	   	SELECT 
+		  id,
+		  type,
+		  shortName,
+		  fullName,
+		  parentId,
+		  topId,
+		  level,
+		  status
+		FROM
+		  sys_org so 
+		WHERE id = 
+		  (SELECT 
+		    suo.`orgId` 
+		  FROM
+		    sys_user su 
+		    INNER JOIN sys_user_org suo 
+		      ON su.id = suo.`userId` 
+		  WHERE suo.type = :type and su.id = :id)
+	   ]]>
+	</sql>
+	<!-- 根据ID删除 -->
+	<delete id="deleteById">
+		delete from sys_user where id=:id
+	</delete>
+	
+	<!-- 根据ID修改 -->
+	<sql id="updateById">
+		<![CDATA[ 
+			update sys_user SET 
+			<#if type?exists && type != "" >
+			   type=:type,
+			</#if>
+			<#if name?exists && name != "" >
+			   name=:name,
+			</#if>
+			<#if code?exists && code != "" >
+			   code=:code,
+			</#if>
+			<#if pwd?exists && pwd != "" >
+			   pwd=:pwd,
+			</#if>
+			<#if pwdErrorTimes?exists && pwdErrorTimes != "" >
+			   pwdErrorTimes=:pwdErrorTimes,
+			</#if>
+			<#if lastErrorTime?exists && lastErrorTime != "" >
+			   lastErrorTime=:lastErrorTime,
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   createTime=:createTime,
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   createUserId=:createUserId,
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   updateUserId=:updateUserId,
+			</#if>
+			<#if mobile?exists && mobile != "" >
+			   mobile=:mobile,
+			</#if>
+			<#if landline?exists && landline != "" >
+			   landline=:landline,
+			</#if>
+			<#if mail?exists && mail != "" >
+			   mail=:mail,
+			</#if>
+			<#if status?exists && status != "" >
+			   status=:status,
+			</#if>
+			updateTime = SYSDATE()
+		]]>
+	</sql>
+	
+	<!--根据帐号查找用户--> 
+	<sql id="getUserByCode"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,name,code,pwd,pwdErrorTimes,lastErrorTime,createTime,
+			createUserId,updateTime,updateUserId,mobile,landline,mail,status,deptNo,groupId
+		  FROM sys_user
+		  WHERE code = :code
+		  LIMIT 1 
+	   ]]>
+	</sql>
+	
+	<sql id="getTotalByCode"> 
+	   <![CDATA[ 
+		  SELECT 
+			COUNT(1)
+		  FROM sys_user
+		  WHERE code = :code
+	   ]]>
+	</sql>
+	
+	<!-- 根据用户ID获取岗位信息 -->
+	<sql id="getPostInfoByUserId">
+		<![CDATA[
+			SELECT 
+			  sp.id,
+			  sp.name
+			FROM
+			  sys_post sp 
+			WHERE sp.`id` IN 
+			  (SELECT 
+			    sup.`postId` AS postId 
+			  FROM
+			    sys_user su 
+			    INNER JOIN sys_user_post sup 
+			      ON su.`id` = sup.`userId` 
+			  WHERE su.`id` = :id)
+			  AND sp.status=1
+		]]>
+	</sql>
+	
+	<!-- 获取用户列表 -->
+	<sql id="getList">
+		<![CDATA[
+			SELECT
+			t.id,
+			t.`name`,
+			r.orgId as departmentId
+			FROM
+				sys_user t
+			LEFT JOIN sys_user_org r ON t.id = r.userId
+			WHERE 1=1
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if type?exists && type != "" >
+			   AND r.type = :type
+			</#if>
+			<#if groupId?exists && groupId != "" >
+			   AND t.groupId = groupId
+			</#if>
+		]]>
+	</sql>
+	
+	<!--根据部门获取用户--> 
+	<sql id="getUserListByOrg"> 
+	   <![CDATA[ 
+		 select t1.id,t1.name,t1.code
+		 from sys_user_org t 
+		 inner join sys_user t1 on t.userId=t1.id and t1.status in (1,2,3)
+		 where 1=1
+		 <#if orgId?exists && orgId != "">
+		 	and t.orgId=:orgId
+		 </#if>
+	   ]]>
+	</sql>
+	
+	<!--获取集团超级超级管理员--> 
+	<sql id="getAdmin"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name
+		  FROM sys_user
+		  WHERE groupId = :groupId and status = :status and type = :type order by id asc
+	   ]]>
+	</sql>
+	
+	<!-- 用户管理，列表查询用户集合 -->
+	<sql id="getListByPage"> 
+	   <![CDATA[ 
+		  SELECT
+			suser.*, sorg4.fullName AS groupName,
+			sorg3.fullName AS marketName,
+			sorg3.orgId AS marketId,
+			sorg2.fullName AS departmentName,
+			sorg2.orgId AS departmentId,
+			sorg1.fullName AS companyName,
+			sorg1.orgId AS companyId
+		FROM
+			(
+				SELECT
+					su.id,
+					su.`name`,
+					su.`code`,
+					su.deptNo,
+					su.groupId,
+					su.landline,
+					su.mail,
+					su.mobile,
+					su.type,
+					su.status,
+					spp.*
+				FROM
+					sys_user su
+				LEFT JOIN (
+					SELECT
+						sup.userId,
+						GROUP_CONCAT(sp.`name`) postName
+					FROM
+						sys_user_post sup
+					LEFT JOIN sys_post sp ON sup.postId = sp.id
+					AND sp.`status` = 1
+					GROUP BY
+						sup.userId
+				) spp ON su.id = spp.userId
+				WHERE
+					su.`status` IN (1, 2, 3)
+				<#if typeList??>
+			  		AND su.type in(
+			  		<#list typeList as type>
+			  			<#if type_index gt 0>
+							,${type}
+						<#else>
+							${type}
+						</#if>
+					</#list>
+					)
+				</#if>
+				<#if groupId?exists && groupId != "" >
+				   AND su.groupId =:groupId
+				</#if>
+				<#if code?exists && code != "" >
+				   AND su.code like "%":code"%"
+				</#if>
+				<#if name?exists && name != "" >
+				   AND su.name like "%":name"%"
+				</#if>
+				<#if postName?exists && postName != "" >
+				   AND FIND_IN_SET(:postName,spp.postName)
+				</#if>
+			) suser
+		LEFT JOIN (
+			SELECT
+				suo.orgId,
+				suo.userId,
+				suo.type,
+				so.fullName
+			FROM
+				sys_user_org suo
+			LEFT JOIN sys_org so ON suo.orgId = so.id
+		) sorg4 ON sorg4.userId = suser.id
+		AND sorg4.type = 4
+		LEFT JOIN (
+			SELECT
+				suo.orgId,
+				suo.userId,
+				suo.type,
+				so.fullName
+			FROM
+				sys_user_org suo
+			LEFT JOIN sys_org so ON suo.orgId = so.id
+		) sorg3 ON sorg3.userId = suser.id
+		AND sorg3.type = 3
+		LEFT JOIN (
+			SELECT
+				suo.orgId,
+				suo.userId,
+				suo.type,
+				so.fullName
+			FROM
+				sys_user_org suo
+			LEFT JOIN sys_org so ON suo.orgId = so.id
+		) sorg2 ON sorg2.userId = suser.id
+		AND sorg2.type = 2
+		LEFT JOIN (
+			SELECT
+				suo.orgId,
+				suo.userId,
+				suo.type,
+				so.fullName
+			FROM
+				sys_user_org suo
+			LEFT JOIN sys_org so ON suo.orgId = so.id
+		) sorg1 ON sorg1.userId = suser.id
+		AND sorg1.type = 1
+		ORDER BY suser.`code`
+		LIMIT :startRow,:endRow
+	   ]]>
+	</sql>
+	
+	<!-- 用户管理，列表查询用户总数 -->
+	<sql id="getListCount"> 
+	   <![CDATA[ 
+			SELECT
+				COUNT(*)
+			FROM
+				sys_user su
+			LEFT JOIN (
+				SELECT
+					sup.userId,
+					GROUP_CONCAT(sp.`name`) postName
+				FROM
+					sys_user_post sup
+				LEFT JOIN sys_post sp ON sup.postId = sp.id
+				AND sp.`status` = 1
+				GROUP BY
+					sup.userId
+			) spp ON su.id = spp.userId
+			WHERE
+				su.`status` IN (1, 2, 3)
+			 <#if typeList??>
+			  	AND su.type in(
+			  		<#list typeList as type>
+			  			<#if type_index gt 0>
+							,${type}
+						<#else>
+							${type}
+						</#if>
+					</#list>
+				)
+			</#if>
+			<#if groupId?exists && groupId != "" >
+			   AND su.groupId =:groupId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND su.code like "%":code"%"
+			</#if>
+			<#if name?exists && name != "" >
+			   AND su.name like "%":name"%"
+			</#if>
+			<#if postName?exists && postName != "" >
+			   AND FIND_IN_SET(:postName,spp.postName)
+			</#if>
+	   ]]>
+	</sql>
+</sqlMap>
+

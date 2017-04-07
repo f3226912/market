@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysWorkflowSetting"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			type,id,workType,marketId,orgId,createUserId,updateTime,createTime,updateUserId
+		  FROM sys_workflow_setting
+		  WHERE 1=1 
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if workType?exists && workType != "" >
+			   AND workType=:workType
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			type,id,workType,marketId,orgId,createUserId,updateTime,createTime,updateUserId
+		  FROM sys_workflow_setting
+		  WHERE 1=1 
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if workType?exists && workType != "" >
+			   AND workType=:workType
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_workflow_setting
+		  WHERE 1=1 
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if workType?exists && workType != "" >
+			   AND workType=:workType
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+	
+	<sql id="queryByMarketId"> 
+	   <![CDATA[ 
+		  SELECT 
+			type,id,workType,marketId,orgId,createUserId,updateTime,createTime,updateUserId
+		  FROM sys_workflow_setting
+		  WHERE  marketId=:marketId
+		  <#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!--  更新设置 -->
+	<sql id="updateByMarketId"> 
+	   <![CDATA[ 
+		 UPDATE  sys_workflow_setting s 
+		 SET s.workType=:workType,
+		 <#if updateUserId?exists && updateUserId!="" >
+			updateUserId =:updateUserId,
+		</#if>	
+		updateTime = SYSDATE()
+		  WHERE s.type=:type  AND s.marketId=:marketId 
+	   ]]>
+	</sql>
+
+
+    <!--  某公司某市场的审批设置 -->
+	<sql id="queryByOrgIdAndMarketId"> 
+	   <![CDATA[ 
+		 SELECT 
+			type,id,workType,marketId,orgId,createUserId,updateTime,createTime,updateUserId
+		  FROM sys_workflow_setting
+		  WHERE  marketId=:marketId
+		  and    orgId=:orgId
+		  and    type=:type
+	   ]]>
+	</sql>
+</sqlMap>

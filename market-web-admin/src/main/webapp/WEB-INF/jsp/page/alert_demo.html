@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <title>text</title>
+    <link href="../lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-reset.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/style-responsive.css" rel="stylesheet" />
+</head>
+
+  <body>
+  	
+	<button type="button" class="btn btn-danger " data-toggle="modal" data-target="#Delete" id="delete">删除</button>
+
+  </body>
+    <script src="../lib/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../lib/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/common/gd-util.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//删除弹框的组件要传三个值第一个是头部的文字，第二个是主要的文字，第三个是点击确认后的方法名
+		$("#delete").deleteButton("谢伟龙","是个大帅哥",alert2);
+		function alert2(){
+			alert("你也觉得是吧！！！")
+		}
+	</script>
+</html>

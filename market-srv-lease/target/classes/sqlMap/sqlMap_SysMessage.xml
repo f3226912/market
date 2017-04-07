@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysMessage"> 
+	<!-- 插入 -->
+	<sql id="insert">
+	<![CDATA[
+		INSERT INTO
+		sys_message(
+			messageType,
+			sender,
+			receiver,
+			sendTime,
+			receiveTime,
+			messageContent,
+			messageTitile,
+			hasRead,
+			businessId,
+			businessJson,
+			status,
+			createTime,
+			createUserId,
+			updateTime,
+			updateUserId,
+			forwardUrl
+		)
+		VALUES(
+			:messageType,
+			:sender,
+			:receiver,
+			sysDate(),
+			sysDate(),
+			:messageContent,
+			:messageTitile,
+			:hasRead,
+			:businessId,
+			:businessJson,
+			:status,
+			sysDate(),
+			:createUserId,
+			sysDate(),
+			:updateUserId,
+			:forwardUrl
+		)
+	]]>
+	</sql>
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,messageType,receiveTime,messageTitile,businessId,messageContent,businessJson,createUserId,
+			validBeginTime,updateUserId,forwardUrl,validEndTime,updateTime,createTime,hasRead,status,
+			receiver,sendTime,sender
+		  FROM sys_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageType?exists && messageType != "" >
+			   AND messageType=:messageType
+			</#if>
+			<#if receiveTime?exists && receiveTime != "" >
+			   AND receiveTime=:receiveTime
+			</#if>
+			<#if messageTitile?exists && messageTitile != "" >
+			   AND messageTitile=:messageTitile
+			</#if>
+			<#if businessId?exists && businessId != "" >
+			   AND businessId=:businessId
+			</#if>
+			<#if messageContent?exists && messageContent != "" >
+			   AND messageContent=:messageContent
+			</#if>
+			<#if businessJson?exists && businessJson != "" >
+			   AND businessJson=:businessJson
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if validBeginTime?exists && validBeginTime != "" >
+			   AND validBeginTime=:validBeginTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if forwardUrl?exists && forwardUrl != "" >
+			   AND forwardUrl=:forwardUrl
+			</#if>
+			<#if validEndTime?exists && validEndTime != "" >
+			   AND validEndTime=:validEndTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if hasRead?exists && hasRead != "" >
+			   AND hasRead=:hasRead
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if sendTime?exists && sendTime != "" >
+			   AND sendTime=:sendTime
+			</#if>
+			<#if sender?exists && sender != "" >
+			   AND sender=:sender
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,messageType,receiveTime,messageTitile,businessId,messageContent,businessJson,createUserId,
+			validBeginTime,updateUserId,forwardUrl,validEndTime,updateTime,createTime,hasRead,status,
+			receiver,sendTime,sender
+		  FROM sys_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageType?exists && messageType != "" >
+			   AND messageType=:messageType
+			</#if>
+			<#if receiveTime?exists && receiveTime != "" >
+			   AND receiveTime=:receiveTime
+			</#if>
+			<#if messageTitile?exists && messageTitile != "" >
+			   AND messageTitile=:messageTitile
+			</#if>
+			<#if businessId?exists && businessId != "" >
+			   AND businessId=:businessId
+			</#if>
+			<#if messageContent?exists && messageContent != "" >
+			   AND messageContent=:messageContent
+			</#if>
+			<#if businessJson?exists && businessJson != "" >
+			   AND businessJson=:businessJson
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if validBeginTime?exists && validBeginTime != "" >
+			   AND validBeginTime=:validBeginTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if forwardUrl?exists && forwardUrl != "" >
+			   AND forwardUrl=:forwardUrl
+			</#if>
+			<#if validEndTime?exists && validEndTime != "" >
+			   AND validEndTime=:validEndTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if hasRead?exists && hasRead != "" >
+			   AND hasRead=:hasRead
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if sendTime?exists && sendTime != "" >
+			   AND sendTime=:sendTime
+			</#if>
+			<#if sender?exists && sender != "" >
+			   AND sender=:sender
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageType?exists && messageType != "" >
+			   AND messageType=:messageType
+			</#if>
+			<#if receiveTime?exists && receiveTime != "" >
+			   AND receiveTime=:receiveTime
+			</#if>
+			<#if messageTitile?exists && messageTitile != "" >
+			   AND messageTitile=:messageTitile
+			</#if>
+			<#if businessId?exists && businessId != "" >
+			   AND businessId=:businessId
+			</#if>
+			<#if messageContent?exists && messageContent != "" >
+			   AND messageContent=:messageContent
+			</#if>
+			<#if businessJson?exists && businessJson != "" >
+			   AND businessJson=:businessJson
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if validBeginTime?exists && validBeginTime != "" >
+			   AND validBeginTime=:validBeginTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if forwardUrl?exists && forwardUrl != "" >
+			   AND forwardUrl=:forwardUrl
+			</#if>
+			<#if validEndTime?exists && validEndTime != "" >
+			   AND validEndTime=:validEndTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if hasRead?exists && hasRead != "" >
+			   AND hasRead=:hasRead
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if sendTime?exists && sendTime != "" >
+			   AND sendTime=:sendTime
+			</#if>
+			<#if sender?exists && sender != "" >
+			   AND sender=:sender
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketResourceMeasure"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,measureId,status,resourceId,createUserId,createTime,updateUserId,updateTime
+		  FROM market_resource_measure
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if measureId?exists && measureId != "" >
+			   AND measureId=:measureId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,measureId,status,resourceId,createUserId,createTime,updateUserId,updateTime
+		  FROM market_resource_measure
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if measureId?exists && measureId != "" >
+			   AND measureId=:measureId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_resource_measure
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if measureId?exists && measureId != "" >
+			   AND measureId=:measureId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysMenuButton"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,code,menuId,createUserId,createTime,updateTime,updateUserId
+		  FROM sys_menu_button
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if menuId?exists && menuId != "" >
+			   AND menuId=:menuId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,code,menuId,createUserId,createTime,updateTime,updateUserId
+		  FROM sys_menu_button
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if menuId?exists && menuId != "" >
+			   AND menuId=:menuId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_menu_button
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if menuId?exists && menuId != "" >
+			   AND menuId=:menuId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfOrder"> 
+	
+	<!--根据id查询--> 
+	<sql id="getById"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			process_Id                      as processId,
+			order_No                        as orderNo,
+			bus_type                        as busType,
+			creator                         as creator,
+			bus_id                          as busId
+		  FROM wf_Order
+		  WHERE 1=1 
+			and id = :id
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			process_Id                      as processId,
+			order_No                        as orderNo,
+			bus_type                        as busType,
+			bus_id                          as busId
+		  FROM wf_Order
+		  WHERE 1=1 
+			<#if orderNo?exists && orderNo != "" >
+			   AND order_No like "%":orderNo"%"
+			</#if>
+			<#if busType?exists && busType != "" >
+			   AND bus_type=:busType
+			</#if>
+			<#if processIdList??>
+				AND process_id in (
+
+					<#list processIdList as processId>
+						<#if processId_index gt 0>
+							,'${processId}'
+						<#else>
+							'${processId}'
+						</#if>
+					</#list>
+				)
+			</#if>
+		  ORDER BY create_Time DESC
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			count(1)
+		  FROM wf_Order
+		  WHERE 1=1 
+			<#if orderNo?exists && orderNo != "" >
+			   AND order_No like "%":orderNo"%"
+			</#if>
+			<#if busType?exists && busType != "" >
+			   AND bus_type=:busType
+			</#if>
+			<#if processIdList??>
+				AND process_id in (
+
+					<#list processIdList as processId>
+						<#if processId_index gt 0>
+							,'${processId}'
+						<#else>
+							'${processId}'
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

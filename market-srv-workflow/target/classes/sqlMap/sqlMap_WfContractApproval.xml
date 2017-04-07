@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfContractApproval"> 
+	<!--查询当前流程实例的活动任务参与者--> 
+	<sql id="queryOrderActiveTaskActor"> 
+	   <![CDATA[ 
+		  SELECT
+				su.id, su.code, su.name
+			FROM
+				sys_user su
+			INNER JOIN wf_task_actor ta ON ta.actor_Id = su.id
+			INNER JOIN wf_task wt ON wt.id = ta.task_Id
+			WHERE wt.order_Id = :orderId
+	   ]]>
+	</sql>
+	
+
+</sqlMap>

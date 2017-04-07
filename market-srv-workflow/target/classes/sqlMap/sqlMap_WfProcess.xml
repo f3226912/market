@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfProcess"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			name                            as name,
+			bus_Type                        as busType,
+			state                           as state,
+			org_id                          as orgId,
+			modified_Time                   as modifiedTime,
+			(SELECT NAME FROM sys_user WHERE id = modificator) AS  modificator
+		  FROM wf_process
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if state?exists && state != "" >
+			   AND state=:state
+			</#if>
+			   AND state in(1,0)
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if content?exists && content != "" >
+			   AND content=:content
+			</#if>
+			<#if displayName?exists && displayName != "" >
+			   AND display_Name=:displayName
+			</#if>
+			<#if version?exists && version != "" >
+			   AND version=:version
+			</#if>
+			<#if creator?exists && creator != "" >
+			   AND creator=:creator
+			</#if>
+			<#if busType?exists && busType != "" >
+			   AND bus_Type=:busType
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND org_Id=:orgId
+			</#if>
+			<#if monitorId?exists && monitorId != "" >
+			   AND monitor_Id=:monitorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND create_Time=:createTime
+			</#if>
+			<#if instanceUrl?exists && instanceUrl != "" >
+			   AND instance_Url=:instanceUrl
+			</#if>
+			<#if modificator?exists && modificator != "" >
+			   AND modificator=:modificator
+			</#if>
+			<#if modifiedTime?exists && modifiedTime != "" >
+			   AND modified_Time=:modifiedTime
+			</#if>
+			<#if processDesc?exists && processDesc != "" >
+			   AND process_Desc=:processDesc
+			</#if>
+			<#if orgIdList??>
+				AND org_id in (
+
+					<#list orgIdList as orgId>
+						<#if orgId_index gt 0>
+							,${orgId}
+						<#else>
+							${orgId}
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+	<!-- 根据ID查询 -->
+	<sql id="getById"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			name                            as name,
+			display_name                    as displayName,
+			bus_Type                        as busType,
+			state                           as state,
+			org_id                          as orgId,
+			monitor_Id                      as monitorId,
+			(SELECT NAME FROM sys_user WHERE id = monitor_Id) AS  monitorDesc,
+			modified_Time                   as modifiedTime,
+			(SELECT NAME FROM sys_user WHERE id = modificator) AS  modificator,
+			process_Desc                    as processDesc
+		  FROM wf_process
+		  WHERE id = :id
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			name                            as name,
+			display_name                    as displayName,
+			bus_Type                        as busType,
+			state                           as state,
+			org_id                          as orgId,
+			modified_Time                   as modifiedTime,
+			(SELECT NAME FROM sys_user WHERE id = modificator) AS  modificator
+		  FROM wf_process
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if state?exists && state != "" >
+			   AND state=:state
+			</#if>
+			   AND state in(1,0)
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if content?exists && content != "" >
+			   AND content=:content
+			</#if>
+			<#if displayName?exists && displayName != "" >
+			   AND display_Name like "%":displayName"%"
+			</#if>
+			<#if version?exists && version != "" >
+			   AND version=:version
+			</#if>
+			<#if creator?exists && creator != "" >
+			   AND creator=:creator
+			</#if>
+			<#if busType?exists && busType != "" >
+			   AND bus_Type=:busType
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND org_Id=:orgId
+			</#if>
+			<#if monitorId?exists && monitorId != "" >
+			   AND monitor_Id=:monitorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND create_Time=:createTime
+			</#if>
+			<#if instanceUrl?exists && instanceUrl != "" >
+			   AND instance_Url=:instanceUrl
+			</#if>
+			<#if modificator?exists && modificator != "" >
+			   AND modificator=:modificator
+			</#if>
+			<#if modifiedTime?exists && modifiedTime != "" >
+			   AND modified_Time=:modifiedTime
+			</#if>
+			<#if processDesc?exists && processDesc != "" >
+			   AND process_Desc=:processDesc
+			</#if>
+			<#if excludeId?exists && excludeId != "" >
+			   AND id != :excludeId
+			</#if>
+			<#if orgIdList??>
+				AND org_id in (
+
+					<#list orgIdList as orgId>
+						<#if orgId_index gt 0>
+							,${orgId}
+						<#else>
+							${orgId}
+						</#if>
+					</#list>
+				)
+			</#if>
+		  ORDER BY org_id DESC,bus_type DESC
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM wf_process
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if state?exists && state != "" >
+			   AND state=:state
+			</#if>
+			   AND state in(1,0)
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if content?exists && content != "" >
+			   AND content=:content
+			</#if>
+			<#if displayName?exists && displayName != "" >
+			   AND display_Name like "%":displayName"%"
+			</#if>
+			<#if version?exists && version != "" >
+			   AND version=:version
+			</#if>
+			<#if creator?exists && creator != "" >
+			   AND creator=:creator
+			</#if>
+			<#if busType?exists && busType != "" >
+			   AND bus_Type=:busType
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND org_Id=:orgId
+			</#if>
+			<#if monitorId?exists && monitorId != "" >
+			   AND monitor_Id=:monitorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND create_Time=:createTime
+			</#if>
+			<#if instanceUrl?exists && instanceUrl != "" >
+			   AND instance_Url=:instanceUrl
+			</#if>
+			<#if modificator?exists && modificator != "" >
+			   AND modificator=:modificator
+			</#if>
+			<#if modifiedTime?exists && modifiedTime != "" >
+			   AND modified_Time=:modifiedTime
+			</#if>
+			<#if processDesc?exists && processDesc != "" >
+			   AND process_Desc=:processDesc
+			</#if>
+			<#if excludeId?exists && excludeId != "" >
+			   AND id != :excludeId
+			</#if>
+			<#if orgIdList??>
+				AND org_id in (
+
+					<#list orgIdList as orgId>
+						<#if orgId_index gt 0>
+							,${orgId}
+						<#else>
+							${orgId}
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+	<!-- 查询当前集团下所有流程模板 -->
+	<sql id="getCurGroupProcess">
+		<![CDATA[ 
+			SELECT 
+				id                              as Id,
+				name                            as name,
+				display_name                    as displayName,
+				bus_Type                        as busType,
+				state                           as state,
+				org_id                          as orgId,
+				modified_Time                   as modifiedTime,
+				(SELECT NAME FROM sys_user WHERE id = modificator) AS  modificator
+			  FROM wf_process
+			  WHERE 1=1
+			  <#if monitorId?exists && monitorId != "" >
+			   AND monitor_Id=:monitorId
+			  </#if>
+			  <#if orgIdList??>
+				AND org_id in (
+					<#list orgIdList as orgId>
+						<#if orgId_index gt 0>
+							,${orgId}
+						<#else>
+							${orgId}
+						</#if>
+					</#list>
+				)
+			</#if>
+		]]>
+	</sql>
+	<!-- 是否唯一的流程名称 -->
+	<sql id="isUniqueForProcessDisplayName"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM wf_process
+		  WHERE state in(1,0) AND display_Name = :displayName
+			<#if excludeId?exists && excludeId != "" >
+			   AND id != :excludeId
+			</#if>
+	   ]]>
+	</sql>
+</sqlMap>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketExpenditure"> 
+
+	<!-- 查询所有费项类型的分组 -->
+	<sql id="getExpTypes">
+	SELECT 
+		t.expType expTypeId,
+		d.remark expTypeName
+	FROM market_expenditure t 
+	LEFT JOIN sysdictionary d on t.expType = d.`value` AND D.`type` ='expenditureType'  and d.sort In( 1,2,3) 
+	WHERE 1=1 
+	AND t.marketId = :marketId
+	AND t.status = :status
+  	and d.remark is not null 
+	GROUP BY t.expType
+	</sql>
+	
+	<sql id="getById">
+	SELECT 
+		t.id,t.marketId,t.name,t.expType,t.expDetail,t.sysType,t.status,t.createUserId,t.createTime,t.updateUserId,t.updateTime,
+		d.remark expTypeName
+	FROM market_expenditure t
+	LEFT JOIN sysdictionary d ON t.expType = d.value AND d.type = 'expenditureType'
+	WHERE 1=1 
+	AND t.id=:id
+	</sql>
+
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.id,t.marketId,t.name,t.expType,t.expDetail,t.sysType,t.status,
+			t.createUserId,t.createTime,t.updateUserId,t.updateTime,
+			d.remark sysTypeName 
+		  FROM market_expenditure t
+		  LEFT JOIN sysdictionary d on sysType = d.value AND d.type = 'sysType'
+		  WHERE 1=1 
+		  	<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND  t.marketId=:marketId 
+			</#if>
+			<#if name?exists && name != "" >
+			   AND t.name=:name
+			</#if>
+			<#if expType?exists && expType != "" && expType != 0>
+			   AND t.expType=:expType
+			</#if>
+			<#if expDetail?exists && expDetail != "" >
+			   AND t.expDetail=:expDetail
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if excludeParentId?exists && excludeParentId != "" >
+			   AND t.parentId != :excludeParentId
+			</#if>			
+			
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.id,t.marketId,t.name,t.expType,t.expDetail,t.status,t.sysType,t.createUserId,
+			t.createTime,t.updateUserId,t.updateTime,
+			d.remark expTypeName,d1.remark sysTypeName
+		  FROM market_expenditure t 
+		  LEFT JOIN sysdictionary d on t.expType = d.value AND d.type = 'expenditureType'
+		  LEFT JOIN sysdictionary d1 on t.sysType = d1.value AND d1.type = 'sysType'
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			  AND t.marketId=:marketId
+			</#if>
+			<#if name?exists && name != "" >
+			   AND t.name=:name
+			</#if>
+			<#if expType?exists && expType != "" >
+			   AND t.expType=:expType
+			</#if>
+			<#if expDetail?exists && expDetail != "" >
+			   AND t.expDetail=:expDetail
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			ORDER BY t.sysType desc,t.updateTime desc
+		  	LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_expenditure
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId 
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if expType?exists && expType != "" >
+			   AND expType=:expType
+			</#if>
+			<#if expDetail?exists && expDetail != "" >
+			   AND expDetail=:expDetail
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+	   ]]>
+	</sql>
+	
+	<sql id="deleteById">
+		UPDATE market_expenditure 
+		SET status = :status,
+		updateUserId = :updateUserId,
+		updateTime=:updateTime
+		WHERE 1=1 
+		AND id=:id
+	</sql>
+	
+	<!--根据条件查询--> 
+	<sql id="queryByMarketIdParentId"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.id,t.marketId,t.name,t.expType,t.expDetail,t.sysType,t.status,
+			t.createUserId,t.createTime,t.updateUserId,t.updateTime,
+			d.remark sysTypeName 
+		  FROM market_expenditure t
+		  LEFT JOIN sysdictionary d on sysType = d.value AND d.type = 'sysType'
+		  WHERE
+			t.marketId=:marketId 
+			and t.parentId = :parentId  
+	   ]]>
+	</sql>
+	
+	<!--根据条件查询--> 
+	<sql id="querySysTypeList"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.id,t.marketId,t.name,t.expType,t.expDetail,t.sysType,t.status,
+			t.createUserId,t.createTime,t.updateUserId,t.updateTime,
+			d.remark sysTypeName 
+		  FROM market_expenditure t
+		  LEFT JOIN sysdictionary d on sysType = d.value AND d.type = 'sysType'
+		  WHERE
+			t.marketId=:marketId 
+			and parentId IN
+		  	<#assign n = parentIds?size />
+			<#if n gt 0>
+				(
+				<#list parentIds as parentId>
+					<#if parentId_index != n-1>
+							${parentId} ,
+						<#else>
+							${parentId}
+					</#if>
+				</#list>
+				) 
+			</#if>
+	   ]]>
+	</sql>
+
+	<sql id="getByParentId">
+		<![CDATA[
+			SELECT 
+				id, expType
+			FROM market_expenditure
+			WHERE parentId = :parentId AND marketId = :marketId
+		]]>
+	</sql>
+	
+	<sql id="getByMeasureType">
+		SELECT e.id,e.name from market_expenditure e
+		LEFT JOIN market_measure_type t on t.expId = e.id
+		WHERE t.id = :measureTypeId
+	</sql>
+</sqlMap>

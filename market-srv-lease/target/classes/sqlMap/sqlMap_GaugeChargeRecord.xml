@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="GaugeChargeRecord"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,last,contractVersion,contractNo,lastNoteDate,customerName,resourceName,receiveDate,
+			createUserId,createTime,updateUserId,updateTime,gaugeNo,noteDate,current,wastage,
+			price,amount,status,partyB,receiver,noteUser
+		  FROM gauge_charge_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if last?exists && last != "" >
+			   AND last=:last
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if lastNoteDate?exists && lastNoteDate != "" >
+			   AND lastNoteDate=:lastNoteDate
+			</#if>
+			<#if customerName?exists && customerName != "" >
+			   AND customerName=:customerName
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			   AND resourceName=:resourceName
+			</#if>
+			<#if receiveDate?exists && receiveDate != "" >
+			   AND receiveDate=:receiveDate
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if gaugeNo?exists && gaugeNo != "" >
+			   AND gaugeNo=:gaugeNo
+			</#if>
+			<#if noteDate?exists && noteDate != "" >
+			   AND noteDate=:noteDate
+			</#if>
+			<#if current?exists && current != "" >
+			   AND current=:current
+			</#if>
+			<#if wastage?exists && wastage != "" >
+			   AND wastage=:wastage
+			</#if>
+			<#if price?exists && price != "" >
+			   AND price=:price
+			</#if>
+			<#if amount?exists && amount != "" >
+			   AND amount=:amount
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if partyB?exists && partyB != "" >
+			   AND partyB=:partyB
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if noteUser?exists && noteUser != "" >
+			   AND noteUser=:noteUser
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,last,contractVersion,contractNo,lastNoteDate,customerName,resourceName,receiveDate,
+			createUserId,createTime,updateUserId,updateTime,gaugeNo,noteDate,current,wastage,
+			price,amount,status,partyB,receiver,noteUser
+		  FROM gauge_charge_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if last?exists && last != "" >
+			   AND last=:last
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if lastNoteDate?exists && lastNoteDate != "" >
+			   AND lastNoteDate=:lastNoteDate
+			</#if>
+			<#if customerName?exists && customerName != "" >
+			   AND customerName=:customerName
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			   AND resourceName=:resourceName
+			</#if>
+			<#if receiveDate?exists && receiveDate != "" >
+			   AND receiveDate=:receiveDate
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if gaugeNo?exists && gaugeNo != "" >
+			   AND gaugeNo=:gaugeNo
+			</#if>
+			<#if noteDate?exists && noteDate != "" >
+			   AND noteDate=:noteDate
+			</#if>
+			<#if current?exists && current != "" >
+			   AND current=:current
+			</#if>
+			<#if wastage?exists && wastage != "" >
+			   AND wastage=:wastage
+			</#if>
+			<#if price?exists && price != "" >
+			   AND price=:price
+			</#if>
+			<#if amount?exists && amount != "" >
+			   AND amount=:amount
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if partyB?exists && partyB != "" >
+			   AND partyB=:partyB
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if noteUser?exists && noteUser != "" >
+			   AND noteUser=:noteUser
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM gauge_charge_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if last?exists && last != "" >
+			   AND last=:last
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if lastNoteDate?exists && lastNoteDate != "" >
+			   AND lastNoteDate=:lastNoteDate
+			</#if>
+			<#if customerName?exists && customerName != "" >
+			   AND customerName=:customerName
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			   AND resourceName=:resourceName
+			</#if>
+			<#if receiveDate?exists && receiveDate != "" >
+			   AND receiveDate=:receiveDate
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if gaugeNo?exists && gaugeNo != "" >
+			   AND gaugeNo=:gaugeNo
+			</#if>
+			<#if noteDate?exists && noteDate != "" >
+			   AND noteDate=:noteDate
+			</#if>
+			<#if current?exists && current != "" >
+			   AND current=:current
+			</#if>
+			<#if wastage?exists && wastage != "" >
+			   AND wastage=:wastage
+			</#if>
+			<#if price?exists && price != "" >
+			   AND price=:price
+			</#if>
+			<#if amount?exists && amount != "" >
+			   AND amount=:amount
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if partyB?exists && partyB != "" >
+			   AND partyB=:partyB
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if noteUser?exists && noteUser != "" >
+			   AND noteUser=:noteUser
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

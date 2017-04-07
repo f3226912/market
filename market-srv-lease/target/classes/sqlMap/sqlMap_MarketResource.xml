@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="MarketResource">
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			name,id,resourceTypeId,leaseValidateTime,leaseStatus,originOperate,updateUserId,createTime,
+			createUserId,updateTime,marketId,code,orginCode,shortCode,rentMode,budingId,
+			areaId,leaseArea,status,builtArea,unitId,floorId,innerArea
+		  FROM market_resource
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceTypeId?exists && resourceTypeId != "" >
+			   AND resourceTypeId=:resourceTypeId
+			</#if>
+			<#if leaseValidateTime?exists && leaseValidateTime != "" >
+			   AND leaseValidateTime=:leaseValidateTime
+			</#if>
+			<#if leaseStatus?exists && leaseStatus != "" >
+			   AND leaseStatus=:leaseStatus
+			</#if>
+			<#if originOperate?exists && originOperate != "" >
+			   AND originOperate=:originOperate
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if orginCode?exists && orginCode != "" >
+			   AND orginCode=:orginCode
+			</#if>
+			<#if shortCode?exists && shortCode != "" >
+			   AND shortCode=:shortCode
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND rentMode=:rentMode
+			</#if>
+			<#if budingId?exists && budingId != "" >
+			   AND budingId=:budingId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if leaseArea?exists && leaseArea != "" >
+			   AND leaseArea=:leaseArea
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if builtArea?exists && builtArea != "" >
+			   AND builtArea=:builtArea
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if innerArea?exists && innerArea != "" >
+			   AND innerArea=:innerArea
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			name,id,resourceTypeId,leaseValidateTime,leaseStatus,originOperate,updateUserId,createTime,
+			createUserId,updateTime,marketId,code,orginCode,shortCode,rentMode,budingId,
+			areaId,leaseArea,status,builtArea,unitId,floorId,innerArea
+		  FROM market_resource
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceTypeId?exists && resourceTypeId != "" >
+			   AND resourceTypeId=:resourceTypeId
+			</#if>
+			<#if leaseValidateTime?exists && leaseValidateTime != "" >
+			   AND leaseValidateTime=:leaseValidateTime
+			</#if>
+			<#if leaseStatus?exists && leaseStatus != "" >
+			   AND leaseStatus=:leaseStatus
+			</#if>
+			<#if originOperate?exists && originOperate != "" >
+			   AND originOperate=:originOperate
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if orginCode?exists && orginCode != "" >
+			   AND orginCode=:orginCode
+			</#if>
+			<#if shortCode?exists && shortCode != "" >
+			   AND shortCode=:shortCode
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND rentMode=:rentMode
+			</#if>
+			<#if budingId?exists && budingId != "" >
+			   AND budingId=:budingId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if leaseArea?exists && leaseArea != "" >
+			   AND leaseArea=:leaseArea
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if builtArea?exists && builtArea != "" >
+			   AND builtArea=:builtArea
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if innerArea?exists && innerArea != "" >
+			   AND innerArea=:innerArea
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_resource
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceTypeId?exists && resourceTypeId != "" >
+			   AND resourceTypeId=:resourceTypeId
+			</#if>
+			<#if leaseValidateTime?exists && leaseValidateTime != "" >
+			   AND leaseValidateTime=:leaseValidateTime
+			</#if>
+			<#if leaseStatus?exists && leaseStatus != "" >
+			   AND leaseStatus=:leaseStatus
+			</#if>
+			<#if originOperate?exists && originOperate != "" >
+			   AND originOperate=:originOperate
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if orginCode?exists && orginCode != "" >
+			   AND orginCode=:orginCode
+			</#if>
+			<#if shortCode?exists && shortCode != "" >
+			   AND shortCode=:shortCode
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND rentMode=:rentMode
+			</#if>
+			<#if budingId?exists && budingId != "" >
+			   AND budingId=:budingId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if leaseArea?exists && leaseArea != "" >
+			   AND leaseArea=:leaseArea
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if builtArea?exists && builtArea != "" >
+			   AND builtArea=:builtArea
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if innerArea?exists && innerArea != "" >
+			   AND innerArea=:innerArea
+			</#if>
+	   ]]>
+	</sql>
+
+<sql id="insert">
+	<![CDATA[
+	INSERT INTO market_resource(code,shortCode,orginCode,
+	originOperate,name,marketId,areaId,budingId,floorId,
+	unitId,resourceTypeId,builtArea,innerArea,leaseArea,
+	leaseStatus,rentMode,leaseValidateTime,
+	createUserId,createTime,updateUserId,updateTime) 
+	VALUES (:code,:shortCode,:orginCode,:originOperate,
+	:name,:marketId,:areaId,:budingId,:floorId,:unitId,
+	:resourceTypeId,:builtArea,:innerArea,:leaseArea,
+	:leaseStatus,:rentMode,:leaseValidateTime,
+	:createUserId,:createTime,:createUserId,:updateTime
+	)
+	]]>
+</sql>
+
+<sql id="update">
+	<![CDATA[
+	UPDATE market_resource SET 
+		<#if code?exists && code!="" >
+		code=:code,
+		</#if>
+		<#if shortCode?exists && shortCode!="" >
+		shortCode=:shortCode,
+		</#if>
+		<#if orginCode?exists && orginCode!="" >
+		orginCode=:orginCode,
+		</#if>
+		<#if originOperate?exists && originOperate!="" >
+		originOperate=:originOperate,
+		</#if>
+		<#if name?exists && name!="" >
+		name=:name,
+		</#if>
+		<#if marketId?exists && marketId!="" >
+		marketId=:marketId,
+		</#if>
+		<#if areaId?exists && areaId!="" >
+		areaId=:areaId,
+		</#if>
+		<#if budingId?exists && budingId!="">
+		budingId=:budingId,
+		</#if>
+		<#if floorId?exists && floorId!="">
+		floorId=:floorId,
+		</#if>
+		<#if unitId?exists && unitId!="">
+		unitId=:unitId,
+		</#if>
+		<#if resourceTypeId?exists && resourceTypeId!="" >
+		 resourceTypeId=:resourceTypeId,
+		</#if>
+		<#if builtArea?exists && builtArea!="" >
+		builtArea=:builtArea,
+		</#if>
+		<#if innerArea?exists && innerArea!="" >
+		innerArea=:innerArea,
+		</#if>
+		<#if leaseArea?exists && leaseArea!="" >
+		leaseArea=:leaseArea,
+		</#if>
+		<#if leaseStatus?exists && leaseStatus!="" >
+		leaseStatus=:leaseStatus,
+		</#if>
+		<#if rentMode?exists && rentMode!="" >
+		rentMode=:rentMode,
+		</#if>
+		<#if leaseValidateTime?exists && leaseValidateTime!="" >
+		leaseValidateTime=:leaseValidateTime,
+		</#if>
+		<#if status?exists && status!="" >
+		status=:status,
+		</#if>
+		<#if createUserId?exists && createUserId!="" >
+		createUserId=:createUserId,
+		</#if>
+		<#if createTime?exists && createTime!="" >
+		createTime=:createTime,
+		</#if>
+		<#if updateUserId?exists && updateUserId!="" >
+		updateUserId=:updateUserId,
+		</#if>
+		updateTime = SYSDATE()
+		WHERE id=:id
+		<#if oldStatus?exists && oldStatus!="" >
+		 and leaseStatus=:oldStatus
+		</#if>
+		
+	]]>
+</sql>
+
+<sql id="getById">
+	<![CDATA[
+	SELECT 
+	mr.id, mr.code, mr.shortCode, mr.orginCode, mr.originOperate, mr.name, mr.marketId, mr.areaId,
+ma.name as areaName,mab.name as buildingName, mr.budingId, mr.floorId,muf.name as unitFloorName, mr.unitId, mbu.name as buildingUnitName,
+mr.resourceTypeId, mr.builtArea, mr.innerArea, mr.leaseArea, mr.leaseStatus,
+  (case mr.leaseStatus 
+  when 1 then '待放租'
+  when 2 then '待租'
+  when 3 then '已租'
+  else '未知'
+  end  )as leaseStatusName, 
+mr.rentMode, mr.leaseValidateTime, mr.status, mr.createUserId, mr.createTime,
+ mr.updateUserId, mr.updateTime,
+ mry.name resourceTypeName
+	FROM market_resource mr 
+       left join market_area ma on  mr.areaId=ma.id 
+       left join market_area_building mab on mr.budingId=mab.id 
+       left join market_building_unit mbu on mr.unitId=mbu.id
+       left join market_unit_floor muf on mr.floorId=muf.id
+	   left join market_resource_type mry on mr.resourceTypeId=mry.id
+ WHERE mr.status=1 
+and mry.status=1
+and ma.status=1 
+and mr.marketId=mry.marketId
+    <#if leaseStatus?exists && leaseStatus!="" >
+		AND mr.leaseStatus=:leaseStatus
+	</#if>
+    <#if extendleaseStatus?exists && extendleaseStatus!="" >
+		AND mr.leaseStatus in (2,3)
+	</#if>	
+	<#if resourceTypeId?exists && resourceTypeId!="" >
+		and mr.resourceTypeId=:resourceTypeId
+	</#if>
+	<#if  marketId?exists && marketId!="" >
+		and  mr.marketId=:marketId
+	</#if>
+	<#if parentId?exists && parentId!="" >
+		and mry.parentId=:parentId
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND mr.areaId=:areaId
+	</#if>
+	<#if budingId?exists && budingId!="" >
+		AND mr.budingId=:budingId
+	</#if>
+	<#if floorId?exists && floorId!="" >
+		AND mr.floorId=:floorId
+	</#if>
+	<#if unitId?exists && unitId!="" >
+		AND mr.unitId=:unitId
+	</#if>
+	<#if id?exists && id!="" >
+		AND mr.id=:id
+	</#if>
+	<#if name?exists && name!="" >
+		AND mr.name like "%":name"%"
+	</#if> 
+	]]>
+</sql>
+
+<sql id="getList">
+	<![CDATA[
+SELECT 
+	mr.id, mr.code, mr.shortCode, mr.orginCode, mr.originOperate, mr.name, mr.marketId, mr.areaId,
+ma.name as areaName,mab.name as buildingName, mr.budingId, mr.floorId,muf.name as unitFloorName, mr.unitId, mbu.name as buildingUnitName,
+mr.resourceTypeId, mr.builtArea, mr.innerArea, mr.leaseArea, mr.leaseStatus,
+  (case mr.leaseStatus 
+  when 1 then '待放租'
+  when 2 then '待租'
+  when 3 then '已租'
+  else '未知'
+  end  )as leaseStatusName, 
+mr.rentMode, mr.leaseValidateTime, mr.status, mr.createUserId, mr.createTime,
+ mr.updateUserId, mr.updateTime,
+ mry.name resourceTypeName
+	FROM market_resource mr 
+       left join market_area ma on  mr.areaId=ma.id 
+       left join market_area_building mab on mr.budingId=mab.id 
+       left join market_building_unit mbu on mr.unitId=mbu.id
+       left join market_unit_floor muf on mr.floorId=muf.id
+	   left join market_resource_type mry on mr.resourceTypeId=mry.id
+ WHERE mr.status=1 
+and mry.status=1
+and ma.status=1 
+and mr.originOperate = 0 
+and mr.marketId=mry.marketId
+    <#if originOperate?exists && originOperate!="" >
+		AND mr.originOperate=:originOperate
+	</#if>
+	<#if leaseStatus?exists && leaseStatus!="" >
+		AND mr.leaseStatus=:leaseStatus
+	</#if>
+	<#if extendleaseStatus?exists && extendleaseStatus!="" >
+		AND mr.leaseStatus in (2,3)
+	</#if>
+	<#if resourceTypeId?exists && resourceTypeId!="" >
+		and mr.resourceTypeId=:resourceTypeId
+	</#if>
+	<#if  marketId?exists && marketId!="" >
+		and  mr.marketId=:marketId
+	</#if>
+	<#if parentId?exists && parentId!="" >
+		and mry.parentId=:parentId
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND mr.areaId=:areaId
+	</#if>
+	<#if budingId?exists && budingId!="" >
+		AND mr.budingId=:budingId
+	</#if>
+	<#if floorId?exists && floorId!="" >
+		AND mr.floorId=:floorId
+	</#if>
+	<#if unitId?exists && unitId!="" >
+		AND mr.unitId=:unitId
+	</#if>
+	<#if id?exists && id!="" >
+		AND mr.id=:id
+	</#if>
+	<#if name?exists && name!="" >
+		AND mr.name like "%":name"%"
+	</#if> 
+	order by mr.createTime desc
+	]]>
+</sql>
+
+<sql id="getListPage">
+	<![CDATA[
+	SELECT 
+	mr.id, mr.code, mr.shortCode, mr.orginCode, mr.originOperate, mr.name, mr.marketId, mr.areaId,
+ma.name as areaName,mab.name as buildingName, mr.budingId, mr.floorId,muf.name as unitFloorName, mr.unitId, mbu.name as buildingUnitName,
+mr.resourceTypeId, mr.builtArea, mr.innerArea, mr.leaseArea, mr.leaseStatus,
+  (case mr.leaseStatus 
+  when 1 then '待放租'
+  when 2 then '待租'
+  when 3 then '已租'
+  else '未知'
+  end  )as leaseStatusName, 
+mr.rentMode, mr.leaseValidateTime, mr.status, mr.createUserId, mr.createTime,
+ mr.updateUserId, mr.updateTime,
+ mry.name resourceTypeName
+	FROM market_resource mr 
+       left join market_area ma on  mr.areaId=ma.id 
+       left join market_area_building mab on mr.budingId=mab.id 
+       left join market_building_unit mbu on mr.unitId=mbu.id
+       left join market_unit_floor muf on mr.floorId=muf.id
+	   left join market_resource_type mry on mr.resourceTypeId=mry.id
+ WHERE mr.status=1 
+and mry.status=1
+and ma.status=1 
+and mr.marketId=mry.marketId
+and mr.originOperate = 0 
+    <#if originOperate?exists && originOperate!="" >
+		AND mr.originOperate=:originOperate
+	</#if>
+	<#if leaseStatus?exists && leaseStatus!="" >
+		AND mr.leaseStatus=:leaseStatus
+	</#if>
+	<#if extendleaseStatus?exists && extendleaseStatus!="" >
+		AND mr.leaseStatus in (2,3)
+	</#if>
+	<#if resourceTypeId?exists && resourceTypeId!="" >
+		and mr.resourceTypeId=:resourceTypeId
+	</#if>
+	<#if  marketId?exists && marketId!="" >
+		and  mr.marketId=:marketId
+	</#if>
+	<#if parentId?exists && parentId!="" >
+		and mry.parentId=:parentId
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND mr.areaId=:areaId
+	</#if>
+	<#if budingId?exists && budingId!="" >
+		AND mr.budingId=:budingId
+	</#if>
+	<#if floorId?exists && floorId!="" >
+		AND mr.floorId=:floorId
+	</#if>
+	<#if unitId?exists && unitId!="" >
+		AND mr.unitId=:unitId
+	</#if>
+	<#if id?exists && id!="" >
+		AND mr.id=:id
+	</#if>
+	<#if name?exists && name!="" >
+		AND mr.name like "%":name"%"
+	</#if> 
+	order by mr.createTime desc
+	LIMIT :startRow, :endRow
+	]]>
+</sql>
+
+<sql id="getTotal">
+	<![CDATA[
+	SELECT count(1)
+	FROM market_resource mr 
+       left join market_area ma on  mr.areaId=ma.id 
+       left join market_area_building mab on mr.budingId=mab.id 
+       left join market_building_unit mbu on mr.unitId=mbu.id
+       left join market_unit_floor muf on mr.floorId=muf.id
+	   left join market_resource_type mry on mr.resourceTypeId=mry.id
+ WHERE mr.status=1 
+and mry.status=1
+and ma.status=1 
+and mr.marketId=mry.marketId 
+and mr.originOperate = 0 
+	<#if leaseStatus?exists && leaseStatus!="" >
+		AND mr.leaseStatus=:leaseStatus
+	</#if>
+	 <#if extendleaseStatus?exists && extendleaseStatus!="" >
+		AND mr.leaseStatus in (2,3)
+	</#if>
+	<#if resourceTypeId?exists && resourceTypeId!="" >
+		and mr.resourceTypeId=:resourceTypeId
+	</#if>
+	<#if  marketId?exists && marketId!="" >
+		and  mr.marketId=:marketId
+	</#if>
+	<#if parentId?exists && parentId!="" >
+		and mry.parentId=:parentId
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND mr.areaId=:areaId
+	</#if>
+	<#if budingId?exists && budingId!="" >
+		AND mr.budingId=:budingId
+	</#if>
+	<#if floorId?exists && floorId!="" >
+		AND mr.floorId=:floorId
+	</#if>
+	<#if unitId?exists && unitId!="" >
+		AND mr.unitId=:unitId
+	</#if>
+	<#if id?exists && id!="" >
+		AND mr.id=:id
+	</#if>
+	<#if name?exists && name!="" >
+		AND mr.name like "%":name"%"
+	</#if> 
+	]]>
+</sql>
+
+	<sql id="getOtherResourceTotal">
+		<![CDATA[
+		SELECT count(1)
+		FROM market_resource mr
+			left join market_area ma on  mr.areaId=ma.id 
+			left join market_area_building mab on mr.budingId=mab.id 
+			left join market_resource_type mry on mr.resourceTypeId = mry.id 
+		WHERE mr.status=1 and mry.status=1 and ma.status=1 
+			and mry.sysType=0 
+			and mr.originOperate = 0 
+		<#if leaseStatus?exists && leaseStatus!="" >
+			AND mr.leaseStatus=:leaseStatus
+		</#if>
+		<#if areaId?exists && areaId!="" >
+			AND mr.areaId=:areaId
+		</#if>
+		<#if resourceTypeId?exists && resourceTypeId!="" >
+			AND mr.resourceTypeId=:resourceTypeId
+		</#if>
+		<#if marketId?exists && marketId!="" >
+			AND mr.marketId=:marketId
+		</#if>
+		<#if budingId?exists && budingId!="" >
+			AND mr.budingId=:budingId
+		</#if>
+		<#if name?exists && name!="" >
+			AND mr.name like "%":name"%"
+		</#if> 
+		]]>
+	</sql>
+	
+	<sql id="getOtherResListPage">
+		<![CDATA[
+		SELECT 
+		mr.id, mr.code, mr.shortCode, mr.orginCode, mr.originOperate, mr.name, mr.marketId, mr.areaId,
+	    ma.name as areaName,mab.name as buildingName, mr.budingId, mr.floorId, mr.unitId, 
+	    mr.resourceTypeId, mr.builtArea, mr.innerArea, mr.leaseArea, mr.leaseStatus,
+	  (case mr.leaseStatus 
+		  when 1 then '待放租'
+		  when 2 then '待租'
+		  when 3 then '已租'
+	      else '未知'
+	  end  )as leaseStatusName, 
+		mr.rentMode, mr.leaseValidateTime, mr.status, mr.createUserId, mr.createTime, mr.updateUserId, mr.updateTime, 
+		mry.name resourceTypeName
+		FROM market_resource mr 
+	       left join market_area ma on  mr.areaId=ma.id 
+	       left join market_area_building mab on mr.budingId=mab.id 
+	       left join market_resource_type mry on mr.resourceTypeId = mry.id
+	 WHERE mr.status=1 and mry.status=1 and mry.sysType=0 
+	and ma.status=1 
+	and mr.originOperate = 0 
+		<#if leaseStatus?exists && leaseStatus!="" >
+			AND mr.leaseStatus=:leaseStatus
+		</#if>
+		<#if resourceTypeId?exists && resourceTypeId!="" >
+			AND mr.resourceTypeId=:resourceTypeId
+		</#if>
+		<#if areaId?exists && areaId!="" >
+			AND mr.areaId=:areaId
+		</#if>
+		<#if budingId?exists && budingId!="" >
+			AND mr.budingId=:budingId
+		</#if>
+		<#if floorId?exists && floorId!="" >
+			AND mr.floorId=:floorId
+		</#if>
+		<#if marketId?exists && marketId!="" >
+			AND mr.marketId=:marketId
+		</#if>
+		<#if name?exists && name!="" >
+			AND mr.name like "%":name"%"
+		</#if> 
+		order by mr.createTime desc
+		LIMIT :startRow, :endRow
+		]]>
+	</sql>
+
+<sql id="deleteById">
+	<![CDATA[
+	UPDATE market_resource SET status='0' where id=:id
+	]]>
+</sql>
+
+<sql id="getResourceByUnitAndFloor">
+	<![CDATA[
+	SELECT id,code,shortCode,orginCode,originOperate,name,marketId,
+	areaId,budingId,floorId,unitId,builtArea,innerArea,
+	leaseArea,leaseStatus,
+    rentMode,leaseValidateTime,status,
+    case
+    	WHEN resourceTypeId IN (SELECT id FROM market_resource_type WHERE parentId = 1 ) THEN 1
+  		WHEN resourceTypeId IN (SELECT id FROM market_resource_type WHERE parentId = 2 ) THEN 2
+    end as resourceTypeId
+    FROM market_resource 
+    WHERE 1=1
+    <#if unitId?exists && unitId !="" >
+    	AND  unitId = :unitId
+    </#if> 
+    <#if floorId?exists && floorId !="" >
+    	AND  floorId = :floorId
+    </#if> 
+    	AND status  = 1
+    	AND originOperate = 0
+    	AND (resourceTypeId in (SELECT id FROM market_resource_type WHERE parentId = 1 OR  parentId = 2) or resourceTypeId is null)
+    	AND leaseStatus in (1,2,3)
+	]]>
+</sql>
+<!--根据资源id获取物业信息  格式为费项名称+计量表分类：计量表编号 -->
+<sql id="getMeasureResourceById">
+	<![CDATA[
+	select mrm.resourceId,me.name as expenditure_name,mmt.name as measure_type_name,mmt.code as  measure_type_code  from market_resource_measure mrm 
+      left join market_measure_setting mms on mrm.measureId=mms.id 
+      left join market_measure_type mmt on mms.measureTypeId=mmt.id     
+      left join market_expenditure  me on mms.expId=me.id  
+ where mms.status=1 and me.status=1 and mmt.status=1 and  mrm.status=1  
+    <#if id?exists && id !="" >
+    	and mrm.resourceId = :id
+    </#if> 
+     order by me.name
+	]]>
+</sql>
+
+	<!-- 放租前查询根据id集和租赁状态(可放租)查询总数 by DavidLiang -->
+	<sql id="rentSelCountResource">
+		<![CDATA[  
+			select count(1) 
+			from market_resource
+			where leaseStatus = :leaseStatus
+			<#if idList?exists>
+				<#assign n = idList?size />
+				<#if n gt 0>
+					and(
+					<#list idList as resourceid>
+						<#if resourceid_index != n-1>
+								id = '${resourceid}' or
+							<#else>
+								id = '${resourceid}'  
+						</#if>
+					</#list>
+					) 
+				</#if>
+			</#if>				
+		 ]]>
+	</sql>
+	
+		<sql id="queryPrintInfoByIds">
+	<![CDATA[
+		SELECT 
+			a.id, b.name as areaName, c.name as buildingName, d.name as unitName, e.name as floorName
+		FROM
+			market_resource a
+		LEFT JOIN
+			market_area b ON b.id = a.areaId
+		LEFT JOIN
+			market_area_building c ON c.id = a.budingId
+		LEFT JOIN
+			market_building_unit d ON d.id = a.unitId
+		LEFT JOIN
+			market_unit_floor e ON e.id = a.floorId
+		WHERE
+			a.id in (
+			<#assign listSize = idList?size />
+			<#list idList as item>
+				<#if item_index != listSize-1>
+					${item},
+				<#else>
+					${item}
+				</#if>
+			</#list>	
+			)
+	]]>
+	</sql>
+	
+	<sql id="getResources">
+	<![CDATA[
+	SELECT 
+	mr.id, mr.code, mr.shortCode, mr.name, mr.marketId, mr.areaId,
+ma.name as areaName,mab.name as buildingName, mr.budingId, mr.floorId,muf.name as unitFloorName, mr.unitId,
+mr.resourceTypeId, mr.builtArea, mr.innerArea, mr.leaseArea, mr.leaseStatus,
+  (case mr.leaseStatus 
+  when 1 then '待放租'
+  when 2 then '待租'
+  when 3 then '已租'
+  else '未知'
+  end  )as leaseStatusName, 
+mr.rentMode, mr.leaseValidateTime, mr.status, mr.createUserId, mr.createTime, mr.updateUserId, mr.updateTime, mis.coordinate as coordinate
+	FROM market_resource mr 
+       left join market_area ma on  mr.areaId=ma.id 
+       left join market_area_building mab on mr.budingId=mab.id 
+       left join market_unit_floor muf on mr.floorId=muf.id
+       left join market_image_setting mis on mr.id = mis.resourceId
+ WHERE mr.status=1 and mab.status=1 
+and ma.status=1 
+    <#if originOperate?exists && originOperate!="" >
+		AND mr.originOperate=:originOperate
+	</#if>
+	<#if leaseStatus?exists && leaseStatus!="" >
+		AND mr.leaseStatus=:leaseStatus
+	</#if>
+	<#if resourceTypeId?exists && resourceTypeId!="" >
+		AND mr.resourceTypeId=:resourceTypeId
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND mr.areaId=:areaId
+	</#if>
+	<#if budingId?exists && budingId!="" >
+		AND mr.budingId=:budingId
+	</#if>
+	<#if floorId?exists && floorId!="" >
+		AND mr.floorId=:floorId
+	</#if>
+	<#if unitId?exists && unitId!="" >
+		AND mr.unitId=:unitId
+	</#if>
+	<#if id?exists && id!="" >
+		AND mr.id=:id
+	</#if>
+	<#if name?exists && name!="" >
+		AND mr.name like "%":name"%"
+	</#if> 
+	order by mr.createTime desc
+	]]>
+</sql>
+	
+	<!-- 当前市场根据id和资源编码查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndCodeAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource where status = :status and originOperate = 0 and marketId = :marketId and id != :id and code = :code
+		]]>
+	</sql>
+	
+	<!-- 当前市场根据id和资源简码查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndShortCodeAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource where status = :status and originOperate = 0 and marketId = :marketId and id != :id and shortCode = :shortCode
+		]]>
+	</sql>
+	
+	<!-- 当前市场根据id和资源名称查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndNameAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource where status = :status and originOperate = 0 and marketId = :marketId and id != :id and name = :name
+		]]>
+	</sql>
+
+<sql id="queryResourceDotByCondition">
+	<![CDATA[
+	SELECT 
+	      mr.id,mr.name,mr.leaseStatus,mis.coordinate
+	      
+	FROM 
+	      market_resource mr 
+	join 
+	      market_image_setting mis 
+	on  
+	      mr.id = mis.resourceId  
+	
+	WHERE mr.floorId=:floorId and mr.originOperate = 0 and mis.imageType = 3 and mis.coordinate != "" order by mr.id asc
+	]]>
+</sql>
+
+<sql id="getNoDotResources">
+	<![CDATA[
+	SELECT 
+	      mr.id,mr.name
+	FROM 
+	      market_resource mr 
+	WHERE 
+	      mr.floorId=:floorId and mr.originOperate = 0 and mr.status = 1 and mr.id not in (select resourceId from market_image_setting where floorId=:floorId and imageType = 3 and resourceId is not NULL) order by mr.id asc
+	]]>
+</sql>
+
+<sql id="queryByResourceId"> 
+	   <![CDATA[ 
+		  select 
+		    cm.id,
+		    cm.customerName, 
+		    cm.customerMobile from contract_main cm 
+          join 
+            market_lease_postage mlp on cm.id = mlp.contractId 
+          join 
+            market_resource mr on mr.id = mlp.resourceId and mr.id = :resourceId
+          where 
+		    cm.isdeleted=0 and cm.isCancel=0
+	   ]]>
+</sql>
+
+<sql id="queryByResourceIds"> 
+	   <![CDATA[ 
+		select sum(builtArea) builtAreaCount,
+		       sum(innerArea) innerAreaCount, 
+		       sum(leaseArea) leaseAreaCount  
+		  from market_resource  where
+			 id in (
+					<#list ids as thisId>
+						<#if thisId_index gt 0>
+							,${thisId}
+						<#else>
+							${thisId}
+						</#if>
+					</#list>
+				)
+			   ]]>
+</sql>
+
+</sqlMap>

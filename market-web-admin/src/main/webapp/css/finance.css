@@ -1,0 +1,371 @@
+/*瀛椾綋鍥炬爣閲嶆瀯*/
+/**{padding:0; margin: 0;}*/
+
+/*閲嶆瀯鏍峰紡satrt*/
+.contract{margin-top:0px;}
+.contract ul li{ list-style: none;}
+.contract .m-bot15{margin-bottom: 0; padding-bottom: 15px;}
+.contract .wid200{width: 180px!important;}
+.contract .input-group-btn{padding-left:25px!important;}
+.contract .dropdown-lt-20{ left: 25px;}
+.contract .fa-angle-down:before ,.fa-angle-up:before { font-size: 18px; padding-left: 5px; color: #b3b3b3;}
+
+.contract .fa-download:before {content: "\f019"; font-size: 16px; color:#999;}
+.contract div.details-of-contract{ padding-bottom:20px; font-size: 20px; color: #1a1a1a;}
+/*閲嶆瀯鏍峰紡end*/
+.contract .export-s{ float: right; margin-top: 10px;padding-right: 50px; font-size: 12px; color:#1a1a1a;}
+.contract .high-search{padding-left: 10px; font-size: 12px; color:#666; cursor: pointer; }
+.contract .border-none-right:focus{ border:1px solid #D7D7D7;border-right: none;}
+.contract .fa-chevron-down:before {content:"\f0d7"!important; font-size: 22px; color: #edb828; float: right; position: relative; top:-3px; left: 5px; padding-right: 26px;}
+.contract .fa-chevron-up:before{content:"\f0d8"!important;font-size: 22px; color: #edb828; float: right; position: relative; top:-3px; left: 5px; padding-right: 26px;}
+.contract #container{ font-family: 'Microsoft YaHei'; background: #fff;}
+.contract .col-md-max{ width: 100%;}
+/*.wrapper{padding:0; margin-top:0px;}*/
+.contract .this_left{padding:13px; margin: 0;}
+.contract .col-pd-10{ text-align: center; height: 31px; line-height: 31px; background: #fff; border-top:solid 1px #e5e4e4; margin-bottom: 17px; }
+.contract .more-search{ width: 100px;  height: 31px; line-height: 31px; border:solid 1px #e5e4e4; border-top:none; position: relative; top: -1px; text-align: center; background: #fafafa; margin: 0 auto;}
+.contract .main-search{}
+.contract .main-contracht-tp{ 
+    width: 100%;
+    height: 65px;
+    background: #f5f5f5;
+    color: #000000;
+    font-size: 20px;
+    line-height: 65px;
+    padding: 0 0 0 17px;
+	}
+.contract .motion-of-contract{ float: left; font-size: 20px; color:#1a1a1a;}
+.contract .main-ipt-types{ background: #fafafa; padding-left: 28px; padding-top:15px;display:none;}
+.contract .mores{color:#ea785b; padding-left: 5px;}
+.contract .col-pd-right{ float: right; position: absolute; top: 10px; right: 0px;}
+/*新增样式*/
+/*新增样式结束*/
+.contract .ipt{ font-size: 12px; height: 28px; line-height: 28px; padding: 0 11px; margin-right: 3px; background: #53b279; display: inline-block; border-radius: 5px; color: #fff!important;}
+.contract .fz-clr-a1{color: #1a1a1a; position: relative; top:5px;}
+.contract .panel-heading{ height: 55px; padding: 13px; background-color:#fff;}
+.contract .fa-bg-img{font-size: 16px; color: #000; padding-right:6px; font-family: 'Microsoft YaHei'!important; font-style: normal;}
+.contract .lsg-res{ height: 56px; line-height: 56px; background: #f6f8f8; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 100%;}
+.contract .panel-body{ padding: 0!important;}
+.contract .res-clr{ color: #1a1a1a;}
+.contract .col-box-ul{ list-style: none; padding: 0;}
+.contract .col-box-ul li{line-height: 28px; font-size: 14px; width: 100%; float: left;}
+.contract .col-li-left{ float: left; width: 35%; text-align: right; padding-right: 6px;}
+.contract .col-li-right{color: #1a1a1a; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 65%; float: left; }
+.contract .panel{ border:solid 1px #e5e5e5; border-radius:0!important; padding-bottom: 10px;}
+.contract .ipt-color{ background:#6c9ece;}
+.contract .fulfil-color{background: #e2e2e2; color: #b8b8b8!important;}
+/*鍚堝悓鍙樻洿绠＄悊*/
+.contract .contract-info{border: solid 1px #e4e0e0; margin-top: 30px; width: 100%; float: left;}
+.contract .contract-title-block{ background: #f6f8f8; height:50px; position: relative;}
+.contract .contract-info-h3{background: #e86d4d url(../images/lease/bg_img_03.png) no-repeat left center; padding-right: 20px; height: 50px; line-height: 50px; display: inline-block; padding-left: 24px; font-size: 16px; color:#fff; position: absolute; top:-1px; left: -1px; }
+.contract .col-info-left ,.contract .col-info-right{ float: left; margin-top: 15px; margin-bottom: 10px;}
+.contract .col-info-lease-l li ,.contract .col-info-lease-r li{ height: 30px; line-height: 30px; margin-bottom: 15px; color:#1a1a1a; font-size: 12px;}
+.contract .list-sp{ text-align: right; width: 120px; display: inline-block;}
+.contract .inf-em{font-size: 12px; color:#f30303; font-style: normal; padding-right: 10px;}
+.contract .col-info-lease-l ,.contract .col-info-lease-r {padding-left: 0;}
+.contract .col-info-lease-lt ,.contract .col-info-lease-rt{padding-left: 30px;}
+.contract .col-info-lease-lt li ,.contract .col-info-lease-rt li{ height: 32px; line-height: 32px;}
+.contract .fees-box-zp{ width: 100%; margin-top: 30px;}
+.contract .list-sp-text{ width: 83.5%; padding-left: 15px; border-radius: 3px; border:solid 1px #d7d7d7; height: 32px; line-height: 32px;}
+.contract .fees-trator-tx{ width: 340px;}
+.contract .fees-ipt-tx{ width: 338px; border-radius: 3px; height: 32px; line-height: 32px; border:solid 1px #d7d7d7; text-indent: .5em;}
+.contract .widLf{ width: 338px;position: relative;left: 123px; top: -31px; border-radius: 3px; height: 34px;}
+/*新增样式*/
+.tor-tw{width: 238px !important;}
+.form_col .error{padding-left:10px!important;}
+/*新增样式结束*/
+/*绉熼噾绾﹀畾*/
+.contract .charges-Fees{padding-left: 49px; margin-top:30px; float: left; width: 100%;} 
+.contract .charges-paid{padding-left: 49px; margin-top:10px; float: left; width: 100%;}
+.contract .col-Fees-bold{ padding-right: 30px;}
+.contract .charges-Fees label ,.charges-paid label{padding-right: 70px;}
+.contract .radio-em-fees{ font-weight: normal; padding-left: 15px; font-size: 12px; font-style: normal;}
+.contract .charges-paid-p{ float: left; padding-right: 113px; color: #1a1a1a;}
+.contract .charges-paid-bold{ font-weight: bold; padding-right: 5px;}
+.contract .charges-paid-bt{padding-top: 20px; padding-left: 49px; float: left; width: 100%; margin-bottom: 10px; }
+.contract .charges-paid-sz{ float: left; color: #1a1a1a; font-size: 14px; font-weight:bold;}
+.contract .charges-add-remove{ float: right; padding-right: 24px; color: #e86d4d; cursor: pointer;}
+.contract .charges-add-remove li{float: left; margin-right: 28px; color: #e86d4d; cursor: pointer;}
+.contract .fa-plus-square:before {content: "\f196"; font-size: 16px; padding-right: 5px; color: #b7b7b7;}
+.contract .fa-trash:before {content: "\f014"; font-size: 16px; padding-right: 5px; color: #b7b7b7;}
+.contract .charges-tab-style{ border: solid 1px #fff; text-align: center; width: 91%; margin: 0 auto;}
+.contract .charges-tab-bg{background: #f4f9f6; border: solid 1px #eee;}
+.contract .charges-tab-bg .charges-tab-bor{border-left: solid 1px #eee!important;}
+.contract .charges-tab-bg td{height: 38px;  border-left: solid 1px #f4f9f6; border-bottom: solid 1px #eee; font-size: 12px; color:#1a1a1a;}
+.contract .charges-tab-blank td ,.contract .ficancial-tab td{ 
+	height: 38px; 
+	font-size: 12px; 
+	color:#1a1a1a; 
+	border-bottom: solid 1px #eee; 
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding:0 10px;
+    }
+.contract .charges-tab-blank td:first-child{border-left: solid 1px #eee!important;}
+.contract .charges-tab-blank td:last-child{border-right: solid 1px #eee!important;}
+.contract .ficancial-tab:nth-child(2n){background: #fff;}
+.contract .ficancial-tab:nth-child(2n+1){background:#fafafa; margin-top:20px; width:100%;}
+.contract tr.total_received:last-child td{font-size:12px; background: #eee; height: 40px; padding-right: 26px; color:#eb6c4c; font-weight: bold; text-align: right;}
+
+.contract .payment-cycle:nth-child(3){ padding-bottom: 20px;}
+.contract .payment-cycle-sp{ font-style: normal; color: #f30303; font-size: 12px; padding-right: 10px;}
+.contract .charges-paid-btm{padding-top: 20px; margin-left: 49px; border-bottom:solid 1px #eee; float: left; width: 91%; padding-bottom: 10px; }
+.contract .charges-max-bt{padding-bottom: 30px;}
+.contract .total-amount{height: 30px; border:solid 1px #d7d7d7; width:240px; border-radius: 2px;}
+.contract .sp-lt-amount{ position: relative; left: -24px;}
+.contract .charges-paid-lh{line-height: 32px; position: relative; left: -30px;}
+.contract .amount-ipt2{padding-left: 49px; margin-top: 30px; color:#1a1a1a; font-size: 12px; float: left; width: 100%;}
+.contract .amount-ret{ float: left;}
+.contract .amount-fine{ float: left; margin-left:40px;}
+/*鍗曢�鎸夐挳*/
+.contract .payment-cycle label{ font-weight: normal;}
+.contract .col-ft-bold{ color: #1a1a1a;}
+/* RADIO */
+
+.regular-radio ,.regular-radios ,.regular-rdi-cause ,.regular-rdi-layer{ display: none;}
+
+.regular-radio + span ,.regular-radios + span.radio-mtd ,.regular-rdi-cause + span.radio-mt-cause ,.regular-rdi-layer + span.radio-mt-layer{
+	-webkit-appearance: none;
+	background-color: #fff;
+	border: 1px solid #cacece;
+	padding: 9px;
+	border-radius: 50px;
+	display: inline-block;
+	position: relative;
+	top:5px
+}
+
+.regular-radio:checked + span:after ,.regular-radios:checked + span:after ,.regular-rdi-cause:checked + span:after ,.regular-rdi-layer:checked + span:after{
+	content: ' ';
+	width: 12px;
+	height: 12px;
+	border-radius: 50px;
+	position: absolute;
+	top: 3px;
+	background: #53b279;
+	left: 3px;
+	font-size: 32px;
+}
+.contract .radio-em{ padding-right:60px; padding-left:12px;font-style:normal; font-size: 12px; color: #1a1a1a;}
+.contract .radio-ems{padding-left:12px;font-style:normal; font-size: 12px; color: #1a1a1a;}
+/*缂磋垂鏃ユ湡*/
+.contract .radio-em-day{ border:none; border-bottom:solid 1px #eee; width:65px; text-align: center; }
+.contract .day-pd60{ padding-right: 66px;}
+/*鍏朵粬璐归」绾﹀畾*/
+.contract .charges-paid-dw{ padding-top:20px}
+.contract .charges-max-other{ margin: 30px 0;}
+.contract .charges-max-other td:first-child{border-left: solid 1px #eee!important; padding-left:20px;}
+/*鍙樻洿淇℃伅*/
+.contract .contract-administrator{ font-size: 12px; color: #1a1a1a; padding:28px 0; float: left; width:100%;}
+.contract .administrator-ls{ padding-left: 76px;}
+.contract .administrator-date{ padding-left: 155px;}
+.contract .change-details{ padding: 10px 0 28px 49px; }
+.contract .change-details-i{ color: #f30303; padding-right: 10px; font-style: normal; font-size: 12px;}
+.contract .change-details-sp{color: #1a1a1a; position: relative; top: -76px;}
+.contract .text-area{ height:90px; padding:0 10px; border:solid #d7d7d7 1px; border-radius: 2px;}
+/*淇濆瓨鈥斺�鍙戣捣鈥斺�鎵撳嵃*/
+.contract .save-box{ width:100%; text-align: center;}
+.contract .save-box ul{ float: left; margin:38px 0;}
+.contract .save-box li{ float: left; width: 180px; height: 50px;  margin-right: 16px;}
+.contract .save-1{ margin-left: 200px;}
+.contract .save-ct ,.approval-s ,.print-s{ display: block; background: #e86d4d; color: #fff; font-size: 24px; height: 48px; line-height: 48px; border-radius: 3px; cursor: pointer;}
+.contract .approval-s{background: #6c9ece;}
+.contract .print-s{background: #fff; color: #53b279; border:solid 1px #53b279;}
+/*寮瑰嚭灞�/
+.contract .col-md-boxs{ width: 100%; padding-top: 10px;}
+.contract .contract .form-group-lt{ float: left; padding-left: 59px;}
+.contract .form-group-rt{float: left; padding-left: 80px;}
+.contract .form-groups-tr{ margin-top:20px; width: 100%; float: left;}
+.contract .control-label{ font-size: 12px !important;}
+/*鍚堝悓绠＄悊*/
+.contract .quantity-contract{ font-size: 12px; padding-left: 10px;}
+.contract .quantity-contract b{color:#ea785b;}
+.contract .quantity-contract-box{ float: left; height: 30px; line-height: 30px;}
+.contract .add-export{ padding-right: 10px;}
+.contract i.fa-cor:before{color:#999}
+.row_ml0{margin:0 !important;}
+.contract .row a{color:#1a1a1a;}
+.contract .row{padding: 28px; margin:0;}
+.contract .fz-green{color:#e86d4d;}
+
+.contract .border-lt-right{ width:130px; margin-bottom: none; position: relative; left: 60px;}
+.contract .form-bor-no{ /*border:none;*/}
+.contract .form-control{ color: #1a1a1a;}
+.contract .wids{ padding-left: 73px; width:160px;}
+.contract .addcss{background: #fbfbfb;}
+.contract .rents{text-align: center; width: 140px; border-radius: 3px; border:solid 1px #d7d7d7;}
+.contract p{margin:0;}
+.start-cet{ text-align: center;}
+/*闄勫姞鏉′欢*/
+.contract .additional-terms{ padding: 10px 0;}
+.contract #File1[type=file] {display:inline-block;}
+
+.contract .floor-fees{ width:775px; margin: 0 auto; border:solid 1px #d7d7d7; border-top:none;}
+.contract .fees-name-box{ width:773px; margin: 0 auto; border-top:solid 1px #d7d7d7; position: relative;}
+.contract .fees-p-rows{ width:100%; border-bottom:solid 1px #d7d7d7;/* position: absolute; top:0;*/}
+.contract .fees-name-left{ width:212px; text-align: center; border-right:solid 1px #d7d7d7;display: inline-block; background: #f4f9f6; height:38px; line-height: 38px;}
+.contract .fees-name-right{ width:560px; margin-left: -3px; text-align: center; display: inline-block; background: #f4f9f6; height:38px; line-height: 38px;}
+.contract .fee-items{ height: 38px; 
+    line-height: 38px; 
+   /* margin-top: -11px; */
+    background: #fafafa; 
+    padding-left: 20px; 
+    /*border-top: solid #d7d7d7 1px;*/
+    border-bottom: solid #d7d7d7 1px;
+}
+.contract .fees-checkbox-box{width:100%;padding-left: 20px; height: 46px; line-height: 46px;}
+.contract .fees-checkbox-box label{width:192px; border-right:solid 1px #bfbfbf; }
+/*閫夋嫨绉熻祦璧勬簮*/
+.contract .checkbox-em{ font-style: normal; padding-left: 20px;}
+.contract .guarantee-select{ width: 100%; border:none; padding-left: 16px;}
+.contract .span-select-down{ height: 32px; width: 480px; margin-left:39px;  border:solid 1px #d7d7d7;  line-height: 32px; display: inline-block;}
+.contract .checkbox-none{ display: none;}
+.contract .checkbox-none + span{
+	-webkit-appearance: none;
+	border:solid 1px #bfbfbf;
+    width:15px;
+    height:15px;
+	display: inline-block;
+	position: relative;
+	top:3px
+}
+
+.contract .checkbox-none:checked + span:after{
+	content: ' ';
+	width:15px;
+    height:15px;
+	position: absolute;
+	left:-1px;
+	top:-1px;
+	background: #53b279;
+	border:solid 1px #53b279;
+	font-size: 32px;
+}
+/*寮圭獥閫夋嫨绉熻祦璧勬簮*/
+.contract .clearfloat:after{display:block;clear:both;content:"";visibility:hidden;height:0} 
+.contract .clearfloat{zoom:1} 
+.contract .leasBox{ width:838px; margin: 0 auto;}
+.contract .leaSelect{ width:100%; font-size: 12px; color: #1a1a1a; margin-bottom:30px; margin-top:20px;}
+.contract label.typesOf{ font-weight:700;}
+.contract .guaranSelect{ width: 230px; border:solid 1px #d7d7d7; border-radius: 3px; height: 30px; line-height: 30px; padding-left: 10px;}
+.contract .floorArea{ border:solid #d7d7d7 1px; width:830px;}
+.contract .floor-max-width{ max-height: 360px; overflow-y: scroll;}
+::scrollbar {
+		  width: 35px;
+	}
+#modalPopwin ::-webkit-scrollbar-track {
+		  background-color: #bcbcbc;
+	} /* 婊氬姩鏉＄殑婊戣建鑳屾櫙棰滆壊 */
+
+#modalPopwin ::-webkit-scrollbar-thumb {
+		  background-color: #eee; 
+	} /* 婊戝潡棰滆壊 */
+#modalPopwin ::-webkit-scrollbar-corner {
+		  /*background-color: #FFFF00;*/
+	} /* 妯悜婊氬姩鏉″拰绾靛悜婊氬姩鏉＄浉浜ゅ灏栬鐨勯鑹�*/
+.floor-max-width{
+	  scrollbar-track-color:#eee;
+	  scrollbar-arrow-color: #bcbcbc;
+}
+.contract .floorLoudong ,.contract .floor-num{ width: 112px; border-right:solid 1px #d7d7d7; float: left;}
+ 
+.contract .floorLoudong_bold ,.contract .floors-t ,.resources{
+	background: #f4f9f6; 
+	height: 38px; 
+	line-height: 38px; 
+	display: block; 
+	color: #1a1a1a; 
+	text-align: center; 
+	font-size: 14px;
+	margin:0;
+	font-weight: bold;
+	border-bottom:solid 1px #d7d7d7;
+	}
+.contract .floorAZone{width: 100%;}
+.contract .floorAZone b{ 
+	font-size: 12px;
+    border-top:#d7d7d7 solid 1px; 
+    border-bottom:#d7d7d7 solid 1px;
+    color:#1a1a1a; 
+    line-height: 28px; 
+    background: #fafafa; 
+    text-align: center;
+    width:100%;
+    height: 28px;
+    line-height: 28px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.contract .floorDong ,.contract .floorDongUl ,.contract .resourcesO{width:100%; padding-left: 0; padding-top: 5px;}
+.contract .floorls{ 
+	height: 26px;
+    line-height: 26px;
+    width: 100%;
+    text-align: center;
+    color: #666;
+    position: relative;
+    cursor: pointer;
+    display:block;
+    white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    }
+/*.floorA-left{ height: 360px;}*/
+.contract .floor-num{width: 80px; height: 398px;}
+/*.floorDongUl{border-top:solid 1px #d7d7d7;}
+.contract .floorResources{ width:636px; float: left; background:#fafafa;}
+.contract .resources-rows{ width: 159px; height: 360px; text-align: center; border-right:solid 1px #d7d7d7; float: left;}
+.contract .resourcesUnit{line-height: 38px; height: 38px; margin:0; color: #1a1a1a;}
+.contract .canRent{ width: 140px; margin: 0 auto; cursor: pointer; text-align: center; height: 58px; line-height: 28px; border:solid 1px #d7d7d7; margin-bottom: 10px;}
+.contract .resources-rows:last-child{ border-right: none;}
+.contract .canRentCls{ background: #53b27a; color: #fff; border:#53b27a solid 1px;}
+.contract .canRentCls2{background: #53b27a; color: #fff; border:#53b27a solid 1px;}
+.contract .btn-default ,.savePop{ height: 38px; line-height: 38px; text-align: center; padding: 0 35px;}
+.contract .savePop{background: #e86d4d; border: solid #e86d4d 1px;}
+.contract .btn-primary:hover, .contract .btn-primary:focus, .contract .btn-primary:active, .contract .btn-primary.active, .contract .open .dropdown-toggle.btn-primary{background: #e86d4d; border: solid #e86d4d 1px;}
+.contract .floorls .fa-caret-right{ position: absolute; right: 10px; top: 6px;}*/
+
+/*修改样式*/
+.contract .floor-num{width: 80px; height: 398px; overflow: hidden;}
+/*.floorDongUl{border-top:solid 1px #d7d7d7;}*/
+.contract .floorResources{height: 398px; width: auto; background:#fafafa;}
+.contract .resources-container{ width:636px;/*  width:633修改成636 */ float: left; overflow-x: auto; height: 398px;}
+.contract .resources-rows{ width: 153px;/* width:154修改成153 */overflow-x: hidden; height: 360px;overflow-y: auto; text-align: center; border-right:solid 1px #d7d7d7; float: left;}
+.contract .resourcesUnit{line-height: 38px; height: 38px; margin:0; color: #1a1a1a;}
+#leasResources .modal-body{ overflow-y:none !important; }
+.contract .canRent{ 
+	width: 140px;
+	padding:0 5px;
+	margin: 0 auto; 
+	cursor: pointer; 
+	text-align: center; 
+	height: 51px; 
+	line-height:24px;
+	border:solid 1px #d7d7d7; 
+	margin-bottom: 10px;
+	display: -webkit-box;  
+    display: -moz-box;  
+    overflow: hidden;  
+    text-overflow: ellipsis;  
+    word-break: break-all;  
+    -webkit-box-orient: vertical;  
+    -webkit-line-clamp:2;
+	}
+.contract .resources-rows:last-child{ border-right: none;}
+.contract .canRentCls{ background: #53b27a; color: #fff; border:#53b27a solid 1px;}
+.contract .canRentCls2{background: #53b27a; color: #fff; border:#53b27a solid 1px;}
+.contract .btn-default ,.savePop{ height: 38px; line-height: 38px; text-align: center; padding: 0 35px;}
+.contract .savePop{background: #e86d4d; border: solid #e86d4d 1px;}
+.contract .btn-primary:hover, .contract .btn-primary:focus, .contract .btn-primary:active, .contract .btn-primary.active, .contract .open .dropdown-toggle.btn-primary{background: #e86d4d; border: solid #e86d4d 1px;}
+.contract .floorls .fa-caret-right{ position: absolute; right: 10px; top: 6px;}
+/*翻页显示多少条  */
+.ml1_0{ text-align:center;}
+.ml1_0 .fl{ margin-left:17px!important;}
+.ml1_0 .dataTables_paginate.paging_bootstrap.pagination{ float:none; margin-top:-8px;}
+.ml1_0 .dataTables_info{ margin-right: 0px; margin-top: 13px;}
+.fz_red{color:#ee040d; font-weight: bold; padding-left: 15px;}
+.wid150{ display:inline!important;}
+.contract .tb-trs{cursor: pointer;}

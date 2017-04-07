@@ -1,0 +1,26 @@
+.market *{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.market .market-btn .btn{
+	background: #f5f5f5;
+	border-radius: 0;
+	width: 88px;
+	height: 50px;
+	margin: 35px 10px 0 0;
+}
+.market .market-btn .btn.active{
+	background: #e86d4d;
+	color: #fffefe;
+}
+.market .drag-wrap{ width: 800PX; height: auto; background: #eee;position: relative;margin: 35px auto;}
+.market .drag-wrap .map-src{width: 100%;}
+.market .drag-wrap .draggable{/*background: #e86d4d;width: 20px;height: 20px;border: #fff 3px solid;*/border-radius: 50%;
+	position: absolute;top: 0;left: 0;}
+.market .drag-wrap .drag-tip{position: absolute;bottom: 36px;width: 70px;background: rgba(255,255,255,1);
+	box-shadow: 0 0 5px #000;right: 0;padding: 5px;display: none;}
+.market .drag-wrap .drag-tip-box .drag-tip{display: block;}
+.market .drag-wrap .drag-tip-box .drag-del{width: auto;right: 70px;padding: 5px;margin: 5px;cursor: pointer;}

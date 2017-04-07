@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="FinanceFeeRecord">
+
+<sql id="update">
+	<![CDATA[
+		UPDATE 
+			finance_fee_record f
+		SET 
+		<#if feeItemTypeId?exists && feeItemTypeId!="" >
+			f.feeItemTypeId = :feeItemTypeId,
+		</#if>	
+		<#if isRemedy?exists && isRemedy!="" >
+			f.isRemedy = :isRemedy,
+		</#if>
+		<#if isDeteled?exists && isDeteled!="" >
+			f.isDeteled = :isDeteled,
+		</#if>		
+		<#if status?exists && status!="" >
+			f.status = :status,
+		</#if>		
+		<#if fundType?exists && fundType!="" >
+			f.fundType = :fundType,
+		</#if>		
+		<#if startTime?exists && startTime!="" >
+			f.startTime = :startTime,
+		</#if>
+		<#if endTime?exists && endTime!="" >
+			f.endTime = :endTime,
+		</#if>				
+		f.updateTime = SYSDATE()	
+		WHERE 
+			f.id = :id
+			
+	]]>
+</sql>
+
+<sql id="getById">
+	<![CDATA[
+		SELECT 
+			f.id, f.contractVersion, f.contractNo, f.feeItemId, f.feeItemTypeId, f.fundType, f.timeLimit, f.startTime, f.status,
+			f.endTime, f.accountPayable, f.accountRebate, f.createUserId, f.createTime, m.expType, m.`name` as feeItemName, f.marketId,
+			DATE_FORMAT(f.timeLimit,'%Y-%m-%d-%T') as timeLimitString, DATE_FORMAT(f.startTime,'%Y-%m-%d-%T') as startTimeString,
+			DATE_FORMAT(f.endTime,'%Y-%m-%d-%T') as endTimeString, DATE_FORMAT(f.createTime,'%Y-%m-%d-%T') as createTimeString,
+			DATE_FORMAT(f.updateTime,'%Y-%m-%d-%T') as updateTimeString, fr.accountPayed, fr.payer, fr.phone
+		FROM 
+			finance_fee_record f
+		LEFT JOIN 
+			market_expenditure m
+		ON 
+			f.feeItemId = m.id AND m.`status` = 1				
+		LEFT JOIN 
+			finance_fee_received fr 
+		ON 
+			f.id = fr.needReceiveId				
+		WHERE
+			f.id = :id and isDeteled = 0
+		<#if marketId?exists && marketId!="" >
+			AND f.marketId = :marketId
+		</#if>			
+		<#if feeItemId?exists && feeItemId!="" >
+			AND f.feeItemId = :feeItemId
+		</#if>			
+		<#if status?exists && status!="" >
+			AND f.`status` = :status
+		</#if>
+		<#if fundType?exists && fundType!="" >
+			AND f.fundType = :fundType
+		</#if>
+		<#if isRemedy?exists && isRemedy!="" >
+			AND f.isRemedy = :isRemedy
+		</#if>					
+		<#if startTime?exists && startTime!="" >
+			f.startTime >= :startTime,
+		</#if>
+		<#if endTime?exists && endTime!="" >
+			f.endTime <= :endTime,
+		</#if>		
+	]]>
+</sql>
+
+<sql id="getList">
+	<![CDATA[
+		SELECT 
+			f.id, f.contractVersion, f.contractNo, f.feeItemId, f.feeItemTypeId, f.marketId, f.timeLimit, f.startTime, f.endTime, f.status, 
+			f.accountPayable, f.accountRebate,	m.expType, m.`name` as feeItemName, s.remark as feeItemTypeName, cm.customerName, 
+			cm.customerMobile, cm.partyB, cm.leasingResource as resourceNames, fr.accountPayed, fr.payer, fr.phone
+		FROM 
+			finance_fee_record f
+		LEFT JOIN 
+			market_expenditure m
+		ON 
+			f.feeItemId = m.id AND m.`status` = 1
+		LEFT JOIN 
+			sysdictionary s
+		ON
+			s.`value` = f.feeItemTypeId AND s.type = 'expenditureType' AND s.`status` = 1	
+		LEFT JOIN 
+			contract_main cm
+		ON
+			f.contractVersion = cm.id		
+		LEFT JOIN 
+			finance_fee_received fr 
+		ON 
+			f.id = fr.needReceiveId							
+		WHERE 
+			1 = 1 AND isDeteled = 0
+		<#if marketId?exists && marketId!="" >
+			AND f.marketId = :marketId
+		</#if>			
+		<#if resourceNameLike?exists && resourceNameLike!="" >
+			AND cm.leasingResource like "%":resourceNameLike"%"
+		</#if>		
+		<#if contractNoLike?exists && contractNoLike!="" >
+			AND f.contractNo like "%":contractNoLike"%"
+		</#if>		
+		<#if feeItemNameLike?exists && feeItemNameLike!="" >
+			AND m.name like "%":feeItemNameLike"%"
+		</#if>			
+		<#if interForMonth?exists && interForMonth!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForMonth Month) < NOW() AND NOW() < f.timeLimit
+		</#if>
+		<#if interForDay?exists && interForDay!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForDay DAY) < NOW() AND NOW() < f.timeLimit
+		</#if>		
+		<#if feeItemId?exists && feeItemId!="" >
+			AND f.feeItemId = :feeItemId
+		</#if>			
+		<#if feeItemTypeId?exists && feeItemTypeId!="" >
+			AND f.feeItemTypeId = :feeItemTypeId
+		</#if>
+		<#if isRemedy?exists && isRemedy!="" >
+			AND f.isRemedy = :isRemedy
+		</#if>
+		<#if status?exists && status!="" >
+			AND f.`status` = :status
+		</#if>			
+		<#if fundType?exists && fundType!="" >
+			AND f.fundType = :fundType
+		</#if>		
+		<#if startTime?exists && startTime!="" >
+			AND f.startTime >= :startTime
+		</#if>
+		<#if endTime?exists && endTime!="" >
+			AND f.endTime <= :endTime
+		</#if>		
+		<#if limitStartTime?exists && limitStartTime!="" >
+			AND f.timeLimit >= :limitStartTime
+		</#if>
+		<#if limitEndTime?exists && limitEndTime!="" >
+			AND f.timeLimit <= :limitEndTime
+		</#if>		
+		<#if sortName?exists >
+      		<#if sortName=="createTime" && sortOrder=="d" >
+			      ORDER BY  f.createTime DESC
+			</#if>
+			<#if sortName=="createTime" && sortOrder=="a" >
+			      ORDER BY  f.createTime ASC
+			</#if>
+      		<#if sortName=="timeLimit" && sortOrder=="d" >
+			      ORDER BY  f.timeLimit DESC
+			</#if>
+			<#if sortName=="timeLimit" && sortOrder=="a" >
+			      ORDER BY  f.timeLimit ASC
+			</#if>			
+		</#if>
+		<#if specialSort?exists && specialSort !="" >
+			ORDER BY cm.contractNo DESC , f.feeItemId,  f.timeLimit
+		</#if>
+	]]>
+</sql>
+
+<sql id="getListPage">
+	<![CDATA[
+		SELECT 
+			f.id, f.contractVersion, f.contractNo, f.feeItemId, f.feeItemTypeId, f.marketId, f.timeLimit, f.startTime, f.endTime, f.status,
+			f.accountPayable, f.accountRebate,	m.expType, m.`name` as feeItemName, s.remark as feeItemTypeName, cm.customerName, 
+			cm.customerMobile, cm.partyB, cm.leasingResource as resourceNames, fr.accountPayed, fr.payer, fr.phone
+		FROM 
+			finance_fee_record f
+		LEFT JOIN 
+			market_expenditure m
+		ON 
+			f.feeItemId = m.id AND m.`status` = 1
+		LEFT JOIN 
+			sysdictionary s
+		ON
+			s.`value` = f.feeItemTypeId AND s.type = 'expenditureType' AND s.`status` = 1	
+		LEFT JOIN 
+			contract_main cm
+		ON
+			f.contractVersion = cm.id			
+		LEFT JOIN 
+			finance_fee_received fr 
+		ON 
+			f.id = fr.needReceiveId					
+		WHERE 
+			1 = 1 AND isDeteled = 0
+		<#if marketId?exists && marketId!="" >
+			AND f.marketId = :marketId
+		</#if>			
+		<#if interForMonth?exists && interForMonth!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForMonth Month) < NOW() AND NOW() < f.timeLimit
+		</#if>
+		<#if interForDay?exists && interForDay!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForDay DAY) < NOW() AND NOW() < f.timeLimit
+		</#if>		
+		<#if resourceNameLike?exists && resourceNameLike!="" >
+			AND cm.leasingResource like "%":resourceNameLike"%"
+		</#if>		
+		<#if contractNoLike?exists && contractNoLike!="" >
+			AND f.contractNo like "%":contractNoLike"%"
+		</#if>		
+		<#if feeItemNameLike?exists && feeItemNameLike!="" >
+			AND m.name like "%":feeItemNameLike"%"
+		</#if>			
+		<#if feeItemId?exists && feeItemId!="" >
+			AND f.feeItemId = :feeItemId
+		</#if>			
+		<#if feeItemTypeId?exists && feeItemTypeId!="" >
+			AND f.feeItemTypeId = :feeItemTypeId
+		</#if>	
+		<#if isRemedy?exists && isRemedy!="" >
+			AND f.isRemedy = :isRemedy
+		</#if>
+		<#if fundType?exists && fundType!="" >
+			AND f.fundType = :fundType
+		</#if>
+		<#if status?exists && status!="" >
+			AND f.`status` = :status
+		</#if>			
+		<#if startTime?exists && startTime!="" >
+			AND f.startTime >= :startTime
+		</#if>
+		<#if endTime?exists && endTime!="" >
+			AND f.endTime <= :endTime
+		</#if>	
+		<#if limitStartTime?exists && limitStartTime!="" >
+			AND f.timeLimit >= :limitStartTime
+		</#if>
+		<#if limitEndTime?exists && limitEndTime!="" >
+			AND f.timeLimit <= :limitEndTime
+		</#if>		
+		<#if sortName?exists >
+      		<#if sortName=="createTime" && sortOrder=="d" >
+			      ORDER BY  f.createTime DESC
+			</#if>
+			<#if sortName=="createTime" && sortOrder=="a" >
+			      ORDER BY  f.createTime ASC
+			</#if>
+      		<#if sortName=="timeLimit" && sortOrder=="d" >
+			      ORDER BY  f.timeLimit DESC
+			</#if>
+			<#if sortName=="timeLimit" && sortOrder=="a" >
+			      ORDER BY  f.timeLimit ASC
+			</#if>			
+		</#if>	
+		<#if specialSort?exists && specialSort !="" >
+			ORDER BY cm.contractNo DESC , f.feeItemId,  f.timeLimit
+		</#if>		
+		LIMIT :startRow, :endRow
+	]]>
+</sql>
+
+<sql id="getTotal">
+	<![CDATA[
+		SELECT 
+			count(1) as count
+		FROM 
+			finance_fee_record f
+		LEFT JOIN market_expenditure m
+		ON 
+			f.feeItemId = m.id AND m.`status` = 1
+		LEFT JOIN 
+			sysdictionary s
+		ON
+			s.`value` = f.feeItemTypeId AND s.type = 'expenditureType' AND s.`status` = 1
+		LEFT JOIN 
+			contract_main cm
+		ON
+			f.contractVersion = cm.id						
+		WHERE 
+			1 = 1 AND isDeteled = 0
+		<#if marketId?exists && marketId!="" >
+			AND f.marketId = :marketId
+		</#if>			
+		<#if resourceNameLike?exists && resourceNameLike!="" >
+			AND cm.leasingResource like "%":resourceNameLike"%"
+		</#if>		
+		<#if contractNoLike?exists && contractNoLike!="" >
+			AND f.contractNo like "%":contractNoLike"%"
+		</#if>		
+		<#if feeItemNameLike?exists && feeItemNameLike!="" >
+			AND m.name like "%":feeItemNameLike"%"
+		</#if>			
+		<#if interForMonth?exists && interForMonth!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForMonth Month) < NOW() AND NOW() < f.timeLimit
+		</#if>
+		<#if interForDay?exists && interForDay!="" >
+			AND DATE_ADD(f.timeLimit, INTERVAL :interForDay DAY) < NOW() AND NOW() < f.timeLimit
+		</#if>		
+		<#if feeItemId?exists && feeItemId!="" >
+			AND f.feeItemId = :feeItemId
+		</#if>			
+		<#if feeItemTypeId?exists && feeItemTypeId!="" >
+			AND f.feeItemTypeId = :feeItemTypeId
+		</#if>	
+		<#if isRemedy?exists && isRemedy!="" >
+			AND f.isRemedy = :isRemedy
+		</#if>
+		<#if status?exists && status!="" >
+			AND f.`status` = :status
+		</#if>			
+		<#if fundType?exists && fundType!="" >
+			AND f.fundType = :fundType
+		</#if>		
+		<#if startTime?exists && startTime!="" >
+			AND f.startTime >= :startTime
+		</#if>
+		<#if endTime?exists && endTime!="" >
+			AND f.endTime <= :endTime
+		</#if>	
+		<#if limitStartTime?exists && limitStartTime!="" >
+			AND f.timeLimit >= :limitStartTime
+		</#if>
+		<#if limitEndTime?exists && limitEndTime!="" >
+			AND f.timeLimit <= :limitEndTime
+		</#if>		
+		<#if sortName?exists >
+      		<#if sortName=="createTime" && sortOrder=="d" >
+			      ORDER BY  f.createTime DESC
+			</#if>
+			<#if sortName=="createTime" && sortOrder=="a" >
+			      ORDER BY  f.createTime ASC
+			</#if>
+      		<#if sortName=="timeLimit" && sortOrder=="d" >
+			      ORDER BY  f.timeLimit DESC
+			</#if>
+			<#if sortName=="timeLimit" && sortOrder=="a" >
+			      ORDER BY  f.timeLimit ASC
+			</#if>			
+		</#if>		
+		<#if specialSort?exists && specialSort !="" >
+			ORDER BY cm.contractNo DESC , f.feeItemId,  f.timeLimit
+		</#if>		
+	]]>
+</sql>
+
+<sql id="updateBycontract">
+	<![CDATA[
+		UPDATE 
+			finance_fee_record f
+		SET 				
+		f.isDeteled = :isDeteled,
+		f.updateTime = SYSDATE()
+		WHERE 
+			f.contractVersion = :contractId
+		AND ((f.startTime > :currentTime AND f.startTime is not null) OR (f.timeLimit > :currentTime AND f.startTime is null))
+	]]>
+</sql>
+
+<sql id="updateByContractAndStatus">
+	<![CDATA[
+		UPDATE 
+			finance_fee_record f
+		SET 				
+		f.isDeteled = :isDeteled,
+		f.updateTime = SYSDATE()
+		WHERE 
+			f.contractVersion = :contractId
+		AND f.status = 0
+	]]>
+</sql>
+
+</sqlMap>

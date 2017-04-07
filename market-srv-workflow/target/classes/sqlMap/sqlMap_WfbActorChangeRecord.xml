@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfbActorChangeRecord"> 
+
+	<!-- 插入 -->
+	<sql id="insert">
+		<![CDATA[
+		INSERT INTO wfb_actor_change_record(oldActorId,newActorId,createTime,operatorId,taskId)
+		VALUES(:oldActorId,:newActorId,sysDate(),:operatorId,:taskId)
+		]]>
+	</sql>
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,oldActorId,newActorId,createTime,operatorId,taskId
+		  FROM wfb_actor_change_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if oldActorId?exists && oldActorId != "" >
+			   AND oldActorId=:oldActorId
+			</#if>
+			<#if newActorId?exists && newActorId != "" >
+			   AND newActorId=:newActorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if operatorId?exists && operatorId != "" >
+			   AND operatorId=:operatorId
+			</#if>
+			<#if taskId?exists && taskId != "" >
+			   AND taskId=:taskId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,oldActorId,newActorId,createTime,operatorId,taskId
+		  FROM wfb_actor_change_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if oldActorId?exists && oldActorId != "" >
+			   AND oldActorId=:oldActorId
+			</#if>
+			<#if newActorId?exists && newActorId != "" >
+			   AND newActorId=:newActorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if operatorId?exists && operatorId != "" >
+			   AND operatorId=:operatorId
+			</#if>
+			<#if taskId?exists && taskId != "" >
+			   AND taskId=:taskId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM wfb_actor_change_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if oldActorId?exists && oldActorId != "" >
+			   AND oldActorId=:oldActorId
+			</#if>
+			<#if newActorId?exists && newActorId != "" >
+			   AND newActorId=:newActorId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if operatorId?exists && operatorId != "" >
+			   AND operatorId=:operatorId
+			</#if>
+			<#if taskId?exists && taskId != "" >
+			   AND taskId=:taskId
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

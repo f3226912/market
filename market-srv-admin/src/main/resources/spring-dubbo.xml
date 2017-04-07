@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd">
+	
+ 	<dubbo:application name="${maven.dubbo.market.admin.provider.application.name}" owner="${maven.dubbo.market.admin.provider.application.owner}" />
+	<dubbo:protocol name="dubbo" threads="${maven.dubbo.market.admin.provider.protocol.threads}" threadpool="${maven.dubbo.market.admin.provider.protocol.threadpool}" port="${maven.dubbo.market.admin.provider.protocol.port}"/>
+ 	<dubbo:registry address="${maven.dubbo.market.registry.address}"  />
+ 	<dubbo:provider  group="${maven.dubbo.market.admin.provider.service.group}" version="${maven.dubbo.market.admin.provider.service.version}" timeout="${maven.dubbo.market.admin.provider.service.timeout}"/>
+ 	
+	
+	<!-- 系统管理 begin-->
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysDictionaryService" ref="sysDictionaryService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysUserService" ref="sysUserService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysOrgService" ref="sysOrgService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysUserPostService" ref="sysUserPostService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.LoginService" ref="loginService" />
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysUserOrgService" ref="sysUserOrgService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysMenuService" ref="sysMenuService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysMenuButtonService" ref="sysMenuButtonService" /> 
+	<!-- 系统管理  end-->	
+	<dubbo:service interface="cn.gdeng.market.service.admin.LoginService" ref="loginService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysPostService" ref="sysPostService" />
+	<dubbo:service interface="cn.gdeng.market.service.admin.SysMessageService" ref="sysMessageService" /> 
+	<!-- 系统管理  end-->
+	
+</beans> 

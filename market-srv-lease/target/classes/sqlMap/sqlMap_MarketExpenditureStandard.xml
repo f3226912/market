@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketExpenditureStandard"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		   SELECT 
+			t.name,t.id,t.chargeUnit,t.chargeUnitPrice,t.wastageRate,t.sectionalCharge,t.chargeAmount,t.updateTime,t.
+			createUserId,t.updateUserId,t.createTime,t.status,t.code,t.expId,t.rentMode,d.remark as chargeUnitName,d1.remark as rentModeName 
+		  FROM market_expenditure_standard t
+	  	  LEFT JOIN sysdictionary d on t.chargeUnit = d.`value` AND d.`type` ='chargeUnit' AND d.status='1' 
+  	  	  LEFT JOIN sysdictionary d1 on t.rentMode = d1.`value` AND d1.`type` ='calculationMethod' AND d1.status='1'
+		  LEFT JOIN market_expenditure e on t.expId = e.id
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND t.name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if chargeUnit?exists && chargeUnit != "" >
+			   AND t.chargeUnit=:chargeUnit
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND t.chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if wastageRate?exists && wastageRate != "" >
+			   AND t.wastageRate=:wastageRate
+			</#if>
+			<#if sectionalCharge?exists && sectionalCharge != "" >
+			   AND t.sectionalCharge=:sectionalCharge
+			</#if>
+			<#if chargeAmount?exists && chargeAmount != "" >
+			   AND t.chargeAmount=:chargeAmount
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t.code=:code
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t.expId=:expId
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND t.rentMode=:rentMode
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if marketId?exists && marketId !="">
+				AND e.marketId=:marketId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.name,t.id,t.chargeUnit,t.chargeUnitPrice,t.wastageRate,t.sectionalCharge,t.chargeAmount,t.updateTime,
+			t.createUserId,t.updateUserId,t.createTime,t.status,t.code,t.expId,t.rentMode,d1.remark rentModeName,
+			e.name expName,d.remark expTypeName,d.value expType
+		  FROM market_expenditure_standard t
+		  LEFT JOIN market_expenditure e on t.expId = e.id
+		  LEFT JOIN sysdictionary d on e.expType = d.value and d.type = 'expenditureType'
+		  LEFT JOIN sysdictionary d1 on t.rentMode = d1.value and d1.type ='calculationMethod'
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND t.name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if chargeUnit?exists && chargeUnit != "" >
+			   AND t.chargeUnit=:chargeUnit
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND t.chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if wastageRate?exists && wastageRate != "" >
+			   AND t.wastageRate=:wastageRate
+			</#if>
+			<#if sectionalCharge?exists && sectionalCharge != "" >
+			   AND t.sectionalCharge=:sectionalCharge
+			</#if>
+			<#if chargeAmount?exists && chargeAmount != "" >
+			   AND t.chargeAmount=:chargeAmount
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t.code=:code
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t.expId=:expId
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND t.rentMode=:rentMode
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND e.marketId=:marketId
+			</#if>
+			ORDER BY t.updateTime desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			count(t.id)
+		  FROM market_expenditure_standard t
+		  LEFT JOIN market_expenditure e on t.expId = e.id
+		  LEFT JOIN sysdictionary d on e.expType = d.value and d.type = 'expenditureType'
+		  LEFT JOIN sysdictionary d1 on t.rentMode = d1.value and d1.type ='calculationMethod'
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND t.name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if chargeUnit?exists && chargeUnit != "" >
+			   AND t.chargeUnit=:chargeUnit
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND t.chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if wastageRate?exists && wastageRate != "" >
+			   AND t.wastageRate=:wastageRate
+			</#if>
+			<#if sectionalCharge?exists && sectionalCharge != "" >
+			   AND t.sectionalCharge=:sectionalCharge
+			</#if>
+			<#if chargeAmount?exists && chargeAmount != "" >
+			   AND t.chargeAmount=:chargeAmount
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t.code=:code
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t.expId=:expId
+			</#if>
+			<#if rentMode?exists && rentMode != "" >
+			   AND t.rentMode=:rentMode
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND e.marketId=:marketId
+			</#if>
+	   ]]>
+	</sql>
+
+	<sql id="queryExpStandardName">
+		<![CDATA[
+			SELECT 
+				id
+		  	FROM market_expenditure_standard
+		  	WHERE 1=1 
+			<#if expId?exists && expId != "" >
+			   AND expId=:expId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+		 ]]>
+	</sql>
+	
+	<sql id="getById">
+	SELECT 
+		t.name,t.id,t.chargeUnit,t.chargeUnitPrice,t.wastageRate,t.sectionalCharge,t.chargeAmount,t.updateTime,
+		t.createUserId,t.updateUserId,t.createTime,t.status,t.code,t.expId,t.rentMode,d1.remark rentModeName,
+		e.name expName,d.remark expTypeName,d.value expType
+ 	FROM market_expenditure_standard t
+	LEFT JOIN market_expenditure e on t.expId = e.id
+	LEFT JOIN sysdictionary d on e.expType = d.value and d.type = 'expenditureType'
+	LEFT JOIN sysdictionary d1 on t.rentMode = d1.value and d1.type ='calculationMethod'
+	WHERE 1=1 
+	AND t.id=:id
+	</sql>
+	
+	<sql id="deleteById">
+		UPDATE market_expenditure_standard 
+		SET status = :status,
+		updateUserId = :updateUserId,
+		updateTime=:updateTime
+		WHERE 1=1 
+		AND id=:id
+	</sql>
+</sqlMap>

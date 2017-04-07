@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractChange"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		SELECT 
+			cc.id
+			,cc.contractId
+			,cc.contractNo
+			,cc.trustees
+			,cc.info
+			,cc.changeReasion
+			,cc.createUserId
+			,cc.createTime
+			,cc.updateUserId
+			,cc.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_change cc  
+				inner join       contract_main cm  
+			  on          cc.contractNewId=cm.id
+			and  cc.contractNewId=:contractId
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+    	SELECT 
+			cc.id
+			,cc.contractId
+			,cc.contractNo
+			,cc.trustees
+			,cc.info
+			,cc.changeReasion
+			,cc.createUserId
+			,cc.contractNewId
+			,cc.createTime
+			,cc.updateUserId
+			,cc.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_change cc  
+			inner join     contract_main cm  
+			  on          cc.contractNewId=cm.id
+			 and  cm.approvalType=2
+		<#if leasingResource?exists && leasingResource !="">
+		 AND cm.leasingResource LIKE "%":leasingResource"%"
+		</#if>	
+		
+	    <#if customerName?exists && customerName !="">
+		 AND cm.customerName LIKE "%":customerName"%"
+		</#if>	
+		
+		<#if contractNo?exists && contractNo !="">
+		 AND cc.contractNo LIKE "%":contractNo"%"
+		</#if>
+			
+	    <#if approvalStatus?exists && approvalStatus !="">
+		 AND cm.approvalStatus =:approvalStatus
+		</#if>	
+		
+		<#if changeReasion?exists && changeReasion !="">
+		 AND cc.changeReasion =:changeReasion
+		</#if>	
+		
+	    <#if createTimeEnd?exists && createTimeEnd !="">
+		 AND cc.createTime <=:createTimeEnd
+		</#if>	
+		
+		<#if createTimeStart?exists && createTimeStart !="">
+		 AND cc.createTime >=:createTimeStart
+		</#if>	
+			
+	    <#if marketId?exists && marketId !="">
+		 AND cm.marketId =:marketId
+		</#if>	
+		order by id desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		SELECT 
+			count(1)
+			 FROM contract_change cc  
+			inner join    contract_main cm  
+			  on          cc.contractNewId=cm.id
+			  	 and  cm.approvalType=2
+		<#if leasingResource?exists && leasingResource !="">
+		 AND cm.leasingResource LIKE "%":leasingResource"%"
+		</#if>	
+		
+	    <#if customerName?exists && customerName !="">
+		 AND cm.customerName LIKE "%":customerName"%"
+		</#if>
+			
+		<#if contractNo?exists && contractNo !="">
+		 AND cc.contractNo LIKE "%":contractNo"%"
+		</#if>
+		
+	    <#if approvalStatus?exists && approvalStatus !="">
+		 AND cm.approvalStatus =:approvalStatus
+		</#if>	
+		
+		<#if changeReasion?exists && changeReasion !="">
+		 AND cc.changeReasion =:changeReasion
+		</#if>	
+		
+	    <#if createTimeEnd?exists && createTimeEnd !="">
+		 AND createTime <=:createTimeEnd
+		</#if>	
+		
+		<#if createTimeStart?exists && createTimeStart !="">
+		 AND createTime >=:createTimeStart
+		</#if>	
+		
+		 <#if marketId?exists && marketId !="">
+		 AND cm.marketId =:marketId
+		</#if>	
+			
+	   ]]>
+	</sql>
+	
+		<!--获取老合同信息--> 
+	<sql id="getOldContract"> 
+	   <![CDATA[ 
+    	SELECT 
+			cc.id
+			,cc.contractId
+			,cc.contractNo
+			,cc.trustees
+			,cc.info
+			,cc.changeReasion
+			,cc.createUserId
+			,cc.createTime
+			,cc.updateUserId
+			,cc.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_change cc  
+				inner join       contract_main cm  
+			  on          cc.contractId=cm.id
+			where cm.isDeleted=0
+			and cm.approvalType=2
+		<#if leasingResource?exists && leasingResource !="">
+		 AND cm.leasingResource LIKE "%":leasingResource"%"
+		</#if>	
+		
+	    <#if customerName?exists && customerName !="">
+		 AND cm.customerName LIKE "%":customerName"%"
+		</#if>	
+		
+		<#if contractNo?exists && contractNo !="">
+		 AND cc.contractNo LIKE "%":contractNo"%"
+		</#if>
+			
+	    <#if approvalStatus?exists && approvalStatus !="">
+		 AND cm.approvalStatus =:approvalStatus
+		</#if>	
+		
+		<#if changeReasion?exists && changeReasion !="">
+		 AND cc.changeReasion =:changeReasion
+		</#if>	
+		
+	    <#if createTimeEnd?exists && createTimeEnd !="">
+		 AND cc.createTime <=:createTimeEnd
+		</#if>	
+		
+		<#if createTimeStart?exists && createTimeStart !="">
+		 AND cc.createTime >=:createTimeStart
+		</#if>	
+			
+	    <#if marketId?exists && marketId !="">
+		 AND cm.marketId =:marketId
+		</#if>	
+	   ]]>
+	</sql>
+	
+	<!--仅限工作流使用--> 
+	<sql id="queryByWorkFlow"> 
+	   <![CDATA[ 
+		SELECT 
+			cm.id
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.categoryId
+			,cm.categoryName
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.paymentCycle
+			,cf.freeDays
+			,cc.changeReasion
+			FROM contract_main cm  
+			LEFT JOIN contract_change cc ON cm.id = cc.contractNewId
+			LEFT JOIN (select contractId, sum(datediff(endDay, startDay)) as freeDays FROM contract_free group by contractId) cf  ON cm.id = cf.contractId   
+			where  cm.id=:contractId
+	   ]]>
+	</sql>
+	
+	<sql  id="ContractChangeList">
+			SELECT
+			cc.id,
+			cc.contractId,
+			cc.contractNewId,
+			cc.contractNo,
+			cc.contractRootId,
+			cc.trustees,
+			cc.info,
+			cc.changeReasion,
+			cc.createTime,
+			cm.leasingResource
+		FROM
+			contract_change cc
+		LEFT JOIN contract_main cm ON cm.id = cc.contractId
+		WHERE
+			cm.approvalStatus = 3
+		AND cc.contractRootId = (
+			SELECT
+				contractRootId
+			FROM
+				contract_change
+			WHERE
+				contractNewId = :contractId
+		)
+		AND cm.id!= :contractId
+        GROUP BY cm.id 
+	</sql>
+	
+	<sql id="findUpdateCountbyContractNo">
+	
+	select count(1) from contract_main
+    where contractNo=:contractNo
+    and approvalType=2
+    and (approvalStatus=0 or approvalStatus=1)
+	</sql>
+	
+
+</sqlMap>

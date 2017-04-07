@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="Area"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,status,areaId,fatherId,sort,areaName
+		  FROM area
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if fatherId?exists && fatherId != "" >
+			   AND fatherId=:fatherId
+			</#if>
+			<#if queryProvince?exists && queryProvince != "" >
+			   AND fatherId is null
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if areaName?exists && areaName != "" >
+			   AND areaName=:areaName
+			</#if>
+			ORDER BY sort desc
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,status,areaId,fatherId,sort,areaName
+		  FROM area
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if fatherId?exists && fatherId != "" >
+			   AND fatherId=:fatherId
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if areaName?exists && areaName != "" >
+			   AND areaName=:areaName
+			</#if>
+		  ORDER BY sort desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM area
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if fatherId?exists && fatherId != "" >
+			   AND fatherId=:fatherId
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if areaName?exists && areaName != "" >
+			   AND areaName=:areaName
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!-- 查询所有的省份(包括港澳地区) -->
+	<sql id="queryAllProvin"> 
+	   <![CDATA[ 
+			 SELECT 
+			 	a.id, a.areaID, a.status, a.fatherID, a.areaName, a.sort
+			 FROM 
+			 	area a
+			 WHERE 
+			 	a.fatherID is null
+			 	<#if status?exists && status != "" >
+					AND a.status = :status 
+				</#if>
+			 ORDER BY sort desc
+		]]>
+	</sql>
+	
+	
+	<!-- 查询所有的城市-->
+	<sql id="queryAllCity"> 
+	   <![CDATA[ 
+			 SELECT 
+			 	cit.id, cit.areaID, cit.status, cit.fatherID, cit.areaName, cit.sort
+			 FROM 
+			 	 area pro, area cit
+			 WHERE 
+			 	pro.fatherID is null 
+				AND cit.fatherID = pro.areaID 
+				<#if status?exists && status != "" >
+					AND cit.status = :status 
+					AND pro.status = :status 
+				</#if>
+			ORDER BY cit.sort desc
+		]]>
+	</sql>
+	
+	<!-- 查询所有的区（县）-->
+	<sql id="queryAllCounty"> 
+	   <![CDATA[ 
+			 SELECT 
+			 	cou.id, cou.areaID, cou.status, cou.fatherID, cou.areaName, cou.sort
+			 FROM 
+			 	 area cit, area cou
+			 WHERE 
+			 	cit.fatherID is not null 
+				AND cou.fatherID = cit.areaID 
+				<#if status?exists && status != "" >
+					AND cit.status = :status 
+					AND cou.status = :status 
+				</#if>
+			ORDER BY cou.sort desc
+		]]>
+	</sql>
+	
+</sqlMap>

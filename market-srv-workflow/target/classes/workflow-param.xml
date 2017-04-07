@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 工作流参数。目前未使用到此xml文件，仅用作查看每个流程支持的参数情况，二期会扩展使用此文件。 -->
+
+<workflow nameSpace="Contract">
+	<process id="C01" name="合同管理审批">
+		<param key="leasingResourceIds" isPub="true" name="租赁资源" type="String" remark="租赁资源id,存在多个使用逗号隔开"/>
+		<param key="startLeasingDay" isPub="true" name="起租日期" type="Date"/>
+		<param key="endLeasingDay" isPub="true" name="结束日期" type="Date"/>
+		<param key="categoryId" isPub="true" name="经营范围" type="Long" remark="存储产品分类表id"/>
+		<param key="freeArea" isPub="true" name="可租面积" type="Double"/>
+		<param key="floorArea" isPub="true" name="建筑面积" type="Double"/>
+		<param key="innerArea" isPub="true" name="套内面积" type="Double"/>
+		<param key="dateOfContract" isPub="true" name="签约日期" type="Date"/>
+		<param key="chargingWays" isPub="true" name="收费方式" type="Byte" remark="收费方式 0 按周期收费 1 约定总金额"/>
+		<param key="billingArea" isPub="true" name="计费面积" type="Byte" remark="计费面积 0 可租面积 1 建筑面积 2 套内面积"/>
+		<param key="freeDays" isPub="true" name="免租总天数" type="Integer"/>
+		<param key="totalAmt" isPub="true" name="合同总金额" type="Double"/>
+		<param key="paymentCycle" isPub="true" name="缴费周期" type="Byte" remark="缴费周期 0 月 1 季度 2 半年 3 年"/>
+	</process>
+	
+	<process id="C02" name="合同变更审批">
+		<param key="leasingResourceIds" isPub="true" name="租赁资源" type="String" remark="租赁资源id,存在多个使用逗号隔开"/>
+		<param key="startLeasingDay" isPub="true" name="起租日期" type="Date"/>
+		<param key="endLeasingDay" isPub="true" name="结束日期" type="Date"/>
+		<param key="categoryId" isPub="true" name="经营范围" type="Long" remark="存储产品分类表id"/>
+		<param key="freeArea" isPub="true" name="可租面积" type="Double"/>
+		<param key="floorArea" isPub="true" name="建筑面积" type="Double"/>
+		<param key="innerArea" isPub="true" name="套内面积" type="Double"/>
+		<param key="dateOfContract" isPub="true" name="签约日期" type="Date"/>
+		<param key="chargingWays" isPub="true" name="收费方式" type="Byte" remark="收费方式 0 按周期收费 1 约定总金额"/>
+		<param key="billingArea" isPub="true" name="计费面积" type="Byte" remark="计费面积 0 可租面积 1 建筑面积 2 套内面积"/>
+		<param key="freeDays" isPub="true" name="免租总天数" type="Integer"/>
+		<param key="totalAmt" isPub="true" name="合同总金额" type="Double"/>
+		<param key="paymentCycle" isPub="true" name="缴费周期" type="Byte" remark="缴费周期 0 月 1 季度 2 半年 3 年"/>
+		<param key="changeReasion" isPub="true" name="变更原因" type="Byte" remark="0 租金水平调整 1 费项增减 2 租金减免" />
+	</process>
+	
+	<process id="C03" name="合同结算审批">
+		<param key="leasingResourceIds" isPub="true" name="租赁资源" type="String" remark="租赁资源id,存在多个使用逗号隔开"/>
+		<param key="startLeasingDay" isPub="true" name="起租日期" type="Date"/>
+		<param key="endLeasingDay" isPub="true" name="结束日期" type="Date"/>
+		<param key="categoryId" isPub="true" name="经营范围" type="Long" remark="存储产品分类表id"/>
+		<param key="freeArea" isPub="true" name="可租面积" type="Double"/>
+		<param key="floorArea" isPub="true" name="建筑面积" type="Double"/>
+		<param key="innerArea" isPub="true" name="套内面积" type="Double"/>
+		<param key="dateOfContract" isPub="true" name="签约日期" type="Date"/>
+		<param key="chargingWays" isPub="true" name="收费方式" type="Byte" remark="收费方式 0 按周期收费 1 约定总金额"/>
+		<param key="billingArea" isPub="true" name="计费面积" type="Byte" remark="计费面积 0 可租面积 1 建筑面积 2 套内面积"/>
+		<param key="freeDays" isPub="true" name="免租总天数" type="Integer"/>
+		<param key="totalAmt" isPub="true" name="合同总金额" type="Double"/>
+		<param key="paymentCycle" isPub="true" name="缴费周期" type="Byte" remark="缴费周期 0 月 1 季度 2 半年 3 年"/>
+		<param key="statementsType" isPub="true" name="结算类型" type="Byte" remark="结算类型 0 合同到期 1 提前解约"/>
+		<param key="deposit" isPub="true" name="退还保证金额" type="Double" />
+		<param key="forfeit" isPub="true" name="罚款金额" type="Double" />
+	</process>
+	
+</workflow>

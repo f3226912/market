@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractPayment"> 
+	<!--根据条件查询--> 
+	<sql id="queryAll"> 
+	   <![CDATA[ 
+		   SELECT
+		      id,
+			  `paymentTime`,
+			  `paymentAmt`
+		   FROM `contract_payment` WHERE contractId=:contractId AND isDeleted=0
+	   ]]>
+	</sql>
+	 <sql id="deleteAll"> 
+	   <![CDATA[ 
+		update   `contract_payment` 
+          set   isDeleted=1
+		  WHERE contractId=:contractId
+		  and   isDeleted=0
+	   ]]>
+	</sql>
+	<sql id="save">
+	   <![CDATA[ 
+		    INSERT INTO `contract_payment`
+	            (
+	             `contractId`,
+	             `contractNo`,
+	             `paymentTime`,
+	             `paymentAmt`,
+	             `isDeleted`,
+	             `createUserId`,
+	             `createTime`
+	             )
+			VALUES 
+			  <#list paymentList as payment>
+			       <#assign listSize = paymentList?size />
+				    (
+				        ${payment.contractId},
+				        ${payment.contractNo},
+				        ${payment.paymentTime},
+				        ${payment.paymentAmt},
+				        ${payment.isDeleted},
+				        ${payment.createUserId},
+				        ${payment.createTime}
+				     )			     
+				     <#if payment_index != listSize-1>
+				          ,
+				     </#if>	
+			  </#list>	        
+		]]>
+	</sql>
+	
+	<sql id="getFirstPayment">
+    	<![CDATA[
+			select 
+				id,
+			  	paymentTime,
+			  	paymentAmt
+			FROM 
+				(select * from contract_payment where isDeleted = 0 order by  paymentTime) cp 
+			GROUP BY cp.contractId HAVING cp.contractId = :contractId
+    	]]>
+    </sql>
+</sqlMap>

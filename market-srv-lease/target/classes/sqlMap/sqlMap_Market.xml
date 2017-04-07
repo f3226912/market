@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="Market">
+<sql id="insert">
+	<![CDATA[
+	INSERT INTO market(
+	provinceId,createTime,updateTime,status,cityId,openTime,code,
+	areaId,nameShort,id,orgId,updateUserId,address,
+	name,pca,marketStatus,createUserId,marketImage
+	) VALUES (
+	:provinceId,:createTime,:updateTime,:status,:cityId,:openTime,:code,
+	:areaId,:nameShort,:id,:orgId,:updateUserId,:address,
+	:name,:pca,:marketStatus,:createUserId,:marketImage
+	)
+	]]>
+</sql>
+
+<sql id="update">
+	<![CDATA[
+	UPDATE market SET 
+	<#if provinceId?exists && provinceId!="" >
+		provinceId=:provinceId,
+	</#if>	
+	<#if status?exists && status!="" >
+		status=:status,
+	</#if>	
+	<#if cityId?exists && cityId!="" >
+		cityId=:cityId,
+	</#if>	
+	<#if code?exists && code!="" >
+		code=:code,
+	</#if>	
+	<#if areaId?exists && areaId!="" >
+		areaId=:areaId,
+	</#if>	
+	<#if nameShort?exists && nameShort!="" >
+		nameShort=:nameShort,
+	</#if>	
+	<#if id?exists && id!="" >
+		id=:id,
+	</#if>	
+	<#if orgId?exists && orgId!="" >
+		orgId=:orgId,
+	</#if>	
+	<#if updateUserId?exists && updateUserId!="" >
+		updateUserId=:updateUserId,
+	</#if>	
+	<#if address?exists && address!="" >
+		address=:address,
+	</#if>	
+	<#if name?exists && name!="" >
+		name=:name,
+	</#if>	
+	<#if pca?exists && pca!="" >
+		pca=:pca,
+	</#if>	
+	<#if marketStatus?exists && marketStatus!="" >
+		marketStatus=:marketStatus,
+	</#if>	
+	<#if createUserId?exists && createUserId!="" >
+		createUserId=:createUserId,
+	</#if>	
+	<#if marketImage?exists && marketImage!="" >
+		marketImage=:marketImage,
+	</#if>
+		updateTime = SYSDATE()
+	WHERE id=:id
+	]]>
+</sql>
+
+<sql id="getById">
+	<![CDATA[
+		SELECT
+		m.provinceId,
+		m.createTime,
+		m.updateTime,
+		m.STATUS,
+		m.cityId,
+		m.openTime,
+		m.CODE,
+		m.areaId,
+		m.nameShort,
+		m.id,
+		m.orgId,
+		m.updateUserId,
+		m.address,
+		m.NAME,
+		m.pca,
+		m.marketStatus,
+		m.createUserId,
+		m.marketImage,
+		o1.fullName as companyName
+	FROM
+		market m
+	LEFT JOIN sys_org o ON o.id = m.orgId
+	LEFT JOIN sys_org o1 on o1.id = o.parentId 
+	WHERE
+		m.id = :id
+	]]>
+</sql>
+
+<sql id="getList">
+	<![CDATA[
+	SELECT 
+	provinceId,createTime,updateTime,status,cityId,openTime,code,
+	areaId,nameShort,id,orgId,updateUserId,address,
+	name,pca,marketStatus,createUserId,marketImage
+	FROM market WHERE 1=1
+	<#if provinceId?exists && provinceId!="" >
+		AND provinceId=:provinceId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if cityId?exists && cityId!="" >
+		AND cityId=:cityId
+	</#if>
+	<#if openTime?exists && openTime!="" >
+		AND openTime=:openTime
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND areaId=:areaId
+	</#if>
+	<#if nameShort?exists && nameShort!="" >
+		AND nameShort=:nameShort
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if orgId?exists && orgId!="" >
+		AND orgId=:orgId
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if address?exists && address!="" >
+		AND address=:address
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if pca?exists && pca!="" >
+		AND pca=:pca
+	</#if>
+	<#if marketStatus?exists && marketStatus!="" >
+		AND marketStatus=:marketStatus
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	<#if marketImage?exists && marketImage!="" >
+		AND marketImage=:marketImage
+	</#if>
+	
+	
+	]]>
+</sql>
+
+<sql id="getListPage">
+	<![CDATA[
+	SELECT 
+	provinceId,createTime,updateTime,status,cityId,openTime,code,
+	areaId,nameShort,id,orgId,updateUserId,address,
+	name,pca,marketStatus,createUserId,marketImage
+	FROM market WHERE 1=1
+	<#if provinceId?exists && provinceId!="" >
+		AND provinceId=:provinceId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if cityId?exists && cityId!="" >
+		AND cityId=:cityId
+	</#if>
+	<#if openTime?exists && openTime!="" >
+		AND openTime=:openTime
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND areaId=:areaId
+	</#if>
+	<#if nameShort?exists && nameShort!="" >
+		AND nameShort=:nameShort
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if orgId?exists && orgId!="" >
+		AND orgId=:orgId
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if address?exists && address!="" >
+		AND address=:address
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if pca?exists && pca!="" >
+		AND pca=:pca
+	</#if>
+	<#if marketStatus?exists && marketStatus!="" >
+		AND marketStatus=:marketStatus
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	<#if marketImage?exists && marketImage!="" >
+		AND marketImage=:marketImage
+	</#if>
+	
+	LIMIT :startRow, :endRow
+	]]>
+</sql>
+
+<sql id="getTotal">
+	<![CDATA[
+	SELECT count(*) FROM market WHERE 1=1
+	<#if provinceId?exists && provinceId!="" >
+		AND provinceId=:provinceId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if cityId?exists && cityId!="" >
+		AND cityId=:cityId
+	</#if>
+	<#if openTime?exists && openTime!="" >
+		AND openTime=:openTime
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if areaId?exists && areaId!="" >
+		AND areaId=:areaId
+	</#if>
+	<#if nameShort?exists && nameShort!="" >
+		AND nameShort=:nameShort
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if orgId?exists && orgId!="" >
+		AND orgId=:orgId
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if address?exists && address!="" >
+		AND address=:address
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if pca?exists && pca!="" >
+		AND pca=:pca
+	</#if>
+	<#if marketStatus?exists && marketStatus!="" >
+		AND marketStatus=:marketStatus
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	<#if marketImage?exists && marketImage!="" >
+		AND marketImage=:marketImage
+	</#if>
+	
+	]]>
+</sql>
+
+<sql id="deleteById">
+	<![CDATA[
+	DELETE FROM market WHERE id=:id
+	]]>
+</sql>
+
+<sql id="getResourceStatistics">
+	<![CDATA[
+     select
+        a.cnt as total, 
+        b.cnt as ineffectiveCnt, 
+        c.cnt as forRentCnt, 
+        d.cnt as alreadyRentedCnt 
+     from 
+       (select count(mr.id) as cnt from market m
+        join market_resource mr
+        on 
+        m.id = mr.marketId and m.id=:marketId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if>
+        ) a, 
+       (select count(mr.id) as cnt from market m
+        join market_resource mr 
+        on 
+        m.id = mr.marketId and m.id=:marketId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 1) b,
+       (select count(mr.id) as cnt from market m
+        join market_resource mr 
+        on 
+        m.id = mr.marketId and m.id=:marketId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 2) c,
+       (select count(mr.id) as cnt from market m 
+        join market_resource mr 
+        on 
+        m.id = mr.marketId and m.id=:marketId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 3) d
+	]]>
+</sql>
+
+<sql id="queryListForSelect">
+<![CDATA[
+	SELECT id, name FROM market WHERE status = 1	
+]]>
+</sql>
+</sqlMap>

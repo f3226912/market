@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlMap namespace="MarketBuildingResource">
+<!-- 查询资源是否已经存在 -->
+	<sql id="queryResources"> 
+	    <![CDATA[ 
+	    SELECT count(1)  FROM market_resource 
+	    WHERE  budingId=:buildingId AND leaseStatus=1
+	   ]]>
+	</sql>
+	<!-- 查询当前楼栋下的资源为2-待租   -已租 -->
+	<sql id="queryResourcesTwo"> 
+	    <![CDATA[ 
+	   SELECT COUNT(1) FROM market_resource r WHERE budingId=:buildingId  AND leaseStatus IN (2,3);
+	   ]]>
+	</sql>
+	<!-- 查询当前楼栋下的资源为2-待租   -已租 -->
+	<sql id="queryResourcesOne"> 
+	    <![CDATA[ 
+	   SELECT COUNT(1) FROM market_resource r WHERE budingId=:buildingId  AND leaseStatus=1;
+	   ]]>
+	</sql>
+	   <!-- 删除楼栋对应的楼层 -->
+   <sql id="delFloor"> 
+	    <![CDATA[ 
+	    UPDATE market_unit_floor  SET STATUS="0" WHERE buildingId=:buildingId
+	   ]]>
+	</sql>
+	   <!-- 删除楼栋对应的楼层 -->
+	 <sql id="delUnit"> 
+	    <![CDATA[ 
+	     UPDATE market_building_unit  SET STATUS="0" WHERE buildingId=:buildingId
+	   ]]>
+	</sql>
+	<!-- 删除楼栋对应的资源 -->
+	 <sql id="delRes"> 
+	    <![CDATA[ 
+	     UPDATE market_resource  SET STATUS="0" WHERE budingId=:buildingId
+	   ]]>
+	</sql>
+ 	<!-- 新增单元
+		<sql id="addMarketBuildingUnit"> 
+	     <![CDATA[ 
+		 INSERT INTO market_building_unit
+		 (
+		 buildingId,
+         name,unitImage,
+         status,createUserId,
+         createTime,updateUserId,updateTime
+		 ) 
+		 VALUES(
+		 :buildingId,
+		 :name,:unitImage,
+		 :status,:createUserId,
+		 sysdate(),:updateUserId,sysdate()
+		 )
+	   ]]>
+	</sql> -->
+	<!-- 新增楼层
+		<sql id="addMarketBuildingUnit"> 
+	     <![CDATA[ 
+		 INSERT INTO market_building_unit
+		 (
+		 unitId,
+         name,floorImage,
+         status,createUserId,floorNo
+         createTime,updateUserId,updateTime
+		 ) 
+		 VALUES(
+		 :unitId,
+		 :name,:unitImage,
+		 :status,:createUserId,:floorNo
+		 sysdate(),:updateUserId,sysdate()
+		 )
+	   ]]>
+	   </sql> -->
+	   <!-- 新增原始资源 
+	   		<sql id="addResourceOriginal"> 
+	     <![CDATA[ 
+		 INSERT INTO market_resource_original
+		 (
+		 code,
+         name,marketId,
+         areaId,budingId,floorId,
+         unitId,resourceTypeCode,builtArea,
+         innerArea,leaseArea,leaseStatus,rentMode,
+         leaseValidateTime,status,createUserId,createTime,updateUserId,updateTime
+		 ) 
+		 VALUES(
+		 :code,
+		 :name,:marketId,
+		 :areaId,:budingId,:floorId,
+		 :unitId,:resourceTypeCode,:builtArea,
+         :innerArea,:leaseArea,:leaseStatus,:rentMode,
+         :leaseValidateTime,:status,:createUserId,sysdate(),:updateUserId,sysdate()
+		 )
+	   ]]>
+	</sql>-->
+	  <!-- 新增资源 
+	   		<sql id="addResource"> 
+	     <![CDATA[ 
+		 INSERT INTO market_resource
+		 (
+		 code,
+         name,marketId,
+         areaId,budingId,floorId,
+         unitId,resourceTypeCode,builtArea,
+         innerArea,leaseArea,leaseStatus,rentMode,
+         leaseValidateTime,status,createUserId,createTime,updateUserId,updateTime
+		 ) 
+		 VALUES(
+		 :code,
+		 :name,:marketId,
+		 :areaId,:budingId,:floorId,
+		 :unitId,:resourceTypeCode,:builtArea,
+         :innerArea,:leaseArea,:leaseStatus,:rentMode,
+         :leaseValidateTime,:status,:createUserId,sysdate(),:updateUserId,sysdate()
+		 )
+	   ]]>
+	</sql>-->
+	
+	 <!-- 根据市场ID  查询市场编码 以及区域编码 -->
+	   		<sql id="queryCodeById"> 
+	     <![CDATA[ 
+		SELECT  m.code AS marketCode,a.code AS areaCode  FROM market  m 
+         INNER JOIN market_area a
+          ON m.id=a.marketId  WHERE  m.id=:marketId AND a.id=:areaId
+	   ]]>
+</sql>
+ <!-- 根据楼栋ID  查询对应区域 -->
+<sql id = "queryAreaBybId">
+		<![CDATA[
+			SELECT areaId
+               FROM  market_area_building
+			      WHERE id = :buildingId
+		]]>
+	</sql>
+	</sqlMap>

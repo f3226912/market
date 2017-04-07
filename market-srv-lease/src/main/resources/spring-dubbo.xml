@@ -1,0 +1,133 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd">
+	
+ 	<dubbo:application name="${maven.dubbo.market.lease.provider.application.name}" owner="${maven.dubbo.market.lease.provider.application.owner}" />
+	<dubbo:protocol name="dubbo" threads="${maven.dubbo.market.lease.provider.protocol.threads}" threadpool="${maven.dubbo.market.lease.provider.protocol.threadpool}" port="${maven.dubbo.market.lease.provider.protocol.port}"/>
+ 	<dubbo:registry address="${maven.dubbo.market.registry.address}"  />
+ 	<dubbo:provider  group="${maven.dubbo.market.lease.provider.service.group}" version="${maven.dubbo.market.lease.provider.service.version}" timeout="${maven.dubbo.market.lease.provider.service.timeout}"/>
+ 	
+ 	<!-- common 服务 -->
+ 	<dubbo:service interface="cn.gdeng.market.service.lease.common.AreaService" ref="areaService" /> 
+
+    <!-- 合同变更 -->
+    <dubbo:service ref="contractChangeService" interface="cn.gdeng.market.service.lease.contract.ContractChangeService" />
+    <!-- 合同管理-->
+    <dubbo:service ref="contractManageService" interface="cn.gdeng.market.service.lease.contract.ContractManageService" />
+    <!-- 合同结算 -->
+    <dubbo:service ref="contractSettlementService" interface="cn.gdeng.market.service.lease.contract.ContractSettlementService" />  
+    <!-- 合同租金约定-->
+    <dubbo:service ref="contractRentService" interface="cn.gdeng.market.service.lease.contract.ContractRentService" />
+    <!-- 合同其他费用约定-->
+    <dubbo:service ref="contractOtherFeeService" interface="cn.gdeng.market.service.lease.contract.ContractOtherFeeService" />
+    <!-- 合同定时任务记录 -->
+    <dubbo:service ref="contractTaskService" interface="cn.gdeng.market.service.lease.contract.ContractTaskService" />  
+    <!-- 合同定时任务记录 -->
+    <dubbo:service ref="contractWorkflowService" interface="cn.gdeng.market.service.lease.contract.ContractWorkflowService" />  
+    <!-- 套打服务 -->
+    <dubbo:service ref="printSetService" interface="cn.gdeng.market.service.lease.settings.PrintSetService" />
+    <!-- 套打模板 -->
+    <dubbo:service ref="printTemplateService" interface="cn.gdeng.market.service.lease.settings.PrintTemplateService" />
+    <!-- 套打文件生成 -->
+    <dubbo:service ref="printService" interface="cn.gdeng.market.service.lease.settings.PrintService" />
+    <!-- 经营范围 -->
+    <dubbo:service ref="productCategoryService" interface="cn.gdeng.market.service.lease.common.ProductCategoryService" />   
+    <!-- 计量分类 -->
+    <dubbo:service ref="marketMeasureTypeService" interface="cn.gdeng.market.service.lease.settings.MarketMeasureTypeService" />
+    <!-- 计量表 -->
+    <dubbo:service ref="marketMeasureSettingService" interface="cn.gdeng.market.service.lease.settings.MarketMeasureSettingService" />
+      <!--合同提醒 -->
+    <dubbo:service ref="sysContractRemindSettingService" interface="cn.gdeng.market.service.lease.settings.SysContractRemindSettingService" />
+    <!-- 计量表抄表收费记录 -->
+    <dubbo:service ref="gaugeChargeRecordService" interface="cn.gdeng.market.service.lease.settings.GaugeChargeRecordService" />
+    
+    <!-- 费项服务 -->
+ 	<dubbo:service ref="expenditureService"  interface="cn.gdeng.market.service.lease.settings.MarketExpenditureService" />
+ 	<!-- 计费标准 -->
+ 	<dubbo:service ref="expenditureStandardService"  interface="cn.gdeng.market.service.lease.settings.MarketExpenditureStandardService" />
+    
+    <!-- 资源类型 -->
+    <dubbo:service ref="marketResourceTypeService" interface="cn.gdeng.market.service.lease.settings.MarketResourceTypeService" />
+   	<!-- 资源调整 -->
+   	<dubbo:service ref="marketResourceAdjustmentService" interface="cn.gdeng.market.service.lease.resources.MarketResourceAdjustmentService"></dubbo:service>
+	<!-- lease 服务--> 
+    <dubbo:service ref="marketAreaBuildingService" interface="cn.gdeng.market.service.lease.resources.MarketAreaBuildingService" />
+    <dubbo:service ref="marketBuildingResourceService" interface="cn.gdeng.market.service.lease.resources.MarketBuildingResourceService" />
+    <dubbo:service ref="marketUnitFloorService" interface="cn.gdeng.market.service.lease.resources.MarketUnitFloorService" />
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+	<!-- 区域管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketAreaService" ref="marketAreaService" />
+	<!-- 区域管理 end -->
+	
+	<!-- 商铺/车位资源管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketResourceService" ref="marketResourceService" />
+	<!-- 铺/车位资源管理 end -->
+   	
+   	<!-- 财务应收款记录 -->
+   	<dubbo:service ref="financeFeeService" interface="cn.gdeng.market.service.lease.finance.FinanceFeeService"></dubbo:service>
+	<!-- 财务实收款记录 -->
+   	<dubbo:service ref="financeFeeReceivedService" interface="cn.gdeng.market.service.lease.finance.FinanceFeeReceivedService"></dubbo:service>
+   	 <!-- 抄表记录 -->
+   	<dubbo:service ref="financeGaugeChargeRecordService" interface="cn.gdeng.market.service.lease.finance.FinanceGaugeChargeRecordService"></dubbo:service>
+   	   	
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+	<!-- 区域管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketAreaService" ref="marketAreaService" />
+	<!-- 区域管理 end -->
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+	<!-- 区域管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketAreaService" ref="marketAreaService" />
+	<!-- 区域管理 end -->
+   	<!-- 市场资源 -->
+   	<dubbo:service ref="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+	<!-- 区域管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketAreaService" ref="marketAreaService" />
+	<!-- 区域管理 end -->
+   	
+	<!-- 区域管理 start -->
+	<dubbo:service interface="cn.gdeng.market.service.lease.resources.MarketAreaService" ref="marketAreaService" />
+	<!-- 区域管理 end -->
+   	
+   	<!-- 财务收款记录 -->
+   	<dubbo:service ref="financeFeeService" interface="cn.gdeng.market.service.lease.finance.FinanceFeeService"></dubbo:service>
+   	<!--租赁合同  -->
+   	<dubbo:service ref="biContractMainService" interface="cn.gdeng.market.service.lease.bi.BiContractMainService"></dubbo:service>
+   	
+   	<!-- 市场平面图设置 -->
+    <dubbo:service ref="marketImageSettingService" interface="cn.gdeng.market.service.lease.settings.MarketImageSettingService" />
+   	
+    <!-- 市场 -->
+    <dubbo:service ref="marketService" interface="cn.gdeng.market.service.lease.settings.MarketService" />
+   	
+   	<!-- 市场平面图设置 -->
+    <dubbo:service ref="marketImageSettingService" interface="cn.gdeng.market.service.lease.settings.MarketImageSettingService" />
+   	
+   	<!-- bi图表服务 -->
+    <dubbo:service ref="reportService" interface="cn.gdeng.market.service.lease.bi.ReportService" />
+   <!-- 租赁情况一览表 -->
+    <dubbo:service ref="biLeaseListService" interface="cn.gdeng.market.service.lease.bi.BiLeaseListService" />
+    
+    <!-- 合同和租赁资源关联服务 -->
+    <dubbo:service ref="marketLeasePostageService" interface="cn.gdeng.market.service.lease.resources.MarketLeasePostageService" />
+
+</beans> 

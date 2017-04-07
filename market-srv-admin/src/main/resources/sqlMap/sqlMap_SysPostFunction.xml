@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysPostFunction"> 
+	<sql id="insert">
+		<![CDATA[
+		INSERT INTO sys_post_function (
+			`postId`,`authId`,`type`,`createUserId`
+		)
+		VALUES
+			(
+				:postId,:authId,:type,:createUserId
+			);
+		]]>
+	</sql>
+	<sql id="delete">
+		<![CDATA[
+		DELETE FROM sys_post_function WHERE postId=:postId
+		]]>
+	</sql>
+
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,postId,authId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_post_function
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if authId?exists && authId != "" >
+			   AND authId=:authId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,postId,authId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_post_function
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if authId?exists && authId != "" >
+			   AND authId=:authId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_post_function
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if authId?exists && authId != "" >
+			   AND authId=:authId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据用户id查询用户的功能权限菜单--> 
+	<sql id="getMenusByUserId"> 
+	   <![CDATA[ 
+		  SELECT
+			m.id,
+			m.`code`,
+			m.`name`,
+			m.pid,
+			m.url,
+			m.icons,
+			m.sort,
+			m.`level`,
+			m.createUserId,
+			m.createTime,
+			m.updateTime,
+			m.updateUserId
+		FROM
+			sys_menu m
+		WHERE
+			m.id IN (
+				SELECT
+					pf.authId
+				FROM
+					sys_post_function pf
+				WHERE
+					pf.type = 1
+				AND pf.postId IN (
+					SELECT
+						t.id
+					FROM
+						sys_post t
+					WHERE
+						t.id IN (
+							SELECT
+								r.postId
+							FROM
+								sys_user_post r
+							WHERE
+								r.userId = :userId
+						)
+					<#if status?exists && status != "" >
+						AND t.`status` = :status
+					</#if>
+				)
+			)
+		ORDER BY
+			m.sort,
+			m.createTime DESC,
+			m.updateTime DESC
+	   ]]>
+	</sql>
+	
+	<!--根据用户id查询用户的功能权限按钮--> 
+	<sql id="getButtonsByUserId"> 
+	   <![CDATA[ 
+		  SELECT
+			m.id,
+			m.`code`,
+			m.`name`,
+			m.menuId,
+			m.createTime,
+			m.createUserId,
+			m.updateTime,
+			m.updateUserId
+		FROM
+			sys_menu_button m
+		WHERE
+			m.id IN (
+				SELECT
+					pf.authId
+				FROM
+					sys_post_function pf
+				WHERE
+					pf.type = 2
+				AND pf.postId IN (
+					SELECT
+						t.id
+					FROM
+						sys_post t
+					WHERE
+						t.id IN (
+							SELECT
+								r.postId
+							FROM
+								sys_user_post r
+							WHERE
+								r.userId = :userId
+						)
+					<#if status?exists && status != "" >
+						AND t.`status` = :status
+					</#if>
+				)
+			)
+		ORDER BY
+			m.createTime DESC,
+			m.updateTime DESC
+	   ]]>
+	</sql>
+	
+	
+
+
+</sqlMap>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysUserOrg"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,orgId,userId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_user_org
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if orgIds??>
+				AND orgId in (
+
+					<#list orgIds as orgId>
+						<#if orgId_index gt 0>
+							,${orgId}
+						<#else>
+							${orgId}
+						</#if>
+						
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,orgId,userId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_user_org
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_user_org
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			
+	   ]]>
+	</sql>
+
+
+	<!--根据用户id查询用户的组织--> 
+	<sql id="getOrgsByUserId"> 
+	   <![CDATA[ 
+		  SELECT
+			t.id,
+			t.type,
+			t.shortName,
+			t.fullName,
+			t.parentId,
+			t.`level`,
+			t.`status`,
+			t.remark,
+			t.createTime,
+			t.createUserId,
+			t.updateTime,
+			t.updateUserId
+		FROM
+			sys_org t
+		WHERE
+			t.id IN (
+			SELECT
+				r.orgId
+			FROM
+				sys_user_org r
+			WHERE
+				r.userId = :userId
+		)
+		<#if status?exists && status != "" >
+			AND t.`status` = :status
+		</#if>
+		ORDER BY
+			t.createTime DESC,
+			t.updateTime DESC
+	   ]]>
+	</sql>
+	<!--根据组织上级ID获取上级组织--> 
+	<sql id="getParOrg"> 
+	   <![CDATA[ 
+		  SELECT
+			t.id,
+			t.type,
+			t.shortName,
+			t.fullName,
+			t.parentId,
+			t.`level`,
+			t.`status`,
+			t.remark,
+			t.createTime,
+			t.createUserId,
+			t.updateTime,
+			t.updateUserId
+		FROM
+			sys_org t
+		WHERE
+		AND t.id = :parentId
+	   ]]>
+	</sql>
+	
+	<!--根据用户id删除用户-组织关系--> 
+	<sql id="deleteByUserId"> 
+	   <![CDATA[ 
+		  DELETE
+			FROM
+				sys_user_org
+		WHERE
+			userId = :userId
+	   ]]>
+	</sql>
+</sqlMap>

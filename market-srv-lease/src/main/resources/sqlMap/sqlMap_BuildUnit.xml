@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="BuildUnit">
+	<!--通过楼栋id  获取 单元 --> 
+	<sql id="getUnitByBuildId">
+		<![CDATA[  
+			SELECT id,name 
+			from market_building_unit
+			where  1 = 1
+			 <#if buildingId?exists && buildingId != "" >
+			 	AND buildingId = :buildingId
+			 </#if>
+			 	AND status = 1
+			 ORDER BY unitNo
+		]]>
+	</sql>
+ </sqlMap>

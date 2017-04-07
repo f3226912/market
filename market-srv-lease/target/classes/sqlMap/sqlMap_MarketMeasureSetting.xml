@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketMeasureSetting"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			t1.id, t1.name, t1.measureTypeId, t1.expId, t1.resourceId, t1.createUserId, t1.createTime, t1.updateUserId,
+			t1.updateTime, t1.code, t1.maxVal, t1.status, t2.name measureTypeName, t3.name expName,t4.name resourceName,t4.leaseStatus leaseStatus, t1.isDeleted,
+			CASE t1.status WHEN 1 THEN '启用' WHEN 0 THEN '停用' END statusStr 
+		  FROM market_measure_setting t1 
+		  LEFT JOIN market_measure_type t2 ON (t1.measureTypeId = t2.id)
+		  LEFT JOIN market_expenditure t3 ON (t1.expId = t3.id)
+		  LEFT JOIN market_resource t4 ON (t1.resourceId = t4.id)
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND t1.id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND t1.name=:name
+			</#if>
+			<#if measureTypeId?exists && measureTypeId != "" >
+			   AND t1.measureTypeId=:measureTypeId
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t1.expId=:expId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND t1.resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t1.createUserId=:createUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND t1.isDeleted=:isDeleted
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t1.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t1.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t1.updateTime=:updateTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t1.code=:code
+			</#if>
+			<#if maxVal?exists && maxVal != "" >
+			   AND t1.maxVal=:maxVal
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t1.status=:status
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			    AND t4.name like "%" :resourceName "%"
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			    AND t2.marketId =:marketId
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			t1.id, t1.name, t1.measureTypeId, t1.expId, t1.resourceId, t1.createUserId, t1.createTime, t1.updateUserId,
+			t1.updateTime, t1.code, t1.maxVal, t1.status, t2.name measureTypeName, t3.name expName, t4.name resourceName, t1.isDeleted,
+			CASE t1.status WHEN 1 THEN '启用' WHEN 0 THEN '停用' END statusStr 
+		  FROM market_measure_setting t1 
+		  LEFT JOIN market_measure_type t2 ON (t1.measureTypeId = t2.id)
+		  LEFT JOIN market_expenditure t3 ON (t1.expId = t3.id)
+		  LEFT JOIN market_resource t4 ON (t1.resourceId = t4.id)
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND t1.id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND t1.name=:name
+			</#if>
+			<#if measureTypeId?exists && measureTypeId != "" >
+			   AND t1.measureTypeId=:measureTypeId
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t1.expId=:expId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND t1.resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t1.createUserId=:createUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND t1.isDeleted=:isDeleted
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t1.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t1.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t1.updateTime=:updateTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t1.code=:code
+			</#if>
+			<#if maxVal?exists && maxVal != "" >
+			   AND t1.maxVal=:maxVal
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t1.status=:status
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			    AND t4.name like "%" :resourceName "%"
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			    AND t2.marketId =:marketId
+			</#if>
+			order by t1.createTime desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT COUNT(1) 
+		  FROM market_measure_setting t1 
+		  LEFT JOIN market_measure_type t2 ON (t1.measureTypeId = t2.id)
+		  LEFT JOIN market_expenditure t3 ON (t1.expId = t3.id)
+		  LEFT JOIN market_resource t4 ON (t1.resourceId = t4.id)
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND t1.id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND t1.name=:name
+			</#if>
+			<#if measureTypeId?exists && measureTypeId != "" >
+			   AND t1.measureTypeId=:measureTypeId
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND t1.expId=:expId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND t1.resourceId=:resourceId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t1.createUserId=:createUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND t1.isDeleted=:isDeleted
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t1.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t1.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t1.updateTime=:updateTime
+			</#if>
+			<#if code?exists && code != "" >
+			   AND t1.code=:code
+			</#if>
+			<#if maxVal?exists && maxVal != "" >
+			   AND t1.maxVal=:maxVal
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t1.status=:status
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			    AND t4.name like "%" :resourceName "%"
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			    AND t2.marketId =:marketId
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!-- 批量更新 --> 
+	<sql id="batchUpdateEntity"> 
+	   <![CDATA[ 
+			UPDATE market_measure_setting SET status = :status where id = :id
+	   ]]>
+	</sql>
+	<!-- 批量新增 --> 
+	<sql id="batchInsertEntity"> 
+	   <![CDATA[ 
+			INSERT INTO market_measure_setting
+				( `measureTypeId`, `resourceId`, `name`, `code`, `maxVal`, `status`,
+			 	`createUserId`, `createTime`, `updateUserId`, `updateTime`, `isDeleted`, `expId`
+			 	)
+			 VALUES (:measureTypeId, :resourceId, :name, :code, :maxVal, :status,
+			 :createUserId, sysDate(), :updateUserId, sysDate(), :isDeleted, :expId);
+	   ]]>
+	</sql>
+	
+	<sql id="updateMeasureResource">
+		UPDATE market_resource_measure 
+		SET resourceId = :resourceId,
+		       updateUserId = :updateUserId,
+		       updateTime = SYSDATE()
+		WHERE measureId = :measureId
+	</sql>
+</sqlMap>

@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="FinanceGaugeChargeRecord"> 
+
+	<!--查询资源以及资源类型信息--> 
+	<sql id="findMarketResourceType"> 
+		<![CDATA[ 
+		SELECT 
+			(CASE WHEN mrt.parentId = 1 THEN 1 WHEN mrt.parentId = 2 THEN 2 ELSE 3 END) as resourceTypeId,
+			mr.id as resourceId
+		FROM 
+			market_resource mr, market_resource_type mrt
+		WHERE 
+			mr.resourceTypeId = mrt.id
+			AND mr.id = :id
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询计量表抄表列表--> 
+	<sql id="queryMeterReadingListPage"> 
+	   <![CDATA[ 
+		  SELECT  
+		  		mms.`id` AS measureId,
+		  		mms.`code` AS measureCode,
+		  		mms.maxVal as maxMeasureVal,
+				mmt.`name` AS measureTypeName,
+		  		'' AS current,
+		  		'' AS wastage,
+		  		mms.`resourceId` AS resourceName,
+		  		mr.`name` AS resourceNames,
+		  		fgcr.current AS last,
+		  		DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d') AS lastNoteDateStr,
+				ma.`name` AS areaName,
+				mab.`name` AS buildName
+		FROM market_measure_setting mms
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		LEFT JOIN 
+			(SELECT fgcr1.measureId,fgcr1.noteDate,fgcr1.current, fgcr1.lastNoteDate FROM finance_gauge_charge_record fgcr1 
+			WHERE fgcr1.id IN(SELECT MAX(fgcr2.id) FROM finance_gauge_charge_record fgcr2 GROUP BY fgcr2.measureId)) fgcr ON fgcr.measureId = mms.`id`
+		WHERE 1=1 AND mms.`status`=1
+	  	<#if areaId?exists && areaId != "" >
+		   AND mr.`areaId`=:areaId
+		</#if>
+	  	<#if mmsStatus?exists && mmsStatus != "" >
+		   AND mms.`status` = :mmsStatus
+		</#if>		
+		<#if buildingId?exists && buildingId != "" >
+		   AND mr.`budingId`=:buildingId
+		</#if>
+		<#if measureTypeId?exists && measureTypeId != "" >
+		   AND mms.`measureTypeId`=:measureTypeId
+		</#if>
+		<#if noteDateStart?exists && noteDateStart != "" >
+		   AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')>=:noteDateStart
+		</#if>
+		<#if noteDateEnd?exists && noteDateEnd != "" >
+		    AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')<=:noteDateEnd
+		</#if>
+		<#if marketId?exists && marketId != "" >
+		    AND mr.`marketId`=:marketId
+		</#if>		
+		ORDER BY fgcr.noteDate DESC,mms.`createTime` DESC
+		<#if startRow?exists && startRow!="" && endRow?exists && endRow!="" >
+				LIMIT :startRow,:endRow
+		</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="queryMeterReadingCount"> 
+	   <![CDATA[ 
+		   SELECT  
+		  		count(1)
+		FROM market_measure_setting mms
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		LEFT JOIN 
+			(SELECT fgcr1.measureId,fgcr1.noteDate,fgcr1.current, fgcr1.lastNoteDate FROM finance_gauge_charge_record fgcr1 
+			WHERE fgcr1.id IN(SELECT MAX(fgcr2.id) FROM finance_gauge_charge_record fgcr2 GROUP BY fgcr2.measureId)) fgcr ON fgcr.measureId = mms.`id`
+		WHERE 1=1 AND mms.`status`=1
+	  	<#if areaId?exists && areaId != "" >
+		   AND mr.`areaId`=:areaId
+		</#if>
+		<#if buildingId?exists && buildingId != "" >
+		   AND mr.`budingId`=:buildingId
+		</#if>
+		<#if measureTypeId?exists && measureTypeId != "" >
+		   AND mms.`measureTypeId`=:measureTypeId
+		</#if>
+		<#if noteDateStart?exists && noteDateStart != "" >
+		   AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')>=:noteDateStart
+		</#if>
+		<#if noteDateEnd?exists && noteDateEnd != "" >
+		    AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')<=:noteDateEnd
+		</#if>
+		<#if marketId?exists && marketId != "" >
+		    AND mr.`marketId`=:marketId
+		</#if>		
+	   ]]>
+	</sql>
+	
+	<!--根据条件查询抄表关联的合同等信息--> 
+	<sql id="findMeterReadingInfo"> 
+		<![CDATA[ 
+			SELECT
+				mms.`id` AS measureId,  
+		  		cm1.`id` AS contractVersion,
+		  		cm1.contractNo AS contractNo,
+		  		fgcr.current AS last,
+		  		fgcr.noteDate AS lastNoteDate,
+		  		cm1.customerName AS customerName,
+		  		mms.`resourceId` AS resourceName,
+		  		cm1.`partyB` AS partyB,
+		  		mes.id AS expStandardId,
+		  		mes.wastageRate AS wastageRate,
+				mes.chargeUnitPrice AS price,
+				mes.sectionalCharge AS sectionalCharge
+		FROM market_measure_setting mms
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN
+			(	SELECT cm.`id`, cm.contractNo, cm.customerName, cm.`partyB`, mlp.`resourceId` 
+				FROM contract_main cm, market_lease_postage mlp
+				WHERE cm.`id`=mlp.`contractId`AND mlp.`status`=1 AND cm.`isCancel`=0 AND cm.`isDeleted`=0 AND approvalStatus = 3 AND contractStatus = 1 
+		  		AND CURRENT_DATE >= DATE_FORMAT(cm.`startLeasingDay`, '%Y-%c-%d') AND CURRENT_DATE <= DATE_FORMAT(cm.`endLeasingDay`, '%Y-%c-%d')
+			) cm1 ON cm1.resourceId = mrm.`resourceId`
+		LEFT JOIN contract_others_fee cof ON cof.`contractId`=cm1.`id` AND cof.`isDeleted`=0	AND mms.expId = cof.itemNameId
+		LEFT JOIN market_expenditure_standard mes ON mes.id=cof.freightBasisId 
+		LEFT JOIN 
+			(SELECT fgcr1.measureId,fgcr1.noteDate,fgcr1.current FROM finance_gauge_charge_record fgcr1 
+			WHERE fgcr1.id IN(SELECT MAX(fgcr2.id) FROM finance_gauge_charge_record fgcr2 GROUP BY fgcr2.measureId)) fgcr ON fgcr.measureId = mms.`id`
+		WHERE 1=1 AND mms.`status`=1
+		<#if measureId?exists && measureId != "" >
+			   AND mms.`id`=:measureId
+		</#if>
+	   ]]>
+	</sql>
+	<!--根据条件查询计费分段信息--> 
+	<sql id="findSectionalchargeList"> 
+		<![CDATA[ 
+			SELECT  
+		  		ms.`expStandardId` AS expStandardId,
+		  		ms.chargeUnitPrice AS chargeUnitPrice,
+		  		ms.upValue AS upValue,
+		  		ms.downValue AS downValue,
+		  		msMin.minPrice AS minPrice
+			FROM market_sectionalcharge ms,
+			(SELECT MIN(ms1.chargeUnitPrice)  AS minPrice,ms1.`expStandardId` AS expStandardId FROM market_sectionalcharge ms1 GROUP BY ms1.`expStandardId`)msMin
+			WHERE 1=1 AND ms.`status`=1
+			AND msMin.expStandardId = ms.`expStandardId`
+			<#if expStandardId?exists && expStandardId != "" >
+				   AND ms.`expStandardId`=:expStandardId
+			</#if>
+			ORDER BY ms.`downValue` ASC
+	   ]]>
+	</sql>
+	<!--根据收费记录ID查询合同相关信息--> 
+	<sql id="findContractInfoById"> 
+		<![CDATA[
+		SELECT  fg.`id` AS id,
+				fg.`contractVersion` AS contractVersion,
+				mes.wastageRate AS wastageRate,
+				mes.chargeUnitPrice AS price,
+				mes.sectionalCharge AS sectionalCharge,
+				mes.id AS expStandardId 
+		FROM finance_gauge_charge_record fg
+		LEFT JOIN  market_measure_setting mms ON mms.`id`=fg.`measureId`
+		LEFT JOIN contract_others_fee cof ON cof.`contractId`=fg.`contractVersion` AND mms.expId = cof.itemNameId
+		LEFT JOIN market_expenditure_standard mes ON mes.id=cof.freightBasisId
+		WHERE 1=1
+		<#if id?exists && id != "" >
+			AND fg.`id`=:id
+		</#if>
+		  ]]>
+	</sql> 
+	<!--插入抄表收费记录--> 
+	<sql id="insert"> 
+		<![CDATA[ 
+			INSERT INTO finance_gauge_charge_record(
+				measureId,
+				contractVersion,
+				contractNo,
+				noteDate,
+				lastNoteDate,
+				current,
+				last,
+				wastage,
+				price,
+				amount,
+				status,
+				customerName,
+				partyB,
+				resourceName,
+				receiver,
+				receiveDate,
+				noteUser,
+				createUserId,
+				createTime,
+				updateUserId,
+				updateTime,
+				remark,
+				marketId
+			) VALUES (
+				:measureId,
+				:contractVersion,
+				:contractNo,
+				:noteDateStr,
+				:lastNoteDate,
+				:current,
+				:last,
+				:wastage,
+				:price,
+				:amount,
+				0,
+				:customerName,
+				:partyB,
+				:resourceName,
+				:receiver,
+				:receiveDate,
+				:noteUser,
+				:createUserId,
+				SYSDATE(),
+				:updateUserId,
+				SYSDATE(),
+				:remark,
+				:marketId
+			)
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询 计量表抄表收费记录--> 
+	<sql id="queryFinanceGaugeChargeRecordListPage"> 
+	   <![CDATA[ 
+		 SELECT 
+		 		mms.`id` AS measureId,
+		  		mms.code AS measureCode,
+		  		mmt.`name` AS measureTypeName,
+		  		fgcr.id AS id,
+		  		DATE_FORMAT(fgcr.`noteDate`, '%Y-%c-%d') AS noteDateStr,
+		  		fgcr.current AS current,
+		  		fgcr.`last` AS last, 
+		  		fgcr.wastage AS wastage,
+		  		fgcr.price AS price,
+		  		fgcr.amount AS amount,
+		  		fgcr.status AS status,
+		  		fgcr.customerName AS customerName,
+		  		fgcr.partyB AS partyB,
+		  		mms.`resourceId` AS resourceName,
+		  		mr.`name` AS resourceNames,
+		  		fgcr.noteUser AS noteUser,
+				ma.`name` AS areaName,
+				mab.`name` AS buildName
+		FROM finance_gauge_charge_record fgcr
+		LEFT JOIN market_measure_setting mms ON mms.`id`=fgcr.`measureId` AND mms.`status`=1
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		WHERE 1=1
+	  	<#if areaId?exists && areaId != "" >
+		   AND mr.`areaId`=:areaId
+		</#if>
+		<#if buildingId?exists && buildingId != "" >
+		   AND mr.`budingId`=:buildingId
+		</#if>
+		<#if measureTypeId?exists && measureTypeId != "" >
+		   AND mms.`measureTypeId`=:measureTypeId
+		</#if>
+		<#if status?exists && status != "" >
+		   AND fgcr.`status`=:status
+		</#if>
+		<#if noteDateStart?exists && noteDateStart != "" >
+		   AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')>=:noteDateStart
+		</#if>
+		<#if noteDateEnd?exists && noteDateEnd != "" >
+		    AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')<=:noteDateEnd
+		</#if>
+		<#if marketId?exists && marketId != "" >
+		    AND mr.`marketId`=:marketId
+		</#if>			
+		ORDER BY fgcr.noteDate DESC,mms.`createTime` DESC
+		<#if startRow?exists && startRow!="" && endRow?exists && endRow!="" >
+				LIMIT :startRow,:endRow
+		</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件统计 计量表抄表收费记录总数--> 
+	<sql id="queryFinanceGaugeChargeRecordListCount"> 
+	   <![CDATA[ 
+		  SELECT 
+		  		count(1)
+		FROM finance_gauge_charge_record fgcr
+		LEFT JOIN market_measure_setting mms ON mms.`id`=fgcr.`measureId` AND mms.`status`=1
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		WHERE 1=1
+	  	<#if areaId?exists && areaId != "" >
+		   AND mr.`areaId`=:areaId
+		</#if>
+		<#if buildingId?exists && buildingId != "" >
+		   AND mr.`budingId`=:buildingId
+		</#if>
+		<#if measureTypeId?exists && measureTypeId != "" >
+		   AND mms.`measureTypeId`=:measureTypeId
+		</#if>
+		<#if noteDateStart?exists && noteDateStart != "" >
+		   AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')>=:noteDateStart
+		</#if>
+		<#if noteDateEnd?exists && noteDateEnd != "" >
+		    AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')<=:noteDateEnd
+		</#if>	
+		<#if status?exists && status != "" >
+		   AND fgcr.`status`=:status
+		</#if>	
+		<#if marketId?exists && marketId != "" >
+		    AND mr.`marketId`=:marketId
+		</#if>	
+	   ]]>
+	</sql>
+	
+	<!--更新抄表收费记录--> 
+	<sql id="update"> 
+		<![CDATA[ 
+			UPDATE finance_gauge_charge_record SET
+				<#if current?exists && current!="" >
+					current=:current,
+				</#if>
+				<#if wastage?exists && wastage!="" >
+					wastage=:wastage,
+				</#if>
+				<#if amount?exists && amount!="" >
+					amount=:amount,
+				</#if>
+				<#if noteDateStr?exists && noteDateStr!="" >
+					noteDate=:noteDateStr,
+				</#if>
+				updateUserId=:updateUserId,
+				updateTime = SYSDATE()
+			WHERE id = :id
+	   ]]>
+	</sql>
+	
+	<!--更新抄表收费记录--> 
+	<sql id="updateStatus"> 
+		<![CDATA[ 
+			UPDATE finance_gauge_charge_record SET
+				status=1,
+				<#if receiver?exists && receiver!="" >
+					receiver=:receiver,
+				</#if>
+				receiveDate=SYSDATE(),
+				updateUserId=:updateUserId,
+				updateTime = SYSDATE()
+			WHERE id = :id
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询--> 
+	<sql id="queryFinanceGaugeChargeById"> 
+	   <![CDATA[
+	   SELECT 
+	   			mms.`id` AS measureId,
+		  		mms.code AS measureCode,
+		  		mmt.`name` AS measureTypeName,
+		  		fgcr.id AS id,
+		  		DATE_FORMAT(fgcr.`noteDate`, '%Y-%c-%d') AS noteDate,
+		  		fgcr.current AS current,
+		  		IFNULL(fgcr.`last`,0) AS last,
+		  		DATE_FORMAT(fgcr.`lastNoteDate`, '%Y-%c-%d') AS lastNoteDate, 
+		  		fgcr.wastage AS wastage,
+		  		fgcr.price AS price,
+		  		fgcr.amount AS amount,
+		  		fgcr.status AS status,
+		  		fgcr.customerName AS customerName,
+		  		fgcr.partyB AS partyB,
+		  		fgcr.`remark` AS remark,
+		  		mr.`name` AS resourceNames,
+		  		fgcr.noteUser AS noteUser,
+				ma.`name` AS areaName,
+				mab.`name` AS buildName
+		FROM finance_gauge_charge_record fgcr
+		LEFT JOIN market_measure_setting mms ON mms.`id`=fgcr.`measureId` AND mms.`status`=1
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		WHERE 1=1
+		AND fgcr.id=:id 
+	     ]]>
+	</sql>
+	
+	<!--根据条件查询--> 
+	<sql id="queryFinanceGaugeChargeRecordList"> 
+	   <![CDATA[ 
+		 SELECT 
+		 		mms.`id` AS measureId,
+		  		mms.code AS measureCode,
+		  		mmt.`name` AS measureTypeName,
+		  		fgcr.id AS id,
+		  		DATE_FORMAT(fgcr.`noteDate`, '%Y-%c-%d') AS noteDateStr,
+		  		fgcr.current AS current,
+		  		fgcr.`last` AS last, 
+		  		fgcr.wastage AS wastage,
+		  		fgcr.price AS price,
+		  		fgcr.amount AS amount,
+		  		fgcr.status AS status,
+		  		fgcr.customerName AS customerName,
+		  		fgcr.partyB AS partyB,
+		  		mr.`name` AS resourceNames,
+		  		fgcr.noteUser AS noteUser,
+				ma.`name` AS areaName,
+				mab.`name` AS buildName
+		FROM finance_gauge_charge_record fgcr
+		LEFT JOIN market_measure_setting mms ON mms.`id`=fgcr.`measureId` AND mms.`status`=1
+		LEFT JOIN market_measure_type mmt ON mms.`measureTypeId`=mmt.`id` AND mmt.`status`=1
+		LEFT JOIN market_resource_measure mrm ON mms.`id`=mrm.`measureId` AND mrm.`status`=1
+		LEFT JOIN market_resource mr ON mr.`id`=mrm.`resourceId` AND mr.`status`=1
+		LEFT JOIN market_area ma ON ma.`id`=mr.`areaId` AND ma.`status`=1
+		LEFT JOIN market_area_building mab ON mab.`id`=mr.`budingId` AND mab.`status`=1
+		WHERE 1=1
+	  	<#if areaId?exists && areaId != "" >
+		   AND mr.`areaId`=:areaId
+		</#if>
+		<#if buildingId?exists && buildingId != "" >
+		   AND mr.`budingId`=:buildingId
+		</#if>
+		<#if measureTypeId?exists && measureTypeId != "" >
+		   AND mms.`measureTypeId`=:measureTypeId
+		</#if>
+		<#if status?exists && status != "" >
+		   AND fgcr.`status`=:status
+		</#if>
+		<#if noteDateStart?exists && noteDateStart != "" >
+		   AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')>=:noteDateStart
+		</#if>
+		<#if noteDateEnd?exists && noteDateEnd != "" >
+		    AND DATE_FORMAT(fgcr.noteDate, '%Y-%c-%d')<=:noteDateEnd
+		</#if>
+		<#if marketId?exists && marketId != "" >
+		    AND mr.`marketId`=:marketId
+		</#if>			
+		ORDER BY fgcr.noteDate DESC,mms.`createTime` DESC
+		<#if startRow?exists && startRow!="" && endRow?exists && endRow!="" >
+				LIMIT :startRow,:endRow
+		</#if>
+	   ]]>
+	</sql>
+	
+	<!--根据条件查询当前市场下的区域--> 
+	<sql id="findCurrentAreaList"> 
+		<![CDATA[ 
+			SELECT `id` AS id,
+				   `name` AS name,
+				   `code` AS code
+			FROM market_area ma
+			WHERE ma.`status`=1 AND ma.`marketId`=:marketId
+			ORDER BY ma.`sort` ASC
+	   ]]>
+	</sql>
+	
+	<!--根据条件查询当前区域下的所有楼栋--> 
+	<sql id="findCurrentBuildList"> 
+		<![CDATA[ 
+			SELECT  `id` AS id,
+					`areaId` AS areaId,
+					`code` AS code,
+					`name` AS name
+			FROM market_area_building mab
+			WHERE mab.`status`=1 AND mab.`areaId`=:areaId
+			ORDER BY mab.`code` ASC
+	   ]]>
+	</sql>
+	
+	
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			t.id,t.contractVersion,t.contractNo,t.lastNoteDate,t.customerName,t.resourceName,t.receiveDate,
+			t.createUserId,t.createTime,t.updateUserId,t.updateTime,t.marketId,t.measureId,t.noteDate,t.current,last,
+			t.wastage,t.price,t.amount,t.status,t.partyB,t.receiver,t.noteUser,t.remark,r.name resourceNames
+		  FROM finance_gauge_charge_record t
+		  LEFT JOIN market_resource r on t.resourceName = r.id
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND t.id=:id
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND t.contractVersion=:contractVersion
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND t.contractNo=:contractNo
+			</#if>
+			<#if lastNoteDate?exists && lastNoteDate != "" >
+			   AND t.lastNoteDate=:lastNoteDate
+			</#if>
+			<#if customerName?exists && customerName != "" >
+			   AND t.customerName=:customerName
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			   AND t.resourceName=:resourceName
+			</#if>
+			<#if receiveDate?exists && receiveDate != "" >
+			   AND t.receiveDate=:receiveDate
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND t.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND t.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND t.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND t.updateTime=:updateTime
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND t.marketId=:marketId
+			</#if>
+			<#if measureId?exists && measureId != "" >
+			   AND t.measureId=:measureId
+			</#if>
+			<#if noteDate?exists && noteDate != "" >
+			   AND t.noteDate=:noteDate
+			</#if>
+			<#if current?exists && current != "" >
+			   AND t.current=:current
+			</#if>
+			<#if last?exists && last != "" >
+			   AND t.last=:last
+			</#if>
+			<#if wastage?exists && wastage != "" >
+			   AND t.wastage=:wastage
+			</#if>
+			<#if price?exists && price != "" >
+			   AND t.price=:price
+			</#if>
+			<#if amount?exists && amount != "" >
+			   AND t.amount=:amount
+			</#if>
+			<#if status?exists && status != "" >
+			   AND t.status=:status
+			</#if>
+			<#if partyB?exists && partyB != "" >
+			   AND t.partyB=:partyB
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND t.receiver=:receiver
+			</#if>
+			<#if noteUser?exists && noteUser != "" >
+			   AND t.noteUser=:noteUser
+			</#if>
+			<#if remark?exists && remark != "" >
+			   AND t.remark=:remark
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+	
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM finance_gauge_charge_record
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if lastNoteDate?exists && lastNoteDate != "" >
+			   AND lastNoteDate=:lastNoteDate
+			</#if>
+			<#if customerName?exists && customerName != "" >
+			   AND customerName=:customerName
+			</#if>
+			<#if resourceName?exists && resourceName != "" >
+			   AND resourceName=:resourceName
+			</#if>
+			<#if receiveDate?exists && receiveDate != "" >
+			   AND receiveDate=:receiveDate
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if measureId?exists && measureId != "" >
+			   AND measureId=:measureId
+			</#if>
+			<#if noteDate?exists && noteDate != "" >
+			   AND noteDate=:noteDate
+			</#if>
+			<#if current?exists && current != "" >
+			   AND current=:current
+			</#if>
+			<#if last?exists && last != "" >
+			   AND last=:last
+			</#if>
+			<#if wastage?exists && wastage != "" >
+			   AND wastage=:wastage
+			</#if>
+			<#if price?exists && price != "" >
+			   AND price=:price
+			</#if>
+			<#if amount?exists && amount != "" >
+			   AND amount=:amount
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if partyB?exists && partyB != "" >
+			   AND partyB=:partyB
+			</#if>
+			<#if receiver?exists && receiver != "" >
+			   AND receiver=:receiver
+			</#if>
+			<#if noteUser?exists && noteUser != "" >
+			   AND noteUser=:noteUser
+			</#if>
+			<#if remark?exists && remark != "" >
+			   AND remark=:remark
+			</#if>
+	   ]]>
+	</sql>
+	
+	<sql id="findAllMeasureType"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,marketId,expId,code,status,createUserId,createTime,
+			updateUserId,updateTime, sysType
+		  FROM 
+		  	market_measure_type
+		  WHERE 
+		  	1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if parentIdList?exists>
+				<#assign n = parentIdList?size />
+				<#if n gt 0>
+					and(
+					<#list parentIdList as parentId>
+						<#if parentId_index != n-1>
+								parentId = '${parentId}' or
+							<#else>
+								parentId = '${parentId}'
+						</#if>
+					</#list>
+					)
+				</#if>
+			</#if>			
+			<#if idList?exists>
+				<#assign n = idList?size />
+				<#if n gt 0>
+					and(
+					<#list idList as selfId>
+						<#if selfId_index != n-1>
+								id = '${selfId}' or
+							<#else>
+								id = '${selfId}'
+						</#if>
+					</#list>
+					)
+				</#if>
+			</#if>			
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId 
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND expId=:expId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+</sqlMap>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+   	    http://www.springframework.org/schema/context  
+   		http://www.springframework.org/schema/context/spring-context.xsd"
+	   default-lazy-init="false">
+  
+   <!-- demo任务配置 start -->
+   <bean id="demoTask" class="cn.gdeng.market.quartz.DemoTask" />  
+ 
+   <bean id="demoTaskDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+    <property name="targetObject" ref="demoTask" />  
+    <property name="targetMethod" value="execute" />  
+    <property name="concurrent" value="false" />  
+  </bean>
+    
+  <bean id="demoTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+  	<property name="jobDetail" ref="demoTaskDetail" />  
+     <property name="cronExpression">  
+     <!-- 每1分钟执行一次执行任务调度 -->  
+        <value>0 0/1 * * * ?</value>
+    </property>  
+  </bean> 
+  <!-- demo任务配置 end -->
+  
+  <bean id="contractResourceLeaseStatusTask" class="cn.gdeng.market.quartz.ContractResourceLeaseStatusTask" />  
+  
+  <bean id="contractResourceLeaseStatusTaskDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+    <property name="targetObject" ref="contractResourceLeaseStatusTask" />  
+    <property name="targetMethod" value="execute" />  
+    <property name="concurrent" value="false" />  
+  </bean>
+ <bean id="contractResourceLeaseStatusTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+  	<property name="jobDetail" ref="contractResourceLeaseStatusTaskDetail" />  
+     <property name="cronExpression">  
+        <value>0 0 0/1 * * ?</value>
+    </property>  
+  </bean> 
+
+
+  
+  <!-- Quartz的调度工厂，调度工厂只能有一个，多个调度任务在list中添加 -->  
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+    <property name="triggers">  
+      <list>  
+         <!-- 所有的调度列表均在此配置-->  
+        <ref bean="demoTaskTrigger" />
+         <ref bean="contractResourceLeaseStatusTaskTrigger" />
+      </list>  
+    </property>  
+  </bean>  
+  
+  
+
+</beans>

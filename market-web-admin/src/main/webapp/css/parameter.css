@@ -1,0 +1,414 @@
+
+/*谢伟龙的代码*/
+.wrapper{
+	font-family:"微软雅黑";
+}
+
+.wrapper .header{
+	width:100%;
+	height:65px;
+	background:#f5f5f5;
+	color:#000000;
+	font-size:20px;
+	line-height:65px;
+	padding-left:17px;
+}
+
+.wrapper .par-ind-con{
+	width:100%;
+	margin:34px auto;
+	padding: 0;
+	overflow:hidden;
+}
+
+.wrapper .par-ind-con li{
+	width:150px;
+	height:50px;
+	background-color:#fcfaf6;
+	border:1px solid #e8d2b6;
+	font-size:16px;
+	color:#000;
+	text-align: center;
+	line-height:50px;
+	float: left;
+	margin-left:40px;
+	cursor: pointer;
+}
+
+.wrapper .par-ind-con li a{
+	display: block;
+	width:100%;
+	height:100%;
+	color: #1a1a1a;
+}
+
+.costDefinition{
+	  padding: 13px;
+    margin: 32px auto;
+    overflow: hidden;
+}
+
+.costDefinition .contract-title-block ul{
+	width:50%;
+	height:100%;
+	margin: 0;
+	padding:0 20px;
+	float:right;
+	line-height:50px;
+	font-size:13px;
+}
+
+.costDefinition .contract-title-block ul li{
+	float:right;
+	margin:0 19px;
+}
+
+.costDefinition .contract-title-block ul li i{
+	color:#b7b7b7;
+	font-size:16px;
+	padding-right:6px;
+  vertical-align: middle;
+}
+
+.costDefinition .contract-title-block ul li a{
+	color:#e86d4d;
+}
+
+.costDefinition .adv-table{
+	margin:30px;
+}
+
+.costDefinition .table-bordered>tbody>tr>td, .costDefinition .table-bordered>tbody>tr>th, .costDefinition .table-bordered>tfoot>tr>td, .costDefinition .table-bordered>tfoot>tr>th, .costDefinition .table-bordered>thead>tr>td,.costDefinition .table-bordered>thead>tr>th{
+	border: none;
+}
+
+.costDefinition thead .ml-ct{
+	border-bottom:1px solid #eeeeee;
+	background:#f4f9f6;
+}
+
+.costDefinition #templateBody .ml-ct{
+	background:#FFFFFF;
+	border-bottom:1px solid #eeeeee;
+}
+
+.dataTables_paginate.paging_bootstrap.pagination{
+	float:none;
+}
+
+.list-unstyled, ul{
+	padding: 0;
+}
+
+#pagebar{
+	text-align: center;
+	overflow: hidden;
+}
+
+.template a{
+	color: #0049dd;
+}
+
+#templateBody a{
+	color: #0049dd;
+}
+
+.addCost .content{
+	overflow:hidden;
+	margin:0 auto;
+}
+
+.addCost{
+	  padding: 13px;
+    margin: 32px auto;
+    overflow: hidden;
+}
+
+.form-horizontal .input{
+	text-align:left;
+}
+
+.overflow-h{
+	overflow: hidden;
+}
+
+.magin-auto{
+	margin: 0 auto;
+}
+
+.padding-t-b-10{
+	padding:10px 0;
+}
+
+.padding-t-b-35{
+	padding:35px 0;
+}
+
+.w-35{
+	width:35%;
+}
+
+.w-40{
+	width:40%;
+}
+
+.w-60{
+	width:60%;
+}
+
+.w-84{
+	width:84%;
+}
+
+.efrom ul{
+	margin:0 0 30px 0;
+}
+
+.efrom ul li{
+	min-height:32px;
+	margin-bottom:10px;
+	line-height:32px;
+}
+
+.efrom ul li input{
+	width:100%;
+	height:32px;
+	border-radius:2px;
+	border: 1px solid #d7d7d7;
+	padding: 5px 10px;
+}
+
+.efrom ul li select{
+	width:100%;
+	height:32px;
+	border-radius:2px;
+	border: 1px solid #d7d7d7;
+}
+
+.efrom ul li textarea{
+	width:100%;
+	resize : none;
+	height:72px;
+	border-radius:2px;
+	border: 1px solid #d7d7d7;
+	font-size:13px;
+	line-height:16px;
+}
+
+.btn-ash{
+	background-color:#d9d9d9;
+	color:#FFFFFF;
+}
+
+.btn-ash:hover{
+	background-color:#d9d9d9;
+	color:#FFFFFF;
+}
+
+.btn-big{
+	padding:7px 47px !important;
+	font-size:17px;
+}
+
+.blod{
+	font-weight: 600;
+}
+
+.chargingStandardDT{
+	  padding: 13px;
+    margin: 12px auto;
+    overflow: hidden;
+}
+
+.chargingStandardDT .color-eee{
+	background-color:#EEEEEE;
+}
+
+.chargingStandardDT ul li{
+	float: left;
+	width: 40%;
+	margin-right:60px;
+}
+
+.step-table{
+	padding: 0;
+	margin-bottom:20px;
+}
+
+.step-table input.form-control{
+	text-align: left;
+}
+
+.chargingStandardDT .etable ul{
+	  width: 37%;
+    height: 100%;
+    margin: 0;
+    padding: 0 20px;
+    float: right;
+    line-height: 50px;
+    font-size: 13px;
+}
+
+.chargingStandardDT .etable ul li{
+		width:auto;
+	  float: right;
+    margin: 0 15px;
+}
+
+.chargingStandardDT .etable{
+	text-align: left;
+	overflow: hidden;
+	line-height:30px;
+	overflow: hidden;
+	margin-bottom:20px;
+}
+
+.color-eee{
+	background-color: #EEEEEE !important;
+}
+
+.display-inline{
+	display: inline;
+}
+
+.chargingStandardDT .etable a{
+	color:#e86d4d;
+}
+
+.chargingStandardDT .etable i{
+		color: #b7b7b7;
+    font-size: 16px;
+    padding-right: 6px;
+    vertical-align: middle;
+}
+
+.chargingStandardDT .ebutton{
+	width:22%;
+	background-color:#53b27a;
+	color:#FFFFFF;
+	height:32px;
+	line-height: 32px;
+	float: left;
+	font-size:12px;
+	margin-left:3%;
+	border-radius:2px;
+}
+
+.meterManagement .form-input{
+	line-height:47px;
+	text-align: center;
+	padding-left:50px;
+	background-color: #fafafa;
+}
+
+select.form-control{
+	background-color: #fff !important;
+}
+
+.meterManagement .form-input .form-group{
+	margin-bottom:0;
+}
+
+.meterManagement .btn{
+	vertical-align: initial;
+}
+
+.meterManagement .costDefinition .contract-title-block ul{
+	width: 64%;
+}
+
+.cursor-p{
+	cursor: pointer;
+}
+
+.efrom ul li .Einput-s{
+	width: 75%;
+	float: left;
+}
+
+.addMeterM .modal-footer .btn{
+		font-size: 20px;
+    padding: 5px 39px;
+}
+
+.addMeterM .eHeader{
+	background-color: #fafafa;
+}
+
+.addMeterM .form-input .form-group{
+	margin-top:15px;
+}
+
+.addMeterM .modal-header h4.modal-title{
+	font-family: Microsoft Yahei;
+}
+
+.addMeterM .costDefinition{
+	padding: 0;
+	margin: 0;
+}
+
+.contract .zuyueheader{
+	font-size:17px;
+	color:#000000;
+	font-weight:600;
+	border-bottom:1px solid #dcdcdc;
+	line-height:45px;
+	width:94%;
+	margin:0px auto;
+}
+
+.contract li{list-style-type: none;}
+
+.contract .zuyueul{
+	width:94%;
+	margin:0 auto;
+}
+
+.contract .zuyueul li{
+	overflow: hidden;
+	margin:30px 0px;
+	color: #000000;
+	line-height:31px;
+}
+
+.contract .zuyueul li div{
+	float: left;
+	margin-right:10px;
+}
+
+.contract .zuyueul2 li div{
+	width:110px;
+}
+
+.contract .zuyueul li div input{
+	width: 83px;
+	height: 31px;
+	border-radius:5px;
+	border: 1px solid #d7d7d7 !important;
+	text-align: center;
+	margin-right:5px;
+}
+
+.contract .zuyueul li .edivf{
+	width:110px;
+}
+
+.edx .nav-tabs>li>a{
+	borter-radius:0px;
+}
+.efrom .w-60{
+	position:relative;
+}
+.efrom label.error{
+	position:absolute;
+	left:37%;
+	top:-5px;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysContractRemindSetting"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,orgId,marketId,remindTimeType,createTime,remindPost,remindTime,
+			remindPerson,updateUserId,createUserId,updateTime
+		  FROM sys_contract_remind_setting
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if remindTimeType?exists && remindTimeType != "" >
+			   AND remindTimeType=:remindTimeType
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if remindPost?exists && remindPost != "" >
+			   AND remindPost=:remindPost
+			</#if>
+			<#if remindTime?exists && remindTime != "" >
+			   AND remindTime=:remindTime
+			</#if>
+			<#if remindPerson?exists && remindPerson != "" >
+			   AND remindPerson=:remindPerson
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,orgId,marketId,remindTimeType,createTime,remindPost,remindTime,
+			remindPerson,updateUserId,createUserId,updateTime
+		  FROM sys_contract_remind_setting
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if remindTimeType?exists && remindTimeType != "" >
+			   AND remindTimeType=:remindTimeType
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if remindPost?exists && remindPost != "" >
+			   AND remindPost=:remindPost
+			</#if>
+			<#if remindTime?exists && remindTime != "" >
+			   AND remindTime=:remindTime
+			</#if>
+			<#if remindPerson?exists && remindPerson != "" >
+			   AND remindPerson=:remindPerson
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_contract_remind_setting
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if orgId?exists && orgId != "" >
+			   AND orgId=:orgId
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if remindTimeType?exists && remindTimeType != "" >
+			   AND remindTimeType=:remindTimeType
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if remindPost?exists && remindPost != "" >
+			   AND remindPost=:remindPost
+			</#if>
+			<#if remindTime?exists && remindTime != "" >
+			   AND remindTime=:remindTime
+			</#if>
+			<#if remindPerson?exists && remindPerson != "" >
+			   AND remindPerson=:remindPerson
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+	<!--  根据市场查询设置  -->
+	<sql id="queryByMarketId"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,orgId,marketId,remindTimeType,createTime,remindPost,remindTime,
+			remindPerson,updateUserId,createUserId,updateTime
+		  FROM sys_contract_remind_setting
+		  WHERE  marketId=:marketId 
+		  <#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+		  
+	   ]]>
+	</sql>
+	<!--  更新设置 -->
+	<sql id="updateByMarketId"> 
+	   <![CDATA[ 
+		 UPDATE  sys_contract_remind_setting s 
+		 SET s.remindTime=:remindTime,
+		 <#if updateUserId?exists && updateUserId!="" >
+			updateUserId =:updateUserId,
+		</#if>	
+		updateTime = SYSDATE()
+		  WHERE s.type=:type  AND s.marketId=:marketId 
+	   ]]>
+	</sql>
+	
+	
+	
+	
+
+</sqlMap>

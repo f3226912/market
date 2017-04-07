@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="UnitFloor">
+	<!--通过楼栋id  获取楼层 --> 
+	<sql id="getFloorBuildId">
+		<![CDATA[  
+			SELECT id,name 
+			from market_unit_floor
+			where  1 = 1
+			 <#if buildingId?exists && buildingId != "" >
+			 	AND buildingId = :buildingId
+			 </#if>
+			 	AND status = 1
+			 ORDER BY floorNo desc
+		]]>
+	</sql>
+ </sqlMap>

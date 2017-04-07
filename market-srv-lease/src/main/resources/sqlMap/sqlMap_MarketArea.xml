@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="MarketArea">
+<sql id="insert">
+	<![CDATA[
+	INSERT INTO market_area(
+	marketId,id,updateUserId,createTime,areaImage,updateTime,status,sort,
+	name,code,createUserId
+	) VALUES (
+	:marketId,:id,:updateUserId,now(),:areaImage,:updateTime,:status,:sort,
+	:name,:code,:createUserId
+	)
+	]]>
+</sql>
+
+<sql id="update">
+	<![CDATA[
+	UPDATE market_area SET 
+	<#if marketId?exists && marketId!="" >
+		marketId=:marketId,
+	</#if>	
+	<#if updateUserId?exists && updateUserId!="" >
+		updateUserId=:updateUserId,
+	</#if>	
+	<#if createTime?exists && createTime!="" >
+		createTime=:createTime,
+	</#if>	
+	<#if areaImage?exists && areaImage!="" >
+		areaImage=:areaImage,
+	</#if>	
+	<#if updateTime?exists && updateTime!="" >
+		updateTime=:updateTime,
+	</#if>	
+	<#if status?exists && status!="" >
+		status=:status,
+	</#if>	
+	<#if sort?exists && sort!="" >
+		sort=:sort,
+	</#if>	
+	<#if name?exists && name!="" >
+		name=:name,
+	</#if>	
+	<#if code?exists && code!="" >
+		code=:code,
+	</#if>	
+	<#if createUserId?exists && createUserId!="" >
+		createUserId=:createUserId,
+	</#if>	
+		updateTime = SYSDATE()
+	WHERE id=:id
+	]]>
+</sql>
+
+<sql id="getById">
+	<![CDATA[
+	SELECT 
+	marketId,id,updateUserId,createTime,areaImage,updateTime,status,sort,
+	name,code,createUserId
+	FROM market_area WHERE status=1 and id=:id
+	]]>
+</sql>
+
+<sql id="getList">
+	<![CDATA[
+	SELECT 
+	marketId,id,updateUserId,createTime,areaImage,updateTime,status,sort,
+	name,code,createUserId
+	FROM market_area WHERE 1=1 and status=1
+	<#if marketId?exists && marketId!="" >
+		AND marketId=:marketId
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if areaImage?exists && areaImage!="" >
+		AND areaImage=:areaImage
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	order by sort asc
+	]]>
+</sql>
+
+<sql id="getListPage">
+	<![CDATA[
+	SELECT 
+	marketId,id,updateUserId,createTime,areaImage,updateTime,status,sort,
+	name,code,createUserId
+	FROM market_area WHERE 1=1 and status=1
+	<#if marketId?exists && marketId!="" >
+		AND marketId=:marketId
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if areaImage?exists && areaImage!="" >
+		AND areaImage=:areaImage
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	order by sort asc
+	LIMIT :startRow, :endRow
+	]]>
+</sql>
+
+<sql id="getTotal">
+	<![CDATA[
+	SELECT count(*) FROM market_area WHERE 1=1 and status=1
+	<#if marketId?exists && marketId!="" >
+		AND marketId=:marketId
+	</#if>
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if areaImage?exists && areaImage!="" >
+		AND areaImage=:areaImage
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	]]>
+</sql>
+<!-- 逻辑删除  -->
+<sql id="deleteById">
+	<![CDATA[
+	update market_area set status = 0 WHERE id=:id  
+	]]>
+</sql>
+
+<sql id="getByMarketId">
+	<![CDATA[
+	SELECT 
+	marketId,id,updateUserId,createTime,areaImage,updateTime,status,sort,
+	name,code,createUserId
+	FROM market_area WHERE status=1 and marketId=:marketId order by sort asc
+	]]>
+</sql>
+
+<sql id="getAreaDotByMarketId">
+	<![CDATA[
+	SELECT 
+	      ma.marketId,ma.id,ma.areaImage,ma.status,ma.sort,
+	      ma.name,ma.code,mis.coordinate
+	FROM 
+	      market_area ma 
+	join 
+	      market_image_setting mis 
+	on  
+	      ma.id = mis.areaId  
+	
+	WHERE ma.status=1 and ma.marketId=:marketId and mis.imageType = 1 and mis.coordinate != "" order by ma.sort asc
+	]]>
+</sql>
+
+<sql id="getResourceStatistics">
+	<![CDATA[
+     select
+        a.cnt as total, 
+        b.cnt as ineffectiveCnt, 
+        c.cnt as forRentCnt, 
+        d.cnt as alreadyRentedCnt
+        <#if isDrawedDot == true >
+		     ,e.cor as coordinate
+	    </#if>
+        
+     from 
+       (select count(mr.id) as cnt from market_area ma 
+        join market_resource mr
+        on 
+        ma.id = mr.areaId and ma.id=:areaId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if>
+        ) a, 
+       (select count(mr.id) as cnt from market_area ma 
+        join market_resource mr 
+        on 
+        ma.id = mr.areaId and ma.id=:areaId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 1) b,
+       (select count(mr.id) as cnt from market_area ma 
+        join market_resource mr 
+        on 
+        ma.id = mr.areaId and ma.id=:areaId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 2) c,
+       (select count(mr.id) as cnt from market_area ma 
+        join market_resource mr 
+        on 
+        ma.id = mr.areaId and ma.id=:areaId and mr.status = 1 and mr.originOperate = 0
+        <#if resourceTypeId?exists && resourceTypeId!="" >
+		      and mr.resourceTypeId=:resourceTypeId
+	    </#if> 
+        and mr.leaseStatus = 3) d
+        
+        <#if isDrawedDot == true >
+		     ,(select mi.coordinate as cor from market_image_setting mi 
+                  join market_area ma 
+                on 
+                  ma.id = mi.areaId and ma.id=:areaId and mi.imageType = 1) e
+	    </#if>
+	    
+       
+	]]>
+</sql>
+
+<sql id="getNoDotByMarket">
+	<![CDATA[
+	SELECT 
+	      ma.id,
+	      ma.name
+	FROM 
+	      market_area ma 
+	
+	WHERE ma.status=1 and ma.marketId=:marketId and ma.id not in (select areaId from market_image_setting where marketId=:marketId and imageType = 1 and areaId is not NULL) order by ma.id asc
+	]]>
+</sql>
+<sql id="ifExistCode">
+	<![CDATA[
+	SELECT 	count(1) FROM market_area WHERE status=1 and marketId=:marketId and code=:code  
+	]]>
+</sql>
+
+<sql id="ifExistName">
+	<![CDATA[
+	SELECT 	count(1) FROM market_area WHERE status=1 and marketId=:marketId and name=:name  
+	]]>
+</sql>
+
+</sqlMap>

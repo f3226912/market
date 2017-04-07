@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractAccessories"> 
+	<!--根据条件查询--> 
+	<sql id="queryAll"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,fileName,fileUrl,createTime,createUserId,updateTime,updateUserId,contractNo,isDeleted
+		  FROM contract_accessories
+		  WHERE contractId=:contractId and isDeleted=0
+	   ]]>
+	</sql>
+
+	<sql id="deleteAll"> 
+	   <![CDATA[ 
+		  update contract_accessories
+		  set   isDeleted=1
+		  WHERE contractId=:contractId
+		  and   isDeleted=0
+	   ]]>
+	</sql>
+    <sql id="save">
+       <![CDATA[
+           INSERT INTO `contract_accessories`
+		            (
+		             `contractId`,
+		             `contractNo`,
+		             `fileUrl`,
+		             `fileName`,
+		             `isDeleted`,
+		             `createUserId`,
+		             `createTime`)
+			VALUES 
+			<#list accessoriesList as accessories>
+			      <#assign listSize = accessoriesList?size />
+			       (
+				        ${accessories.contractId},
+				        ${accessories.contractNo},
+				        ${accessories.fileUrl},
+				        ${accessories.fileName},
+				        ${accessories.isDeleted},
+				        ${accessories.createUserId},
+				        ${accessories.createTime}
+			        )
+			     <#if accessories_index != listSize-1>
+			       ,
+			     </#if>			     
+			 </#list>	
+		]]>
+    </sql>
+</sqlMap>

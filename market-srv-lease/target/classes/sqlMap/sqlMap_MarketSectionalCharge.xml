@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketSectionalCharge"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,expStandardId,chargeUnitPrice,createUserId,createTime,updateTime,updateUserId,status,
+			downValue,upValue
+		  FROM market_sectionalcharge
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if expStandardId?exists && expStandardId != "" >
+			   AND expStandardId=:expStandardId
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if downValue?exists && downValue != "" >
+			   AND downValue=:downValue
+			</#if>
+			<#if upValue?exists && upValue != "" >
+			   AND upValue=:upValue
+			</#if>
+			AND status=1
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,expStandardId,chargeUnitPrice,createUserId,createTime,updateTime,updateUserId,status,
+			downValue,upValue
+		  FROM market_sectionalcharge
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if expStandardId?exists && expStandardId != "" >
+			   AND expStandardId=:expStandardId
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if downValue?exists && downValue != "" >
+			   AND downValue=:downValue
+			</#if>
+			<#if upValue?exists && upValue != "" >
+			   AND upValue=:upValue
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_sectionalcharge
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if expStandardId?exists && expStandardId != "" >
+			   AND expStandardId=:expStandardId
+			</#if>
+			<#if chargeUnitPrice?exists && chargeUnitPrice != "" >
+			   AND chargeUnitPrice=:chargeUnitPrice
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if downValue?exists && downValue != "" >
+			   AND downValue=:downValue
+			</#if>
+			<#if upValue?exists && upValue != "" >
+			   AND upValue=:upValue
+			</#if>
+	   ]]>
+	</sql>
+
+	<sql id="batchInsertEntity">
+		insert into market_sectionalcharge 
+		(
+			expStandardId,downValue,upValue,chargeUnitPrice,status,
+			createUserId,createTime,updateUserId,updateTime
+		) 
+		values 
+		(
+			:expStandardId, :downValue, :upValue, :chargeUnitPrice, :status, :createUserId,SYSDATE(),:updateUserId,SYSDATE()
+		)
+	</sql>
+	
+	<sql id="deleteByExpStandardId">
+		UPDATE market_sectionalcharge 
+		SET status = :status,
+		updateUserId = :updateUserId,
+		updateTime= SYSDATE()
+		WHERE 1=1
+		AND expStandardId=:expStandardId
+	</sql>
+</sqlMap>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="SysDictionary">
+	<sql id="insert">
+	<![CDATA[
+	INSERT INTO sysdictionary(
+	id,createTime,createUserId,sort,status,remark,value,
+	code,type
+	) VALUES (
+	:id,:createTime,:createUserId,:sort,:status,:remark,:value,
+	:code,:type
+	)
+	]]>
+	</sql>
+
+	<sql id="update">
+	<![CDATA[
+	UPDATE sysdictionary SET 
+	<#if sort?exists && sort!="" >
+		sort=:sort,
+	</#if>	
+	<#if status?exists && status!="" >
+		status=:status,
+	</#if>	
+	<#if remark?exists && remark!="" >
+		remark=:remark,
+	</#if>	
+	<#if value?exists && value!="" >
+		value=:value,
+	</#if>	
+	<#if code?exists && code!="" >
+		code=:code,
+	</#if>	
+	<#if type?exists && type!="" >
+		type=:type,
+	</#if>	
+	<#if updateUserId?exists && updateUserId!="" >
+		updateUserId=:updateUserId,
+	</#if>	
+		updateTime = SYSDATE()
+	WHERE id=:id
+	]]>
+	</sql>
+
+	<sql id="getById">
+	<![CDATA[
+	SELECT 
+	id,createTime,createUserId,sort,status,remark,value,updateTime,updateUserId,
+	code,type
+	FROM sysdictionary WHERE id=:id
+	]]>
+	</sql>
+
+	<sql id="getList">
+	<![CDATA[
+	SELECT 
+	id,createTime,createUserId,sort,status,remark,value,updateTime,updateUserId,
+	code,type
+	FROM sysdictionary WHERE 1=1
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if createUser?exists && createUser!="" >
+		AND createUser=:createUser
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if remark?exists && remark!="" >
+		AND remark=:remark
+	</#if>
+	<#if value?exists && value!="" >
+		AND value=:value
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if codeList?exists>
+		<#assign n = codeList?size />
+		<#if n gt 0>
+			AND code IN(
+			<#list codeList as codeitem>
+				<#if codeitem_index != n-1>
+						'${codeitem}' ,
+					<#else>
+						'${codeitem}'
+				</#if>
+			</#list>
+			)
+		</#if>
+	</#if>
+	<#if type?exists && type!="" >
+		AND type=:type
+	</#if>
+	ORDER BY sort ASC,createTime DESC
+	]]>
+	</sql>
+
+	<sql id="getListPage">
+	<![CDATA[
+	SELECT 
+	id,createTime,createUser,sort,status,remark,value,updateTime,updateUserId,
+	code,type
+	FROM sysdictionary WHERE 1=1
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if createUser?exists && createUser!="" >
+		AND createUser=:createUser
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if remark?exists && remark!="" >
+		AND remark=:remark
+	</#if>
+	<#if value?exists && value!="" >
+		AND value=:value
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if type?exists && type!="" >
+		AND type=:type
+	</#if>
+	ORDER BY sort ASC,createTime DESC
+	LIMIT :startRow, :endRow
+	]]>
+	</sql>
+
+	<sql id="getTotal">
+	<![CDATA[
+	SELECT count(*) FROM sysdictionary WHERE 1=1
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if createUser?exists && createUser!="" >
+		AND createUser=:createUser
+	</#if>
+	<#if sort?exists && sort!="" >
+		AND sort=:sort
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if remark?exists && remark!="" >
+		AND remark=:remark
+	</#if>
+	<#if value?exists && value!="" >
+		AND value=:value
+	</#if>
+	<#if code?exists && code!="" >
+		AND code=:code
+	</#if>
+	<#if type?exists && type!="" >
+		AND type=:type
+	</#if>
+	]]>
+	</sql>
+
+	<sql id="deleteById">
+	<![CDATA[
+	DELETE FROM sysdictionary WHERE id=:id
+	]]>
+	</sql>
+</sqlMap>

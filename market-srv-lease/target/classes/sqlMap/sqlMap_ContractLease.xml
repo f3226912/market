@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractLease"> 
+	<!-- 根据合同版本号查找所有的记录 --> 
+	<sql id="queryAll"> 
+	   <![CDATA[ 
+		  SELECT   
+		      `id`,
+			  `startDay`,
+			  `endDay`,
+			  `billingUnit`,
+			  `billingArea`,
+			  `unitPrice`,
+			  `rental` 
+		  FROM `contract_lease` 
+		  WHERE contractId=:contractId AND isDeleted=0
+	   ]]>
+	</sql>
+    <sql id="deleteAll"> 
+	   <![CDATA[ 
+		update   `contract_lease` 
+          set   isDeleted=1
+		  WHERE contractId=:contractId
+		  and   isDeleted=0
+	   ]]>
+	</sql>
+    <sql id="save">
+        <![CDATA[
+           INSERT INTO `contract_lease`
+		           (
+		             `contractId`,
+		             `contractNo`,
+		             `startDay`,
+		             `endDay`,
+		             `billingUnit`,
+		             `billingArea`,
+		             `unitPrice`,
+		             `rental`,
+		             `isDeleted`,
+		             `createUserId`,
+		             `createTime`
+                   )
+			VALUES 
+			<#list leaseList as lease>
+			    <#assign listSize = leaseList?size />
+			    (
+			        ${lease.contractId},
+			        ${lease.contractNo},
+			        ${lease.startDay},
+			        ${lease.endDay},
+			        ${lease.billingUnit},
+			        ${lease.billingArea},
+			        ${lease.unitPrice},
+			        ${lease.rental},
+			        ${lease.isDeleted},			    
+			        ${lease.createUserId},
+			        ${lease.createTime}
+			     )
+			     <#if lease_index != listSize-1>
+			       ,
+			     </#if>			     
+			</#list>			        
+        ]]>
+    </sql>
+    
+    <sql id="getFirstLease">
+    	<![CDATA[
+    		select
+    		  id,
+			  startDay,
+			  endDay,
+			  billingUnit,
+			  billingArea,
+			  unitPrice,
+			  rental
+    		FROM 
+    			(select * FROM contract_lease WHERE isDeleted=0 ORDER BY startDay) cl 
+    		GROUP BY cl.contractId HAVING cl.contractId = :contractId
+    	]]>
+    </sql>
+</sqlMap>

@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<dubbo:application name="market-web-lease-consumer" owner="market-web-lease" />
+ 	<dubbo:registry address="zookeeper://10.17.1.161:2181?backup=10.17.1.162:2181,10.17.1.163:2181"  />
+ 	<dubbo:consumer retries="0"  init="false" 
+ 		loadbalance="random" async="false" 
+ 		cache="false" group="market-group-test"
+		version="v1.0.0" 
+ 		timeout="100000"
+ 		check="false" />
+ 	
+ 	 <!-- 合同管理-->
+    <dubbo:reference id="contractManageService" interface="cn.gdeng.market.service.lease.contract.ContractManageService" />
+ 	 <!-- 合同定时任务记录 -->
+    <dubbo:reference id="contractTaskService" interface="cn.gdeng.market.service.lease.contract.ContractTaskService" />  
+ 	 <!-- 市场资源 -->
+   	<dubbo:reference id="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+</beans>
+ 

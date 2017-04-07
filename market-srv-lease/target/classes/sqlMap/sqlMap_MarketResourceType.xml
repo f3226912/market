@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketResourceType"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			name,id,createTime,updateTime,createUserId,updateUserId,marketId,code,
+			sysType,status,sort,image
+		  FROM market_resource_type
+		  WHERE 1=1 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if sysType?exists && sysType != "" >
+			   AND sysType=:sysType
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if image?exists && image != "" >
+			   AND image=:image
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			name,id,createTime,updateTime,createUserId,updateUserId,marketId,code,
+			sysType,status,sort,image,
+			CASE sysType WHEN 1 THEN '是' WHEN 0 THEN '否' END sysTypeStr 
+		  FROM market_resource_type
+		  WHERE status = 1 AND marketId=:marketId
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if image?exists && image != "" >
+			   AND image=:image
+			</#if>
+		  ORDER BY sysType desc, sort, createTime desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_resource_type
+		  WHERE status = 1 and marketId = :marketId 
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if sort?exists && sort != "" >
+			   AND sort=:sort
+			</#if>
+			<#if image?exists && image != "" >
+			   AND image=:image
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!-- 新增 -->
+	<sql id="insert">
+		<![CDATA[
+			INSERT INTO market_resource_type(
+				marketId, code, name, sysType, status, createUserId, createTime, updateUserId, updateTime
+			) VALUES (
+				:marketId, :code, :name, :sysType, :status, :createUserId, :createTime, :updateUserId, :updateTime
+			)
+		]]>
+	</sql>
+	
+	<sql id="update">
+		<![CDATA[
+		UPDATE market_resource_type SET 
+		<#if marketId?exists && marketId!="" >
+			marketId=:marketId,
+		</#if>	
+		<#if code?exists && code!="" >
+			code=:code,
+		</#if>
+		<#if name?exists && name!="" >
+			name=:name,
+		</#if>
+		<#if sysType?exists && sysType!="" >
+			sysType=:sysType,
+		</#if>
+		<#if status?exists && status!="" >
+			status=:status,
+		</#if>
+		<#if createUserId?exists && createUserId!="" >
+			createUserId=:createUserId,
+		</#if>
+		<#if createTime?exists && createTime!="" >
+			createTime=:createTime,
+		</#if>
+		<#if processId?exists && processId!="" >
+			process_id=:processId,
+		</#if>
+		<#if updateUserId?exists && updateUserId!="" >
+			updateUserId=:updateUserId,
+		</#if>
+			updateTime = sysdate()
+		WHERE id = :id
+		]]>
+	</sql>
+	
+	<!-- 根据code查询资源类型数目 -->
+	<sql id = "selCountByCode">
+		<![CDATA[
+			select count(1) from market_resource_type where status = 1 and code = :code
+		]]>
+	</sql>
+	
+	<sql id="getByMarketId">
+	<![CDATA[
+	SELECT 
+	id,marketId,name,code 
+	FROM market_resource_type WHERE  marketId=:marketId and status = 1 order by sysType desc , sort asc
+	]]>
+    </sql>
+	
+	<!-- 根据市场查询资源类型-->
+	<sql id = "getMarketResourceType">
+		<![CDATA[
+			SELECT
+				name,id,createTime,updateTime,createUserId,updateUserId,marketId,code,
+				sysType,status,sort,image
+			FROM
+				market_resource_type AS mrt 
+			WHERE
+				1=1
+			 <#if status?exists && status!="" >
+				AND mrt.status = :status 
+			 </#if>
+			 <#if marketId?exists && marketId!="" >
+				AND  mrt.marketId =:marketId 
+			 </#if>
+			ORDER BY
+				mrt.sysType desc,
+				mrt.sort ASC
+			 <#if number?exists && number!="" >
+				limit  :number 
+			 </#if>
+		]]>
+	</sql>
+	
+	<sql id = "selMarketResourceTypeById">
+		<![CDATA[
+			SELECT
+				name,id,createTime,updateTime,createUserId,updateUserId,marketId,code,
+				sysType,status,sort,image
+			FROM market_resource_type
+			WHERE id = :id
+		]]>
+	</sql>
+	
+	<!-- 根据code查询资源类型数目 -->
+	<sql id = "queryByMarketIdParentId">
+		<![CDATA[
+			select id from market_resource_type where marketId = :marketId and parentId=:parentId
+		]]>
+	</sql>
+	
+	<!-- 根据id和资源类型编码查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndCodeAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource_type where status = :status and marketId = :marketId and id != :id and code = :code
+		]]>
+	</sql>
+	
+	<!-- 根据id和资源类型名称查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndNameAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource_type where status = :status and marketId = :marketId and id != :id and name = :name
+		]]>
+	</sql>
+	
+	<!-- 根据id和资源类型序号查询总数 by DavidLiang -->
+	<sql id = "selCountByIdAndSortAndMarketId">
+		<![CDATA[
+			select count(1) from market_resource_type where status = :status and marketId = :marketId and id != :id and sort = :sort
+		]]>
+	</sql>
+	
+</sqlMap>

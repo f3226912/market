@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="Market">
+<sql id="insert">
+	<![CDATA[
+	INSERT INTO market(
+	provinceId,createTime,updateTime,status,cityId,openTime,code,
+	areaId,nameShort,id,orgId,updateUserId,address,
+	name,pca,marketStatus,createUserId
+	) VALUES (
+	:provinceId,:createTime,:updateTime,:status,:cityId,:openTime,:code,
+	:areaId,:nameShort,:id,:orgId,:updateUserId,:address,
+	:name,:pca,:marketStatus,:createUserId
+	)
+	]]>
+</sql>
+
+<sql id="updateByOrgId">
+	<![CDATA[
+	UPDATE market SET 
+	<#if provinceId?exists && provinceId!="" >
+		provinceId=:provinceId,
+	</#if>	
+	<#if createTime?exists && createTime!="" >
+		createTime=:createTime,
+	</#if>	
+	<#if updateTime?exists && updateTime!="" >
+		updateTime=:updateTime,
+	</#if>	
+	<#if status?exists && status!="" >
+		status=:status,
+	</#if>	
+	<#if cityId?exists && cityId!="" >
+		cityId=:cityId,
+	</#if>	
+	<#if openTime?exists && openTime!="" >
+		openTime=:openTime,
+	</#if>	
+	<#if code?exists && code!="" >
+		code=:code,
+	</#if>	
+	<#if areaId?exists && areaId!="" >
+		areaId=:areaId,
+	</#if>	
+	<#if nameShort?exists && nameShort!="" >
+		nameShort=:nameShort,
+	</#if>	
+	<#if id?exists && id!="" >
+		id=:id,
+	</#if>	
+	<#if orgId?exists && orgId!="" >
+		orgId=:orgId,
+	</#if>	
+	<#if updateUserId?exists && updateUserId!="" >
+		updateUserId=:updateUserId,
+	</#if>	
+	<#if address?exists && address!="" >
+		address=:address,
+	</#if>	
+	<#if name?exists && name!="" >
+		name=:name,
+	</#if>	
+	<#if pca?exists && pca!="" >
+		pca=:pca,
+	</#if>	
+	<#if marketStatus?exists && marketStatus!="" >
+		marketStatus=:marketStatus,
+	</#if>	
+	<#if createUserId?exists && createUserId!="" >
+		createUserId=:createUserId,
+	</#if>	
+	<#if marketImage?exists && marketImage!="" >
+		marketImage=:marketImage,
+	</#if>	
+		updateTime = SYSDATE()
+	WHERE orgId=:orgId
+	]]>
+</sql>
+
+<sql id="getByOrgId">
+	<![CDATA[
+	SELECT 
+	provinceId,createTime,updateTime,status,cityId,openTime,code,
+	areaId,nameShort,id,orgId,updateUserId,address,
+	name,pca,marketStatus,createUserId
+	FROM market WHERE orgId=:orgId
+	]]>
+</sql>
+
+<sql id="getMarketAreaTotal">
+	<![CDATA[
+	SELECT count(*) FROM market_area WHERE 1=1 and status=1
+	<#if marketId?exists && marketId!="" >
+		AND marketId=:marketId
+	</#if>
+
+	]]>
+</sql>
+
+<!-- 批量新增费项名称 -->
+<sql id="batchInsertEXP">
+	<![CDATA[
+	insert INTO market_expenditure(marketid,name,expType,status,sysType,createUserId,createTime,parentId,expDetail)
+	SELECT :marketId ,name,expType,1,sysType,null,now(),id,expDetail from market_expenditure where marketId=0 
+	]]>
+</sql>
+
+<!-- 计量表分类 -->
+<sql id="batchInsertMeaType">
+	<![CDATA[
+	insert INTO market_measure_type(marketid,name,code,status,sysType,expId,createUserId,createTime,parentId)
+	SELECT :marketId ,name,code,1,sysType,expId,null,now(),id from market_measure_type where marketId=0 
+	]]>
+</sql>
+
+<!-- 资源类型 -->
+<sql id="batchInsertResType">
+	<![CDATA[
+	insert INTO market_resource_type(marketid,name,code,status,sysType,createUserId,createTime,parentId,sort)
+	SELECT :marketId ,name,code,1,sysType,null,now(),id,sort  from market_resource_type where marketId=0 
+	]]>
+</sql>
+
+</sqlMap>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfTask"> 
+	
+	<!--根据流程实例ID查询--> 
+	<sql id="queryByOrderId"> 
+	   <![CDATA[ 
+		  SELECT 
+			id                              as Id,
+			order_id                      	as orderId,
+			task_Name                       as taskName,
+			display_Name                    as displayName,
+			perform_Type                    as performType
+		  FROM wf_task
+		  WHERE 1=1 
+			<#if orderId?exists && orderId != "" >
+			   AND order_id = :orderId
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!--根据流程实例ID获取当前任务节点的所有责任人--> 
+	<sql id="getActorsByOrderId"> 
+	   <![CDATA[ 
+		  SELECT 
+			wa.actor_id  as actorId,
+			(select name from sys_user where id = actor_id) actorDesc,
+			wa.task_id as taskId
+			FROM 
+				wf_task_actor  wa
+			INNER JOIN 
+				wf_task wt 
+			ON 
+				wa.task_id = wt.id
+			WHERE 
+				wt.order_Id = :orderId
+	   ]]>
+	</sql>
+	
+	<!-- 待办任务-分页查询 -->
+	<sql id="getGtasks4Page">
+		<![CDATA[
+			SELECT 
+			  wta.`task_Id` id,
+			  wta.`actor_Id` actorId,
+			  wt.`display_Name` displayName,
+			  wt.`create_Time` createTime,
+			  wt.order_id     orderId,
+			  (SELECT wo.creator  FROM wf_order wo WHERE id = wt.`order_Id`) creator ,
+			  (SELECT name  FROM sys_user WHERE id = creator) creatorDesc,
+			  (SELECT order_No  FROM wf_order WHERE id = wt.`order_Id`) orderNo,
+			  (SELECT bus_type  FROM wf_order WHERE id = wt.`order_Id`) busType 
+			FROM
+			  wf_task_actor wta 
+			  INNER JOIN wf_task wt 
+			    ON wta.`task_Id` = wt.`id` 
+			WHERE wta.`actor_Id` = :actorId 
+			ORDER BY wt.create_Time DESC
+			LIMIT :startRow,:endRow 
+		]]>	
+	</sql>
+	
+	<!-- 待办任务 -->
+	<sql id="getTotal">
+		<![CDATA[
+			SELECT 
+			  count(1)
+			FROM
+			  wf_task_actor wta 
+			  INNER JOIN wf_task wt 
+			    ON wta.`task_Id` = wt.`id` 
+			WHERE wta.`actor_Id` = :actorId 
+		]]>	
+	</sql>
+</sqlMap>

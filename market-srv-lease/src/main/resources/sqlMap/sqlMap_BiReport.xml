@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="BiReport"> 
+	<!--关键指标--> 
+	<sql id="getReportKeyIndex"> 
+	   <![CDATA[ 
+SELECT t.id,TRUNCATE(IFNULL(SUM(t.stayArea),0),2)stayArea,
+		TRUNCATE(IFNULL(SUM(t.alreadyArea),0),2)alreadyArea,
+		TRUNCATE(IFNULL(SUM(t.unrentableArea),0),2)unrentableArea,
+		TRUNCATE(IFNULL(SUM(t.accountPayable),0),2)accountPayable,
+		TRUNCATE(IFNULL(SUM(accountPayed),0),2)accountPayed,
+		TRUNCATE(IFNULL(SUM(t.alreadyArea)/(IFNULL(SUM(t.stayArea),0)+IFNULL(SUM(t.alreadyArea),0)),0)*100,2)periodRate,
+		TRUNCATE(IFNULL(SUM(t.accountPayed)/SUM(t.accountPayable)*100,0),2)AS accountRate,
+		TRUNCATE(IFNULL(SUM(t.accountPayedMon)/SUM(t.accountPayableMon)*100,0),2)accountMonRate,
+		TRUNCATE(IFNULL(SUM(t.accountPayedMon),0),2)accountPayedMon,keydataTime FROM (
+ SELECT id,SUM(stayArea)stayArea,SUM(alreadyArea)alreadyArea,SUM(unrentableArea)unrentableArea,SUM(accountPayable)accountPayable,SUM(accountPayed)accountPayed,SUM(accountPayedMon)accountPayedMon,SUM(accountPayableMon)accountPayableMon,resourceTypeId,keydataTime FROM 
+		(
+			SELECT * FROM bi_key_index AS t
+			WHERE t.marketId=:marketId 
+   		<#if resourceTypeId?exists && resourceTypeId !="">
+		  AND t.resourceTypeId=:resourceTypeId
+		</#if>	
+			ORDER BY keydataTime DESC
+		) AS t
+		GROUP BY t.resourceTypeId
+		ORDER BY keydataTime DESC
+		) AS t
+	   ]]>
+	</sql>
+	
+	
+	<!--费项收缴情况--> 
+	<sql id="getReportExpfeeInfo"> 
+	   <![CDATA[ 
+		SELECT bfi.id,bfi.marketId,bfi.areaId,bfi.expId,bfi.resourceTypeId,IFNULL(TRUNCATE(SUM(bfi.accountPayable),2),0)accountPayable,IFNULL(TRUNCATE(SUM(bfi.accountPayed),2),0)accountPayed,DATE_FORMAT(bfi.dataDate,'%Y%m') dataDate,
+		TRUNCATE((IFNULL(SUM(bfi.accountPayable),0)-IFNULL(SUM(bfi.accountPayed),0)),2)AS accountDidPay,
+		IFNULL(TRUNCATE(SUM(bfi.accountPayed)/SUM(bfi.accountPayable)*100,2),0)AS captureRate FROM bi_feetake_info AS bfi
+		WHERE 
+		bfi.marketId=:marketId
+		<#if startDate?exists && startDate !="">
+		AND bfi.dataDate>=DATE_FORMAT(:startDate,'%Y%m%d') 
+		</#if>	
+		<#if endDate?exists && endDate !="">
+		AND bfi.dataDate<DATE_FORMAT(:endDate,'%Y%m%d')
+		</#if>	
+		<#if areaId?exists && areaId !="">
+		AND bfi.areaId=:areaId
+		</#if>	
+		<#if expId?exists && expId !="">
+		AND bfi.expId=:expId
+		</#if>	
+		<#if resourceTypeId?exists && resourceTypeId !="">
+		 AND bfi.resourceTypeId=:resourceTypeId
+		</#if>	
+		
+		GROUP BY bfi.dataDate
+		<#if areaId?exists && areaId !="">
+		,bfi.areaId
+		</#if>
+		<#if expId?exists && expId !="">	
+		,bfi.expId 
+		</#if>	
+		<#if resourceTypeId?exists && resourceTypeId !="">
+		,bfi.resourceTypeId
+		</#if>	
+		ORDER BY bfi.dataDate ASC
+	   ]]>
+	</sql>
+	<!--未收款情况--> 
+	<sql id="getReportDidfeeInfo"> 
+	   <![CDATA[ 
+	   
+	SELECT t1.id,t1.marketId,t1.areaId,t3.name AS areaName,t1.expId,t1.resourceTypeId,t1.accountPayable,t1.accountPayed,t1.accountDidPay,TRUNCATE(IFNULL( t1.accountDidPay / t2.accountDidPay * 100,0),2) rate,TRUNCATE(IFNULL(t1.accountPayed / t1.accountPayable * 100 ,0),2) captureRate   FROM (
+	SELECT bfi.id,bfi.marketId,bfi.areaId,bfi.expId,bfi.resourceTypeId,TRUNCATE(IFNULL(SUM(bfi.accountPayable),0),2)accountPayable,TRUNCATE(IFNULL(SUM(bfi.accountPayed),0),2)accountPayed,DATE_FORMAT(bfi.dataDate,'%Y%m') dataDate,
+	TRUNCATE((IFNULL(SUM(bfi.accountPayable),0)-IFNULL(SUM(bfi.accountPayed),0)),2)AS accountDidPay
+	FROM bi_feetake_info AS bfi
+	WHERE
+	bfi.marketId=:marketId
+	<#if expId?exists && expId !="">
+	AND bfi.expId=:expId
+	</#if>	
+	<#if resourceTypeId?exists && resourceTypeId !="">
+	AND bfi.resourceTypeId=:resourceTypeId
+	</#if>	
+	<#if startDate?exists && startDate !="">
+	AND bfi.dataDate>=DATE_FORMAT(:startDate,'%Y%m%d') 
+	</#if>	
+	<#if endDate?exists && endDate !="">
+	AND bfi.dataDate<DATE_FORMAT(:endDate,'%Y%m%d') 
+	</#if>	
+	GROUP BY bfi.areaId
+	<#if expId?exists && expId !="">
+	,bfi.expId 
+	</#if>	
+	<#if resourceTypeId?exists && resourceTypeId !="">
+	,bfi.resourceTypeId
+	</#if>	
+	)AS t1	
+	LEFT JOIN (
+	SELECT bfi.id,bfi.marketId,
+		TRUNCATE((IFNULL(SUM(bfi.accountPayable),0)-IFNULL(SUM(bfi.accountPayed),0)),2)AS accountDidPay FROM bi_feetake_info AS bfi
+		WHERE  bfi.marketId=:marketId
+		<#if expId?exists && expId !="">
+	AND bfi.expId=:expId
+	</#if>	
+	<#if resourceTypeId?exists && resourceTypeId !="">
+	AND bfi.resourceTypeId=:resourceTypeId
+	</#if>	
+	<#if startDate?exists && startDate !="">
+	AND bfi.dataDate>=DATE_FORMAT(:startDate,'%Y%m%d') 
+	</#if>	
+	<#if endDate?exists && endDate !="">
+	AND bfi.dataDate<DATE_FORMAT(:endDate,'%Y%m%d') 
+	</#if>	
+	)AS t2 ON t1.marketId=t2.marketId 
+	LEFT JOIN (
+	SELECT ma.marketId,ma.id,ma.name FROM market_area AS ma 
+	)AS t3 ON t1.areaId=t3.id AND t1.marketId=t3.marketId
+	ORDER BY t1.accountDidPay DESC
+	<#if topfive?exists && topfive !="">
+	limit :topfive
+	</#if>	
+	 ]]>
+	</sql>
+	<!--优惠情况分析--> 
+	<sql id="getReportPreferentialInfo"> 
+	   <![CDATA[ 
+		SELECT bfi.id,bfi.marketId,bfi.areaId,bfi.expId,bfi.resourceTypeId,TRUNCATE(IFNULL(SUM(bfi.accountPayed),0),2)accountPayed,TRUNCATE(IFNULL(SUM(bfi.discountAmount),0),2)discountAmount,DATE_FORMAT(bfi.dataDate,'%Y%m') dataDate,TRUNCATE(SUM(bfi.discountAmount)/(SUM(bfi.accountPayed)+SUM(bfi.discountAmount))*100,2)AS captureRate FROM bi_feetake_info AS bfi
+		WHERE 
+		bfi.marketId=:marketId
+		<#if startDate?exists && startDate !="">
+		AND bfi.dataDate>=DATE_FORMAT(:startDate,'%Y%m%d') 
+		</#if>	
+		<#if endDate?exists && endDate !="">
+		AND bfi.dataDate<DATE_FORMAT(:endDate,'%Y%m%d') 
+		</#if>	
+		<#if areaId?exists && areaId !="">
+		AND bfi.areaId=:areaId
+		</#if>	
+		<#if expId?exists && expId !="">
+		AND bfi.expId=:expId
+		</#if>	
+		<#if resourceTypeId?exists && resourceTypeId !="">
+		 AND bfi.resourceTypeId=:resourceTypeId
+		</#if>	
+		
+		GROUP BY bfi.dataDate
+		<#if areaId?exists && areaId !="">
+		,bfi.areaId
+		</#if>
+		<#if expId?exists && expId !="">	
+		,bfi.expId 
+		</#if>	
+		<#if resourceTypeId?exists && resourceTypeId !="">
+		,bfi.resourceTypeId
+		</#if>	
+		ORDER BY bfi.dataDate ASC
+	   ]]>
+	</sql>
+	
+	<sql id="getReportPreferentialInfoPie"> 
+	   <![CDATA[ 
+		SELECT bfi.id,bfi.marketId,bfi.areaId,bfi.expId,bfi.resourceTypeId,TRUNCATE(IFNULL(SUM(bfi.accountPayed),0),2)accountPayed,TRUNCATE(IFNULL(SUM(bfi.discountAmount),0),2)discountAmount,DATE_FORMAT(bfi.dataDate,'%Y%m') dataDate,TRUNCATE(SUM(bfi.discountAmount)/(SUM(bfi.accountPayed)+SUM(bfi.discountAmount))*100,2)AS captureRate FROM bi_feetake_info AS bfi
+		WHERE 
+		bfi.marketId=:marketId
+		<#if startDate?exists && startDate !="">
+		AND bfi.dataDate>=DATE_FORMAT(:startDate,'%Y%m%d') 
+		</#if>	
+		<#if endDate?exists && endDate !="">
+		AND bfi.dataDate<DATE_FORMAT(:endDate,'%Y%m%d') 
+		</#if>	
+		<#if areaId?exists && areaId !="">
+		AND bfi.areaId=:areaId
+		</#if>	
+		<#if expId?exists && expId !="">
+		AND bfi.expId=:expId
+		</#if>	
+		<#if resourceTypeId?exists && resourceTypeId !="">
+		 AND bfi.resourceTypeId=:resourceTypeId
+		</#if>	
+	   ]]>
+	</sql>
+	
+</sqlMap>

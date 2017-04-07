@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketLeasePostage"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,resourceId,contractId,createUserId,createTime,updateUserId,updateTime,status
+		  FROM market_lease_postage
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if contractId?exists && contractId != "" >
+			   AND contractId=:contractId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,resourceId,contractId,createUserId,createTime,updateUserId,updateTime,status
+		  FROM market_lease_postage
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if contractId?exists && contractId != "" >
+			   AND contractId=:contractId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_lease_postage
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if contractId?exists && contractId != "" >
+			   AND contractId=:contractId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!--根据条件分页查询租赁单 by DavidLiang--> 
+	<sql id="queryLeaseOrderByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			mlp.id, mlp.contractId, mlp.resourceId, 
+			mrt.name resourceTypeName, cm.contractStatus, cm.customerName, 
+			cm.contractNo, cm.startLeasingDay, cm.endLeasingDay, cm.dateOfContract, 
+			cm.createTime contractCreateTime, cm.trustees
+			FROM market_lease_postage mlp
+			left join market_resource mr on mlp.resourceId = mr.id
+			left join market_resource_type mrt on mr.resourceTypeId = mrt.id
+			left join contract_main cm on mlp.contractId = cm.id
+		WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND mlp.id=:id
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND mlp.resourceId=:resourceId
+			</#if>
+			<#if contractId?exists && contractId != "" >
+			   AND mlp.contractId=:contractId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND mlp.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND mlp.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND mlp.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND mlp.updateTime=:updateTime
+			</#if>
+			<#if status?exists && status != "" >
+			   AND mlp.status=:status
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+</sqlMap>

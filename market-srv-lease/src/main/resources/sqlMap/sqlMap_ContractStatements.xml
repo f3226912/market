@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractStatements"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		 SELECT 
+			 cs.id
+            ,cs.contractId
+            ,cs.contractNo
+            ,cs.deposit
+            ,cs.forfeit
+            ,cs.trustees
+            ,cs.approvalStatus 
+            ,cs.info
+            ,cs.statementsType
+            ,cs.createUserId
+            ,cs.createTime
+            ,cs.updateUserId
+            ,cs.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_statements cs  
+			LEFT JOIN     contract_main cm  
+			  on          cs.contractId=cm.id
+			where cm.isDeleted=0
+			and cm.isCancel=0
+			and id=:contractStatementsId
+	   ]]>
+	</sql>
+	<sql id="queryByContractId"> 
+	   <![CDATA[ 
+		 SELECT 
+			 cs.id
+            ,cs.contractId
+            ,cs.contractNo
+            ,cs.deposit
+            ,cs.forfeit
+            ,cs.trustees
+            ,cs.info
+			,cs.approvalStatus
+            ,cs.statementsType
+            ,cs.createUserId
+            ,cs.createTime
+            ,cs.updateUserId
+            ,cs.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_statements cs  
+			LEFT JOIN     contract_main cm  
+			  on          cs.contractId=cm.id
+			where cm.isDeleted=0
+			and cm.isCancel=0
+			and cm.id=:contractId
+	   ]]>
+	</sql>
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		 	SELECT 
+			 cs.id
+            ,cs.contractId
+            ,cs.contractNo
+            ,cs.deposit
+            ,cs.forfeit
+            ,cs.trustees
+            ,cs.info
+            ,cs.statementsType
+            ,cs.approvalStatus
+            ,cs.createUserId
+            ,cs.createTime
+            ,cs.updateUserId
+            ,cs.updateTime
+			,cm.marketId
+			,cm.leasingResource
+			,cm.leasingResourceIds
+			,cm.marketResourceTypeId
+			,cm.customerName
+			,cm.customerMobile
+			,cm.partyA
+			,cm.partyB
+			,cm.startLeasingDay
+			,cm.endLeasingDay
+			,cm.leasingForfeit
+			,cm.shopForfeit
+			,cm.shopName
+			,cm.categoryId
+			,cm.freeArea
+			,cm.floorArea
+			,cm.innerArea
+			,cm.dateOfContract
+			,cm.chargingWays
+			,cm.totalAmt
+			,cm.billingArea
+			,cm.countArea
+			,cm.paymentCycle
+			,cm.paymentDayType
+			,cm.paymentDays
+			,cm.additionalTerms
+			,cm.contractStatus
+			,cm.approvalType
+			,cm.approvalMethod
+			,cm.approvalTimeA
+			,cm.approvalTimeB
+			,cm.approvalTimeC
+			,cm.isCancel
+			,cm.isDeleted
+			,cm.version
+			 FROM contract_statements cs  
+			LEFT JOIN     contract_main cm  
+			  on          cs.contractId=cm.id
+			where cm.isDeleted=0
+			and cm.isCancel=0
+	    <#if leasingResource?exists && leasingResource !="">
+		 AND cm.leasingResource LIKE "%":leasingResource"%"
+		</#if>	
+		
+	    <#if customerName?exists && customerName !="">
+		 AND cm.customerName LIKE "%":customerName"%"
+		</#if>	
+		
+		<#if contractNo?exists && contractNo !="">
+		 AND cs.contractNo LIKE "%":contractNo"%"
+		</#if>
+			
+	    <#if approvalStatus?exists && approvalStatus !="">
+		 AND cs.approvalStatus =:approvalStatus
+		</#if>	
+		
+		<#if statementsType?exists && statementsType !="">
+		 AND cs.statementsType =:statementsType
+		</#if>	
+		
+	    <#if createTimeEnd?exists && createTimeEnd !="">
+		 AND cs.createTime <=:createTimeEnd
+		</#if>	
+		
+		<#if createTimeStart?exists && createTimeStart !="">
+		 AND cs.createTime >=:createTimeStart
+		</#if>	
+		
+		 <#if marketId?exists && marketId !="">
+		 AND cm.marketId =:marketId
+		</#if>	
+			order by cs.id desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(1) 
+		   FROM contract_statements cs  
+			LEFT JOIN     contract_main cm  
+			  on          cs.contractId=cm.id
+			where cm.isDeleted=0
+			and cm.isCancel=0
+		<#if leasingResource?exists && leasingResource !="">
+		 AND cm.leasingResource LIKE "%":leasingResource"%"
+		</#if>	
+		
+	    <#if customerName?exists && customerName !="">
+		 AND cm.customerName LIKE "%":customerName"%"
+		</#if>	
+		
+		<#if contractNo?exists && contractNo !="">
+		 AND cs.contractNo LIKE "%":contractNo"%"
+		</#if>
+			
+	    <#if approvalStatus?exists && approvalStatus !="">
+		 AND cs.approvalStatus =:approvalStatus
+		</#if>	
+		
+		<#if statementsType?exists && statementsType !="">
+		 AND cs.statementsType =:statementsType
+		</#if>	
+		
+	    <#if createTimeEnd?exists && createTimeEnd !="">
+		 AND cs.createTime <=:createTimeEnd
+		</#if>	
+		
+		<#if createTimeStart?exists && createTimeStart !="">
+		 AND cs.createTime >=:createTimeStart
+		</#if>	
+		
+		 <#if marketId?exists && marketId !="">
+		 AND cm.marketId =:marketId
+		</#if>
+	   ]]>
+	</sql>
+
+	<!--仅限工作流使用--> 
+	<sql id="queryByWorkFlow"> 
+	   <![CDATA[ 
+		 	SELECT 
+				cm.id
+				,cm.leasingResourceIds
+				,cm.marketResourceTypeId
+				,cm.startLeasingDay
+				,cm.endLeasingDay
+				,cm.categoryId
+				,cm.categoryName
+				,cm.freeArea
+				,cm.floorArea
+				,cm.innerArea
+				,cm.dateOfContract
+				,cm.chargingWays
+				,cm.totalAmt
+				,cm.billingArea
+				,cm.paymentCycle
+				,cf.freeDays
+				,cs.statementsType
+				,cs.deposit
+				,cs.forfeit
+			FROM contract_main cm
+		  	LEFT JOIN (select contractId, sum(datediff(endDay, startDay)) as freeDays FROM contract_free group by contractId) cf  ON cm.id = cf.contractId
+		  	LEFT JOIN contract_statements cs ON cm.id = cs.contractId
+			WHERE cm.id=:contractId
+	   ]]>
+	</sql>
+	
+	<sql id="findStatementsCountbyContractId">
+		<![CDATA[
+			SELECT count(1)  
+			FROM contract_statements
+			WHERE contractId = :contractId
+		]]>
+	</sql>
+	
+	<sql id="getStatementByContractId">
+		<![CDATA[
+			SELECT *  
+			FROM contract_statements
+			WHERE contractId = :contractId
+    	]]>
+	</sql>
+	
+</sqlMap>

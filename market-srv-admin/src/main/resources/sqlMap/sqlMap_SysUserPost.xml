@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysUserPost"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,postId,userId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_user_post
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if postIds??>
+				AND postId in (
+
+					<#list postIds as postId>
+						<#if postId_index gt 0>
+							,${postId}
+						<#else>
+							${postId}
+						</#if>
+					</#list>
+				)
+			</#if>
+			<#if userIds??>
+				AND userId in (
+
+					<#list userIds as userId>
+						<#if userId_index gt 0>
+							,${userId}
+						<#else>
+							${userId}
+						</#if>
+					</#list>
+				)
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,postId,userId,createTime,createUserId,updateTime,updateUserId
+		  FROM sys_user_post
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_user_post
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if postId?exists && postId != "" >
+			   AND postId=:postId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+	   ]]>
+	</sql>
+	
+	<!--根据用户id查询用户的岗位--> 
+	<sql id="getPostsByUserId"> 
+	   <![CDATA[ 
+		  SELECT
+			t.id,
+			t.`name`,
+			t.orgId,
+			t.topOrgId,
+			t.`status`,
+			t.remark,
+			t.createTime,
+			t.createUserId,
+			t.updateTime,
+			t.updateUserId
+		FROM
+			sys_post t
+		WHERE
+			t.id IN (
+			SELECT
+				r.postId
+			FROM
+				sys_user_post r
+			WHERE
+				r.userId = :userId
+		)
+		<#if status?exists && status != "" >
+			AND t.`status` = :status
+		</#if>
+		ORDER BY
+			t.createTime DESC,
+			t.updateTime DESC
+	   ]]>
+	</sql>
+	
+	<!--根据岗位查询岗位下用户信息--> 
+	<sql id="getUsersByPostId"> 
+	   <![CDATA[ 
+		  SELECT
+			uu.id,
+			uu.`code`,
+			uu.`name`,
+			uu.mobile,
+			uu.`status`,
+			uu.postName,
+			so.fullName AS companyName,
+			so1.fullName AS departmentName,
+			so2.fullName AS marketName
+		FROM
+			(
+				SELECT
+					u.*, sp.`name` AS postName,
+					suo.orgId AS companyId,
+					suo1.orgId AS deptId,
+					suo2.orgId AS marketId
+				FROM
+					(
+						SELECT
+							t.id,
+							t.`code`,
+							t.`name`,
+							t.mobile,
+							t.`status`
+						FROM
+							sys_user t
+						WHERE
+							t.id IN (
+								SELECT
+									r.userId
+								FROM
+									sys_user_post r
+								WHERE
+									r.postId = :postId
+							)
+					) AS u
+				LEFT JOIN sys_post sp ON sp.id = :postId
+				LEFT JOIN sys_user_org suo ON suo.userId = u.id
+				AND suo.type = 1
+				LEFT JOIN sys_user_org suo1 ON suo1.userId = u.id
+				AND suo1.type = 2
+				LEFT JOIN sys_user_org suo2 ON suo2.userId = u.id
+				AND suo2.type = 3
+			) AS uu
+		LEFT JOIN sys_org so ON uu.companyId = so.id
+		LEFT JOIN sys_org so1 ON uu.deptId = so1.id
+		LEFT JOIN sys_org so2 ON uu.marketId = so2.id
+		ORDER BY uu.`code`
+		LIMIT :startRow,:endRow
+	   ]]>
+	</sql>
+	
+	<!--根据用户id删除用户-岗位关系--> 
+	<sql id="deleteByUserId"> 
+	   <![CDATA[ 
+		  DELETE
+		FROM
+			sys_user_post
+		WHERE
+		userId = :userId
+	   ]]>
+	</sql>
+	
+	<!--根据岗位id查询有效的用户岗位映射数据。--> 
+	<sql id="queryValidByPostId"> 
+	   <![CDATA[ 
+		SELECT
+			sup.id, sup.postId, sup.userId, sup.createTime, 
+			sup.createUserId, sup.updateTime, sup.updateUserId
+		FROM
+			sys_user_post sup
+		INNER JOIN sys_user su ON su.id = sup.userId
+		INNER JOIN sys_post sp ON sp.id = sup.postId
+		WHERE
+			su. status = 1
+			AND sp.status = 1
+			AND sup.postId = :postId
+	   ]]>
+	</sql>
+	
+	
+</sqlMap>

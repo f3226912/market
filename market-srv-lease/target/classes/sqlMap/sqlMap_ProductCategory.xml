@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ProductCategory"> 
+    <sql id="findAllByParent">
+       <![CDATA[
+          select * from product_category where marketId = 0 and status = 1 and parentId =:parentId
+       ]]>
+    </sql>
+    
+    
+    <!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			marketId,categoryId,createUserId,createTime,updateUserId,updateTime,webTypeIcon,curLevel,
+			cateName,parentId,orderNum,status,typeIcon,lefts,rights
+		  FROM product_category
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if categoryId?exists && categoryId != "" >
+			   AND categoryId=:categoryId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if webTypeIcon?exists && webTypeIcon != "" >
+			   AND webTypeIcon=:webTypeIcon
+			</#if>
+			<#if curLevel?exists && curLevel != "" >
+			   AND curLevel=:curLevel
+			</#if>
+			<#if cateName?exists && cateName != "" >
+			   AND cateName=:cateName
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if orderNum?exists && orderNum != "" >
+			   AND orderNum=:orderNum
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if typeIcon?exists && typeIcon != "" >
+			   AND typeIcon=:typeIcon
+			</#if>
+			<#if lefts?exists && lefts != "" >
+			   AND lefts=:lefts
+			</#if>
+			<#if rights?exists && rights != "" >
+			   AND rights=:rights
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			marketId,categoryId,createUserId,createTime,updateUserId,updateTime,webTypeIcon,curLevel,
+			cateName,parentId,orderNum,status,typeIcon,lefts,rights
+		  FROM product_category
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if categoryId?exists && categoryId != "" >
+			   AND categoryId=:categoryId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if webTypeIcon?exists && webTypeIcon != "" >
+			   AND webTypeIcon=:webTypeIcon
+			</#if>
+			<#if curLevel?exists && curLevel != "" >
+			   AND curLevel=:curLevel
+			</#if>
+			<#if cateName?exists && cateName != "" >
+			   AND cateName=:cateName
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if orderNum?exists && orderNum != "" >
+			   AND orderNum=:orderNum
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if typeIcon?exists && typeIcon != "" >
+			   AND typeIcon=:typeIcon
+			</#if>
+			<#if lefts?exists && lefts != "" >
+			   AND lefts=:lefts
+			</#if>
+			<#if rights?exists && rights != "" >
+			   AND rights=:rights
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(categoryId) 
+		  FROM product_category
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if categoryId?exists && categoryId != "" >
+			   AND categoryId=:categoryId
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if webTypeIcon?exists && webTypeIcon != "" >
+			   AND webTypeIcon=:webTypeIcon
+			</#if>
+			<#if curLevel?exists && curLevel != "" >
+			   AND curLevel=:curLevel
+			</#if>
+			<#if cateName?exists && cateName != "" >
+			   AND cateName=:cateName
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if orderNum?exists && orderNum != "" >
+			   AND orderNum=:orderNum
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if typeIcon?exists && typeIcon != "" >
+			   AND typeIcon=:typeIcon
+			</#if>
+			<#if lefts?exists && lefts != "" >
+			   AND lefts=:lefts
+			</#if>
+			<#if rights?exists && rights != "" >
+			   AND rights=:rights
+			</#if>
+	   ]]>
+	</sql>
+</sqlMap>

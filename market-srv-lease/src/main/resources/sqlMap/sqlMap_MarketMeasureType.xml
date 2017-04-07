@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketMeasureType"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,name,marketId,expId,code,status,createUserId,createTime,
+			updateUserId,updateTime, sysType
+		  FROM market_measure_type
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND name=:name
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId 
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND expId=:expId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND code=:code
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+			SELECT 
+				T1.id, T1.name, T1.marketId, T1.expId, T1.code, T1.status, T1.createUserId, T1.createTime,
+				T1.updateUserId, T1.updateTime, T2.name as expName, 
+				CASE T1.sysType WHEN 1 THEN '是' WHEN 0 THEN '否' END sysTypeStr, T1.sysType
+			FROM market_measure_type T1
+			LEFT JOIN market_expenditure T2
+			ON (T1.expId = T2.id)
+			WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND T1.id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND T1.name=:name
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND T1.marketId=:marketId 
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND T1.expId=:expId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND T1.code=:code
+			</#if>
+			<#if status?exists && status != "" >
+			   AND T1.status=:status
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND T1.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND T1.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND T1.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND T1.updateTime=:updateTime
+			</#if>
+			order by t1.sysType desc,t1.updateTime desc
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(1) 
+		  FROM market_measure_type T1
+			LEFT JOIN market_expenditure T2
+			ON (T1.expId = T2.id)
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND T1.id=:id
+			</#if>
+			<#if name?exists && name != "" >
+			   AND T1.name=:name
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND T1.marketId=:marketId
+			</#if>
+			<#if expId?exists && expId != "" >
+			   AND T1.expId=:expId
+			</#if>
+			<#if code?exists && code != "" >
+			   AND T1.code=:code
+			</#if>
+			<#if status?exists && status != "" >
+			   AND T1.status=:status
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND T1.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND T1.createTime=:createTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND T1.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND T1.updateTime=:updateTime
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

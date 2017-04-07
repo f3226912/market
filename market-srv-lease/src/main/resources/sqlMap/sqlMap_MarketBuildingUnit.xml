@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="MarketBuildingUnit">
+
+<sql id="getList">
+	<![CDATA[
+	SELECT 
+	id,updateUserId,createTime,unitImage,updateTime,status,name,
+	createUserId,buildingId
+	FROM market_building_unit WHERE 1=1
+	<#if id?exists && id!="" >
+		AND id=:id
+	</#if>
+	<#if updateUserId?exists && updateUserId!="" >
+		AND updateUserId=:updateUserId
+	</#if>
+	<#if createTime?exists && createTime!="" >
+		AND createTime=:createTime
+	</#if>
+	<#if unitImage?exists && unitImage!="" >
+		AND unitImage=:unitImage
+	</#if>
+	<#if updateTime?exists && updateTime!="" >
+		AND updateTime=:updateTime
+	</#if>
+	<#if status?exists && status!="" >
+		AND status=:status
+	</#if>
+	<#if name?exists && name!="" >
+		AND name=:name
+	</#if>
+	<#if createUserId?exists && createUserId!="" >
+		AND createUserId=:createUserId
+	</#if>
+	<#if buildingId?exists && buildingId!="" >
+		AND buildingId=:buildingId
+	</#if>
+	order by unitNo desc  
+	]]>
+</sql>
+
+</sqlMap>

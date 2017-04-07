@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="PrintSetting"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			ps.id,ps.isDeleted,ps.marketId,ps.bizType,ps.printName,ps.templateId,
+			pt.templateCode, pt.templateName, pt.templateFile
+		  FROM print_setting ps
+		  LEFT JOIN print_template pt ON ps.templateId = pt.id
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND ps.id=:id
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND ps.isDeleted=:isDeleted
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND ps.marketId=:marketId
+			</#if>
+			<#if bizType?exists && bizType != "" >
+			   AND ps.bizType=:bizType
+			</#if>
+			<#if printName?exists && printName != "" >
+			   AND ps.printName like "%":printName"%"
+			</#if>
+			<#if templateId?exists && templateId != "" >
+			   AND ps.templateId=:templateId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND ps.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND ps.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND ps.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND ps.createTime=:createTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			ps.id,ps.isDeleted,ps.marketId,ps.bizType,ps.printName,ps.templateId,ps.createTime,
+			pt.templateCode, pt.templateName, m.name as marketName
+		  FROM print_setting ps
+		  LEFT JOIN market m ON ps.marketId = m.id
+		  LEFT JOIN print_template pt ON ps.templateId = pt.id
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND ps.id=:id
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND ps.isDeleted=:isDeleted
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND ps.marketId=:marketId
+			</#if>
+			<#if bizType?exists && bizType != "" >
+			   AND ps.bizType=:bizType
+			</#if>
+			<#if printName?exists && printName != "" >
+			   AND ps.printName like "%":printName"%"
+			</#if>
+			<#if templateId?exists && templateId != "" >
+			   AND ps.templateId=:templateId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND ps.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND ps.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND ps.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND ps.createTime=:createTime
+			</#if>
+		  ORDER BY ps.id DESC
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(1) 
+		  FROM print_setting ps
+		  LEFT JOIN market m ON ps.marketId = m.id
+		  LEFT JOIN print_template pt ON ps.templateId = pt.id
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND ps.id=:id
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND ps.isDeleted=:isDeleted
+			</#if>
+			<#if marketId?exists && marketId != "" >
+			   AND ps.marketId=:marketId
+			</#if>
+			<#if bizType?exists && bizType != "" >
+			   AND ps.bizType=:bizType
+			</#if>
+			<#if printName?exists && printName != "" >
+			   AND ps.printName like "%":printName"%"
+			</#if>
+			<#if templateId?exists && templateId != "" >
+			   AND ps.templateId=:templateId
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND ps.updateUserId=:updateUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND ps.updateTime=:updateTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND ps.createUserId=:createUserId
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND ps.createTime=:createTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!-- 根据templateId统计 -->
+	<sql id="countBytemplateId">
+	<![CDATA[ 
+	 	 SELECT count(1) FROM print_setting WHERE isDelete != 1 AND templateId = :templateId
+	]]>
+	</sql>
+	
+	<sql id="dynamicUpdate">
+	<![CDATA[ 
+		UPDATE
+			print_setting
+		SET
+			updateTime = SYSDATE()
+		<#if updateUserId?exists && updateUserId != "">
+			,updateUserId = :updateUserId
+		</#if>
+		<#if isDeleted?exists && isDeleted != "">
+			,isDeleted = :isDeleted
+		</#if>
+		WHERE
+			id = :id
+	]]>
+	</sql>
+	
+	<sql id="update">
+	<![CDATA[ 
+		UPDATE
+			print_setting
+		SET
+			printName = :printName,
+			bizType = :bizType,
+			templateId = :templateId,
+			updateUserId = :updateUserId,
+			updateTime = SYSDATE()
+		WHERE
+			id = :id
+	]]>
+	</sql>
+	
+	<sql id="queryById">
+	<![CDATA[ 
+		SELECT
+			ps.id,
+			ps.marketId,
+			ps.printName,
+			ps.templateId,
+			ps.bizType,
+			m.name as marketName,
+			pt.templateName,
+			pt.templateUrl
+		FROM
+			print_setting ps
+		LEFT JOIN 
+			market m ON ps.marketId = m.id
+		LEFT JOIN 
+			print_template pt ON ps.templateId = pt.id
+		WHERE
+			ps.id = :id
+	]]>
+	</sql>
+	
+	<sql id="countByTemplateId">
+	<![CDATA[ 
+		SELECT count(id) FROM print_setting WHERE templateId = :templateId AND isDeleted = 0 
+	]]>
+	</sql>
+	
+	<sql id="queryTemplateDocById">
+	<![CDATA[ 
+		SELECT
+			ps.id,
+			pt.templateDoc
+		FROM
+			print_setting ps
+		LEFT JOIN 
+			market m ON ps.marketId = m.id
+		LEFT JOIN 
+			print_template pt ON ps.templateId = pt.id
+		WHERE
+			ps.id = :id
+	]]>
+	</sql>
+</sqlMap>

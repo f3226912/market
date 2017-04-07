@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="WfNextVal"> 
+	
+	<!--根据名称获取序列号--> 
+	<sql id="getNextValByName"> 
+	   <![CDATA[ 
+	   		SELECT wf_nextval(:name)
+	   ]]>
+	</sql>
+
+
+</sqlMap>

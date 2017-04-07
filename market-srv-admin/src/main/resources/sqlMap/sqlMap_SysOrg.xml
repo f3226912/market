@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="SysOrg"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,shortName,fullName,createTime,createUserId,updateTime,updateUserId,
+			parentId,topId,level,status,remark
+		  FROM sys_org
+		  WHERE 1=1 and status in (1,2)
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if typeList?exists>
+				<#assign n = typeList?size />
+				<#if n gt 0>
+					AND(
+					<#list typeList as resourceid>
+						<#if resourceid_index != n-1>
+								type = '${resourceid}' or
+							<#else>
+								type = '${resourceid}'  
+						</#if>
+					</#list>
+					) 
+				</#if>
+			</#if>	
+			<#if shortName?exists && shortName != "" >
+			   AND shortName=:shortName
+			</#if>
+			<#if fullName?exists && fullName != "" >
+			   AND fullName=:fullName
+			</#if>
+			<#if likeFullName?exists && likeFullName != "" >
+			   AND fullName like '%${likeFullName}%'
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if topId?exists && topId != "" >
+			   AND topId=:topId
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if remark?exists && remark != "" >
+			   AND remark=:remark
+			</#if>
+			<#if topOrg?exists && topOrg != "" >
+			   AND parentId is null
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,shortName,fullName,createTime,createUserId,updateTime,updateUserId,
+			parentId,topId,level,status,remark
+		  FROM sys_org 
+		  WHERE 1=1 and status in (1,2)
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if shortName?exists && shortName != "" >
+			   AND shortName=:shortName
+			</#if>
+			<#if fullName?exists && fullName != "" >
+			   AND fullName=:fullName
+			</#if>
+			<#if likeFullName?exists && likeFullName != "" >
+			   AND fullName like '%${likeFullName}%'
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if topId?exists && topId != "" >
+			   AND topId=:topId
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if remark?exists && remark != "" >
+			   AND remark=:remark
+			</#if>
+			<#if topOrg?exists && topOrg != "" >
+			   AND parentId is null
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_org
+		  WHERE 1=1 and status in (1,2)
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if type?exists && type != "" >
+			   AND type=:type
+			</#if>
+			<#if shortName?exists && shortName != "" >
+			   AND shortName=:shortName
+			</#if>
+			<#if fullName?exists && fullName != "" >
+			   AND fullName=:fullName
+			</#if>
+			<#if likeFullName?exists && likeFullName != "" >
+			   AND fullName like '%${likeFullName}%'
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if parentId?exists && parentId != "" >
+			   AND parentId=:parentId
+			</#if>
+			<#if topId?exists && topId != "" >
+			   AND topId=:topId
+			</#if>
+			<#if level?exists && level != "" >
+			   AND level=:level
+			</#if>
+			<#if status?exists && status != "" >
+			   AND status=:status
+			</#if>
+			<#if remark?exists && remark != "" >
+			   AND remark=:remark
+			</#if>
+			<#if topOrg?exists && topOrg != "" >
+			   AND parentId is null
+			</#if>
+			<#if notId?exists && notId != "" >
+			   AND id !=:notId
+			</#if>
+
+	   ]]>
+	</sql>
+	<!-- 查找上级 -->
+	<sql id="getParOrgByUserId">
+		<![CDATA[
+			select
+				id,type,shortName,fullName,createTime,createUserId,updateTime,updateUserId,
+				parentId,topId,level,status,remark
+			from sys_org
+			where id = :parentId
+		]]>
+	</sql>
+	
+	<!-- 查找上级 -->
+	<sql id="updateOrg">
+		<![CDATA[
+
+		]]>
+	</sql>
+	
+	
+	<sql id="queryById"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,type,shortName,fullName,createTime,createUserId,updateTime,updateUserId,
+			parentId,topId,level,status,remark
+		  FROM sys_org
+		  WHERE 1=1  AND id=:id
+	   ]]>
+	</sql>
+</sqlMap>
+

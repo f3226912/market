@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="ThemeBucket">
+		<title>text</title>
+		<link href="../lib/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/bootstrap-reset.css" rel="stylesheet">
+		<link href="../css/font-awesome.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../lib/css/datepicker.css" />
+		<link rel="stylesheet" href="../lib/css/datetimepicker.css" />
+		<link href="../lib/iCheck/skins/minimal/minimal.css" rel="stylesheet">
+		<link href="../lib/iCheck/skins/minimal/green.css" rel="stylesheet">
+		<link rel="stylesheet" href="../css/style.css" />
+		<style>
+			.form-inline .form-group{ margin-bottom: 15px;}
+			.form-inline .form-group .icheck .checkbox, .form-inline .form-group .icheck .radio{
+				margin-bottom: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="panel">
+			<div class="panel-body">
+				<form class="form-inline mbot30" role="form">
+					<div class="form-group">
+						<label class="control-label" for="exampleInputEmail2">查询条件:</label>
+						<input type="text" class="form-control" placeholder="查询条件">
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="exampleInputEmail2">开始时间:</label>
+						<div class="input-group date form_datetime-component">
+							<input type="text" class="form-control" value="2012-06-15 14:45" readonly="" size="16" data-date-format="yyyy/mm/dd">
+							<span class="input-group-btn">
+                            	<button type="button" class="btn btn-primary date-set"><i class="fa fa-calendar"></i></button>
+                            </span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="exampleInputPassword2">时间段选择</label>
+						<div class="input-group input-large" data-date="2016/07/13" data-date-format="yyyy/mm/dd">
+							<input type="text" class="form-control dpd1" name="from" placeholder="开始时间">
+							<span class="input-group-addon">To</span>
+							<input type="text" class="form-control dpd2" name="to" placeholder="结束时间">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="exampleInputPassword2">查询条件</label>
+						<select class="form-control">
+							<option selected="">请选择1</option>
+							<option>请选择2</option>
+							<option>请选择3</option>
+						</select>
+					</div>
+					<div class="form-group icheck minimal">
+					<div class="checkbox">
+						<label class="checkbox-inline">
+                       		<input type="checkbox" id="inlineCheckbox1" value="option1"> 多选1
+                    	</label>
+						<label class="checkbox-inline">
+                        	<input type="checkbox" id="inlineCheckbox2" value="option2"> 多选2
+                    	</label>
+						<label class="checkbox-inline">
+                        	<input type="checkbox" id="inlineCheckbox3" value="option3"> 多选3
+                    	</label>
+					</div>
+					
+					<div class="radio">
+						<label class="radio-inline">
+                        	<input type="radio" value="option1" name="optionsRadios"> 单选1
+                    	</label>
+						<label class="checkbox-inline">
+                       		<input type="radio" value="option2" name="optionsRadios"> 单选2
+                    	</label>
+						<label class="checkbox-inline">
+                        	<input type="radio" value="option3" name="optionsRadios"> 单选3
+                    	</label>
+					</div>
+					</div>
+					<button type="button" class="btn btn-primary">查询</button>
+					<button type="reset" class="btn btn-primary">重置</button>
+				</form>
+				<form class="form-inline ">
+					<div id="distpicker">
+						<div class="form-group">
+							<label class="sr-only" for="province">Province</label>
+							<select class="form-control" id="province"></select>
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="city">City</label>
+							<select class="form-control" id="city"></select>
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="district">District</label>
+							<select class="form-control" id="district"></select>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary" id="reset" type="button">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+	<script src="../lib/jquery.js" type="text/javascript"></script>
+	<script src="../lib/bootstrap.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../lib/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="../lib/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="../lib/distpicker.data.js"></script>
+	<script type="text/javascript" src="../lib/distpicker.js"></script>
+	<script src="../lib/iCheck/jquery.icheck.js"></script>
+	<script src="../lib/icheck-init.js"></script>
+	<script src="../js/common/gd-util.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	/*时间*/
+		$('.form_datetime-component').datetimepicker({
+			format: "yyyy mm dd - hh:ii",
+			autoclose: true
+		});
+		/*日期*/
+		var nowTemp = new Date();
+		$(".dpd1").datepicker({
+			format: "yyyy-mm-dd",
+			autoclose: true
+		});
+		$(".dpd2").datepicker({
+			format: "yyyy-mm-dd",
+			autoclose: true
+		});
+	/*联动*/
+		var $distpicker = $('#distpicker');
+		$distpicker.distpicker({
+			
+		});
+		$('#reset').click(function() {
+			$distpicker.distpicker('reset');
+		});
+	</script>
+
+</html>

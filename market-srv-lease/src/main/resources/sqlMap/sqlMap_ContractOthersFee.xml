@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractOthersFee"> 
+	<!--根据条件查询--> 
+	<sql id="queryAll"> 
+	   <![CDATA[ 
+		  SELECT 
+			co.*,
+			d.remark as chargeUnitName,d1.remark as rentModeName 
+		  FROM contract_others_fee co
+		  LEFT JOIN sysdictionary d on co.chargeUnit = d.`value` AND d.`type` ='chargeUnit' AND d.status='1'  
+  	  	  LEFT JOIN sysdictionary d1 on co.rentMode = d1.`value` AND d1.`type` ='calculationMethod'  AND d1.status='1'
+		  WHERE contractId=:contractId AND isDeleted=0
+	   ]]>
+	</sql>
+	 <sql id="deleteAll"> 
+	   <![CDATA[ 
+		update   `contract_others_fee` 
+          set   isDeleted=1
+		  WHERE contractId=:contractId
+		  and   isDeleted=0
+	   ]]>
+	</sql>
+	
+	<sql id="save">
+	    <![CDATA[
+	        INSERT INTO `contract_others_fee`
+		            (
+			             `contractId`,
+			             `contractNo`,
+			             `leasingResource`,
+			             `itemCategory`,
+			             `itemCategoryId`,
+			             `itemName`,
+			             `itemNameId`,
+			             `freightBasis`,
+			             `freightBasisId`,
+			             `chargeUnitPrice`,
+			             `chargeUnit`,
+			             `total`,
+			             `isDeleted`,
+			             `createUserId`,
+			             `createTime`
+		             )
+			VALUES 
+			   <#list othersFeeList as fee>
+			       <#assign listSize = othersFeeList?size />
+			       (
+				        ${fee.contractId},
+				        ${fee.contractNo},
+				        ${fee.leasingResource},
+				        ${fee.itemCategory},
+				        ${fee.itemCategoryId},
+				        ${fee.itemName},
+				        ${fee.itemNameId},
+				        ${fee.freightBasis},
+				        ${fee.freightBasisId},
+				        ${fee.chargeUnitPrice},
+				        ${fee.chargeUnit},
+				        ${fee.total},
+				        ${fee.isDeleted},
+				        ${fee.createUserId},
+				        ${fee.createTime}
+			        )
+			       <#if fee_index != listSize-1>
+			       ,
+			       </#if>	
+			  </#list>
+	    ]]>
+	</sql>
+</sqlMap>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="SysUserMessage"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,messageId,userId,isread,isdel,createUserID,createTime
+		  FROM sys_user_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageId?exists && messageId != "" >
+			   AND messageId=:messageId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if isread?exists && isread != "" >
+			   AND isread=:isread
+			</#if>
+			<#if isdel?exists && isdel != "" >
+			   AND isdel=:isdel
+			</#if>
+			<#if createUserID?exists && createUserID != "" >
+			   AND createUserID=:createUserID
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,messageId,userId,isread,isdel,createUserID,createTime
+		  FROM sys_user_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageId?exists && messageId != "" >
+			   AND messageId=:messageId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if isread?exists && isread != "" >
+			   AND isread=:isread
+			</#if>
+			<#if isdel?exists && isdel != "" >
+			   AND isdel=:isdel
+			</#if>
+			<#if createUserID?exists && createUserID != "" >
+			   AND createUserID=:createUserID
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM sys_user_message
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if messageId?exists && messageId != "" >
+			   AND messageId=:messageId
+			</#if>
+			<#if userId?exists && userId != "" >
+			   AND userId=:userId
+			</#if>
+			<#if isread?exists && isread != "" >
+			   AND isread=:isread
+			</#if>
+			<#if isdel?exists && isdel != "" >
+			   AND isdel=:isdel
+			</#if>
+			<#if createUserID?exists && createUserID != "" >
+			   AND createUserID=:createUserID
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

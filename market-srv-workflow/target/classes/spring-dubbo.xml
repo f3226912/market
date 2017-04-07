@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+	http://www.springframework.org/schema/context  
+    http://www.springframework.org/schema/context/spring-context.xsd">
+	
+ 	<dubbo:application name="market-srv-workflow-provider" owner="market-srv-workflow" />
+	<dubbo:protocol name="dubbo" threads="50" threadpool="cached" port="23893"/>
+ 	<dubbo:registry address="zookeeper://10.17.1.161:2181?backup=10.17.1.162:2181,10.17.1.163:2181"  />
+ 	
+ 	<dubbo:provider  group="market-group-test" version="v1.0.0" timeout="100000"/>
+ 	
+ 	<dubbo:consumer retries="0"  init="false" 
+ 		loadbalance="random" async="false" 
+ 		cache="false" group="market-group-test"
+		version="v1.0.0" 
+ 		timeout="100000"
+ 		check="false" />
+ 	
+ 	
+	<!-- 提供服务 -->
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerFacadeService" ref="snakerFacadeService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerManagerService" ref="snakerManagerService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerOrderService" ref="snakerOrderService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerProcessService" ref="snakerProcessService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerQueryService" ref="snakerQueryService" /> 
+	<dubbo:service interface="cn.gdeng.market.service.workflow.core.SnakerTaskService" ref="snakerTaskService" />
+	<dubbo:service interface="cn.gdeng.market.service.workflow.bus.WfProcessService" ref="wfProcessService" />
+	<dubbo:service interface="cn.gdeng.market.service.workflow.bus.WfOrderService" ref="wfOrderService" />
+	<dubbo:service interface="cn.gdeng.market.service.workflow.bus.WfSequenceService" ref="wfSequenceService" />
+	<dubbo:service interface="cn.gdeng.market.service.workflow.bus.WfContractApprovalService" ref="wfContractApprovalService" />
+	<dubbo:service interface="cn.gdeng.market.service.workflow.bus.WfTaskService" ref="wfTaskService" />
+	
+	
+	<!-- 调用服务 -->
+	<dubbo:reference id="sysUserPostService"  interface="cn.gdeng.market.service.admin.SysUserPostService"  check="false"/>
+	<dubbo:reference id="sysOrgService"  interface="cn.gdeng.market.service.admin.SysOrgService"  check="false"/>
+	<dubbo:reference id="sysUserService"  interface="cn.gdeng.market.service.admin.SysUserService"  check="false"/>
+	<dubbo:reference id="sysMessageService"  interface="cn.gdeng.market.service.admin.SysMessageService"  check="false"/>
+	<dubbo:reference id="sysPostService"  interface="cn.gdeng.market.service.admin.SysPostService"  check="false"/>
+	
+	<!--合同给工作流提供的服务 -->
+   	<dubbo:reference id="contractWorkflowService" interface="cn.gdeng.market.service.lease.contract.ContractWorkflowService" check="false"/>
+</beans> 

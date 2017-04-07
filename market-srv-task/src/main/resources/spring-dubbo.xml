@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<dubbo:application name="${maven.dubbo.market.lease.consumer.application.name}" owner="${maven.dubbo.market.lease.consumer.application.owner}" />
+ 	<dubbo:registry address="${maven.dubbo.market.registry.address}"  />
+ 	<dubbo:consumer retries="${maven.dubbo.market.lease.consumer.reference.retries}"  init="${maven.dubbo.market.lease.consumer.reference.init}" 
+ 		loadbalance="${maven.dubbo.market.lease.consumer.reference.loadbalance}" async="${maven.dubbo.market.lease.consumer.reference.async}" 
+ 		cache="${maven.dubbo.market.lease.consumer.reference.cache}" group="${maven.dubbo.market.lease.consumer.reference.group}"
+		version="${maven.dubbo.market.lease.consumer.reference.version}" 
+ 		timeout="${maven.dubbo.market.lease.consumer.reference.timeout}"
+ 		check="${maven.dubbo.market.lease.consumer.reference.check}" />
+ 	
+ 	 <!-- 合同管理-->
+    <dubbo:reference id="contractManageService" interface="cn.gdeng.market.service.lease.contract.ContractManageService" />
+ 	 <!-- 合同定时任务记录 -->
+    <dubbo:reference id="contractTaskService" interface="cn.gdeng.market.service.lease.contract.ContractTaskService" />  
+ 	 <!-- 市场资源 -->
+   	<dubbo:reference id="marketResourceService" interface="cn.gdeng.market.service.lease.resources.MarketResourceService" />
+   	
+</beans>
+ 

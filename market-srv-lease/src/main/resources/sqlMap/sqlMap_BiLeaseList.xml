@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="BiLeaseList"> 
+	<!--根据条件查询--> 
+	<sql id="gueryList"> 
+	   <![CDATA[ 
+		SELECT
+	marketResourceTypeId,
+	marketResourceTypeName,
+	areaName,
+	countResource,
+	countRented,
+	rentalRate,
+	CASE WHEN areaAvailableForRent IS NULL THEN 0 ELSE areaAvailableForRent END AS areaAvailableForRent,
+	 leasedArea,
+	 CASE WHEN rentalRateArea IS NULL THEN 0 ELSE rentalRateArea END AS rentalRateArea,
+	 CASE WHEN rentalIncome IS NULL THEN	0 ELSE rentalIncome END AS rentalIncome,
+	 CASE WHEN leasePxZmj IS NULL THEN 0 ELSE leasePxZmj END AS leasePxZmj,
+	 CASE WHEN leasePxYzmj IS NULL THEN 0 ELSE leasePxYzmj END AS leasePxYzmj
+	FROM
+		(
+	select 
+	a.marketResourceTypeId,
+	a.marketResourceTypeName,
+	a.areaName,
+	count(1) as countResource,
+	sum(case when a.leaseStatus=3 then 1 else 0 end) as countRented,
+	TRUNCATE (sum(case when a.leaseStatus=3 then 1 else 0 end) / count(1) * 100, 2 ) as rentalRate,
+	sum(leaseArea) as areaAvailableForRent,
+	sum(case when a.leaseStatus=3 then leaseArea else 0 end) as leasedArea,
+	TRUNCATE (sum(case when a.leaseStatus=3 then leaseArea else 0 end)/sum(leaseArea)*100,2) as rentalRateArea,
+	sum(zjsr) as rentalIncome,
+	TRUNCATE (sum(zjsr)/sum(leaseArea),2) as leasePxZmj,
+	TRUNCATE (sum(zjsr)/sum(case when a.leaseStatus=3 then leaseArea else 0 end),2) as leasePxYzmj
+	 from(
+	SELECT
+	    c.id AS marketResourceTypeId,
+			c. NAME AS marketResourceTypeName,
+			b. NAME AS areaName,
+            a.*
+		FROM
+				market_resource a
+			INNER JOIN  market_area b ON a.marketId = b.marketId and a.areaId=b.id
+			LEFT JOIN market_resource_type c ON a.resourceTypeId = c.id
+			WHERE
+	 		1 = 1
+			AND c. NAME IS NOT NULL
+	       AND a.name is not NULL
+	       <#if marketResourceTypeId?exists && marketResourceTypeId!="">
+			and a.resourceTypeId=:marketResourceTypeId
+			</#if>
+			   <#if marketId?exists && marketId !="">
+				 and a.marketId=:marketId
+				</#if>
+		) a
+		left join (
+
+			SELECT
+				CASE WHEN sum(pj) IS NULL THEN 0 ELSE sum(pj) END AS zjsr,
+			    id
+		        FROM
+			( SELECT
+					a.pj,
+					a.contractNo,
+					substring_index(
+						substring_index( a.leasingResourceIds, ',', b.help_topic_id + 1 ), ',' ,- 1 ) AS id
+				FROM
+					(
+						SELECT
+							b.sum / a.db AS pj,
+							a.contractNo,
+							a.leasingResourceIds
+						FROM
+							(
+							     select contractNo,db+1 as db,leasingResourceIds from(
+								SELECT
+									contractNo,
+    								LENGTH(leasingResourceIds) - LENGTH( REPLACE (leasingResourceIds, ',', '') )  AS db,
+								    leasingResourceIds
+									FROM
+										contract_main
+									WHERE
+										1 = 1
+									AND isCancel = 0
+									AND isDeleted = 0
+						            <#if marketId?exists && marketId !="">
+									 and marketId=:marketId
+									</#if>
+						              and (contractStatus=1 or contractStatus=2)
+						              and approvalStatus=3
+									<#if startTime?exists && startTime !="">
+									and endLeasingDay>=:startTime
+									</#if>
+									<#if endTime?exists && endTime !="">
+									and startLeasingDay<=:endTime
+									</#if>
+									)a
+										) a
+									LEFT JOIN (
+										SELECT
+											sum(a.accountPayed) AS sum,
+											a.contractNo
+										FROM
+											finance_fee_received a
+										LEFT JOIN market_expenditure b ON a.feeItemId = b.id
+										where b. NAME = '租金'
+										<#if marketId?exists && marketId !="">
+								     	and b.marketId=:marketId
+										</#if>
+										GROUP BY
+											a.contractNo
+									) b ON a.contractNo = b.contractNo
+								) a
+								JOIN bi_help_topic b ON b.help_topic_id < (
+									length(a.leasingResourceIds) - length( REPLACE ( a.leasingResourceIds, ',', '' ) ) + 1
+								)
+								ORDER BY
+									a.contractNo
+							) a
+						GROUP BY
+							id
+						
+						) b on a.id=b.id
+						group by a.marketResourceTypeId,a.marketResourceTypeName,a.areaName
+							LIMIT :startRow, :endRow
+						) A
+	   ]]>
+	</sql>
+<!--统计总条数  -->
+<sql id="getTotal"> 
+	   <![CDATA[ 
+	SELECT COUNT(1) FROM (
+	select 
+	a.marketResourceTypeId,
+	a.marketResourceTypeName,
+	a.areaName,
+	count(1) as countResource,
+	sum(case when a.leaseStatus=3 then 1 else 0 end) as countRented,
+	TRUNCATE (sum(case when a.leaseStatus=3 then 1 else 0 end) / count(1) * 100, 2 ) as rentalRate,
+	sum(leaseArea) as areaAvailableForRent,
+	sum(case when a.leaseStatus=3 then leaseArea else 0 end) as leasedArea,
+	TRUNCATE (sum(case when a.leaseStatus=3 then leaseArea else 0 end)/sum(leaseArea)*100,2) as rentalRateArea,
+	TRUNCATE (sum(zjsr),2) as rentalIncome,
+	TRUNCATE (sum(zjsr)/sum(leaseArea),2) as leasePxZmj,
+	TRUNCATE (sum(zjsr)/sum(case when a.leaseStatus=3 then leaseArea else 0 end),2) as leasePxYzmj
+	 from(
+	SELECT
+	    c.id AS marketResourceTypeId,
+			c. NAME AS marketResourceTypeName,
+			b. NAME AS areaName,
+            a.*
+		FROM
+				market_resource a
+			INNER JOIN  market_area b ON a.marketId = b.marketId and a.areaId=b.id
+			LEFT JOIN market_resource_type c ON a.resourceTypeId = c.id
+			WHERE
+	 		1 = 1
+			AND c. NAME IS NOT NULL
+			<#if marketResourceTypeId?exists && marketResourceTypeId!="">
+			and a.resourceTypeId=:marketResourceTypeId
+			</#if>
+	    AND a.name is not NULL
+			   <#if marketId?exists && marketId !="">
+				 and a.marketId=:marketId
+				</#if>
+		) a
+		left join (
+
+			SELECT
+				CASE
+			WHEN sum(pj) IS NULL THEN
+				0
+			ELSE
+				sum(pj)
+			END AS zjsr,
+			id
+		FROM
+			(
+				SELECT
+					a.pj,
+					a.contractNo,
+					substring_index( substring_index( a.leasingResourceIds, ',', b.help_topic_id + 1 ), ',' ,- 1 ) AS id
+				FROM
+					(
+						SELECT
+							b.sum / a.db AS pj,
+							a.contractNo,
+							a.leasingResourceIds
+						FROM
+							(
+							 select contractNo,db+1 as db,leasingResourceIds from(
+								SELECT
+									contractNo,
+ 								LENGTH(leasingResourceIds) - LENGTH( REPLACE (leasingResourceIds, ',', '') ) AS db,
+								leasingResourceIds
+							FROM
+								contract_main
+							WHERE
+								1 = 1
+							AND isCancel = 0
+							AND isDeleted = 0
+			            <#if marketId?exists && marketId !="">
+						 and marketId=:marketId
+						</#if>
+			              and (contractStatus=1 or contractStatus=2)
+			              and approvalStatus=3
+						<#if startTime?exists && startTime !="">
+						and endLeasingDay>=:startTime
+						</#if>
+						<#if endTime?exists && endTime !="">
+						and startLeasingDay<=:endTime
+						</#if>
+							)a) a
+						LEFT JOIN (
+							SELECT
+								sum(a.accountPayed) AS sum,
+								a.contractNo
+							FROM
+								finance_fee_received a
+							LEFT JOIN market_expenditure b ON a.feeItemId = b.id
+							where b. NAME = '租金'
+							<#if marketId?exists && marketId !="">
+					     	and b.marketId=:marketId
+							</#if>
+							GROUP BY
+								a.contractNo
+						) b ON a.contractNo = b.contractNo
+					) a
+				JOIN bi_help_topic b ON b.help_topic_id < (
+					length(a.leasingResourceIds) - length( REPLACE ( a.leasingResourceIds, ',', '' ) ) + 1
+				)
+				ORDER BY
+					a.contractNo
+			) a
+		GROUP BY
+			id
+		
+		) b on a.id=b.id
+		group by a.marketResourceTypeId,a.marketResourceTypeName,a.areaName
+		) A
+	   ]]>
+	</sql>
+    <sql id="getSum">
+	   <![CDATA[ 
+		select 
+		sum(countResource) as  countResource,
+		sum(countRented) as countRented,
+		sum(areaAvailableForRent) as areaAvailableForRent,
+		sum(leasedArea) as leasedArea,
+		sum(rentalIncome) as rentalIncome
+		from (
+				SELECT
+					countResource,
+					countRented,
+					CASE WHEN areaAvailableForRent IS NULL THEN 0 ELSE areaAvailableForRent END AS areaAvailableForRent,
+					 leasedArea,
+					 CASE WHEN rentalIncome IS NULL THEN	0 ELSE rentalIncome END AS rentalIncome
+						FROM
+							(
+								select 
+								count(1) as countResource,
+								sum(case when a.leaseStatus=3 then 1 else 0 end) as countRented,
+								sum(leaseArea) as areaAvailableForRent,
+								sum(case when a.leaseStatus=3 then leaseArea else 0 end) as leasedArea,
+								sum(zjsr) as rentalIncome
+	 								from(
+										SELECT
+										   	    c.id AS marketResourceTypeId,
+												c. NAME AS marketResourceTypeName,
+												b. NAME AS areaName,
+									            a.*
+													FROM
+													market_resource a
+													INNER JOIN  market_area b ON a.marketId = b.marketId and a.areaId=b.id
+													LEFT JOIN market_resource_type c ON a.resourceTypeId = c.id
+													WHERE
+											 		1 = 1
+													AND c. NAME IS NOT NULL
+	                                                AND a.name is not NULL
+											   		 <#if marketResourceTypeId?exists && marketResourceTypeId!="">
+													and a.resourceTypeId=:marketResourceTypeId
+													</#if>
+												   <#if marketId?exists && marketId !="">
+													 and a.marketId=:marketId
+													</#if>
+													) a
+													left join (
+ 															SELECT
+																CASE WHEN sum(pj) IS NULL THEN 0 ELSE sum(pj) END AS zjsr,
+															    id
+																FROM
+																(
+																	SELECT
+																		a.pj,
+																		a.contractNo,
+																		substring_index( substring_index( a.leasingResourceIds, ',', b.help_topic_id + 1 ), ',' ,- 1 ) AS id
+																		FROM
+																		(
+																			SELECT
+																				b.sum / a.db AS pj,
+																				a.contractNo,
+																				a.leasingResourceIds
+																				FROM
+																				(
+																					select contractNo,db+1 as db,leasingResourceIds from(
+																						SELECT
+																							contractNo,
+																							 LENGTH(leasingResourceIds) - LENGTH( REPLACE (leasingResourceIds, ',', '') )  AS db,
+																						     leasingResourceIds
+																								FROM
+																									contract_main
+																								WHERE
+																									1 = 1
+																								AND isCancel = 0
+																								AND isDeleted = 0
+																					            <#if marketId?exists && marketId !="">
+																								 and marketId=:marketId
+																								</#if>
+																					              and (contractStatus=1 or contractStatus=2)
+																					              and approvalStatus=3
+																								<#if startTime?exists && startTime !="">
+																								and endLeasingDay>=:startTime
+																								</#if>
+																								<#if endTime?exists && endTime !="">
+																								and startLeasingDay<=:endTime
+																								</#if>
+																								) countIdLen
+																									) a
+																					LEFT JOIN (
+																						SELECT
+																							sum(a.accountPayed) AS sum,
+																							a.contractNo
+																						FROM
+																							finance_fee_received a
+																						LEFT JOIN market_expenditure b ON a.feeItemId = b.id
+																						where b. NAME = '租金'
+																						<#if marketId?exists && marketId !="">
+																				     	and b.marketId=:marketId
+																						</#if>
+																						GROUP BY
+																							a.contractNo
+																						) b ON a.contractNo = b.contractNo
+																						) a
+																					JOIN bi_help_topic b ON b.help_topic_id < (
+																						length(a.leasingResourceIds) - length(
+																							REPLACE (
+																								a.leasingResourceIds,
+																								',',
+																								''
+																							)
+																						) + 1
+																					)
+																					ORDER BY
+																						a.contractNo
+																) a
+																GROUP BY id
+							    ) b on a.id=b.id
+		                          group by a.marketResourceTypeId,a.marketResourceTypeName,a.areaName
+		                              ) A
+						) A
+	   ]]>
+    </sql>
+	
+</sqlMap>

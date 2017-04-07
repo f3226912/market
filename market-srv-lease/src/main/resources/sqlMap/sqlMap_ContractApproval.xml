@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="ContractApproval"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,createTime,contractVersion,createUserId,approvalType,approvalStatus,updateTime,updateUserId,
+			contractNo,info,trustees
+		  FROM contract_approval
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if approvalType?exists && approvalType != "" >
+			   AND approvalType=:approvalType
+			</#if>
+			<#if approvalStatus?exists && approvalStatus != "" >
+			   AND approvalStatus=:approvalStatus
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+			<#if trustees?exists && trustees != "" >
+			   AND trustees=:trustees
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,createTime,contractVersion,createUserId,approvalType,approvalStatus,updateTime,updateUserId,
+			contractNo,info,trustees
+		  FROM contract_approval
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if approvalType?exists && approvalType != "" >
+			   AND approvalType=:approvalType
+			</#if>
+			<#if approvalStatus?exists && approvalStatus != "" >
+			   AND approvalStatus=:approvalStatus
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+			<#if trustees?exists && trustees != "" >
+			   AND trustees=:trustees
+			</#if>
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM contract_approval
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if contractVersion?exists && contractVersion != "" >
+			   AND contractVersion=:contractVersion
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if approvalType?exists && approvalType != "" >
+			   AND approvalType=:approvalType
+			</#if>
+			<#if approvalStatus?exists && approvalStatus != "" >
+			   AND approvalStatus=:approvalStatus
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if contractNo?exists && contractNo != "" >
+			   AND contractNo=:contractNo
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+			<#if trustees?exists && trustees != "" >
+			   AND trustees=:trustees
+			</#if>
+	   ]]>
+	</sql>
+
+</sqlMap>

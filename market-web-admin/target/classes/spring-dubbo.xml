@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	
+	<dubbo:application name="market-web-lease-consumer" owner="market-web-lease" />
+ 	<dubbo:registry address="zookeeper://10.17.1.161:2181?backup=10.17.1.162:2181,10.17.1.163:2181"  />
+ 	<dubbo:consumer retries="0"  init="false" 
+ 		loadbalance="random" async="false" 
+ 		cache="false" group="market-group-test"
+		version="v1.0.0" 
+ 		timeout="100000"
+ 		check="false" />
+ 	
+ 	<!-- 系统管理 begin-->	
+ 	<dubbo:reference id="sysDictionaryService" interface="cn.gdeng.market.service.admin.SysDictionaryService" check="false"/> 
+ 	<dubbo:reference id="sysUserService" interface="cn.gdeng.market.service.admin.SysUserService" check="false"/> 
+ 	<dubbo:reference id="sysOrgService" interface="cn.gdeng.market.service.admin.SysOrgService" check="false"/> 
+ 	<dubbo:reference id="sysUserPostService" interface="cn.gdeng.market.service.admin.SysUserPostService" check="false"/> 
+ 	<dubbo:reference id="loginService" interface="cn.gdeng.market.service.admin.LoginService" check="false"/> 
+ 	<dubbo:reference id="sysUserOrgService" interface="cn.gdeng.market.service.admin.SysUserOrgService" check="false"/>
+ 	<!-- 系统管理  end-->
+ 	
+</beans>
+ 

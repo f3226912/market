@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="PrintTemplate"> 
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,templateCode,templateName,templateFile,templateUrl,isDeleted,info
+		  FROM print_template
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if templateCode?exists && templateCode != "" >
+			   AND templateCode=:templateCode
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if templateName?exists && templateName != "" >
+			   AND templateName like "%":templateName"%"
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if templateFile?exists && templateFile != "" >
+			   AND templateFile=:templateFile
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND isDeleted=:isDeleted
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+	   ]]>
+	</sql>
+
+	<!--根据条件分页查询--> 
+	<sql id="queryByConditionPage"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,templateCode,createTime,templateName,createUserId,templateFile,templateUrl,updateTime,updateUserId,
+			isDeleted,info
+		  FROM print_template
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if templateCode?exists && templateCode != "" >
+			   AND templateCode=:templateCode
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if templateName?exists && templateName != "" >
+			   AND templateName like "%":templateName"%"
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if templateFile?exists && templateFile != "" >
+			   AND templateFile=:templateFile
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND isDeleted=:isDeleted
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+		  ORDER BY id DESC
+		  LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+	<!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM print_template
+		  WHERE 1=1 
+			<#if id?exists && id != "" >
+			   AND id=:id
+			</#if>
+			<#if templateCode?exists && templateCode != "" >
+			   AND templateCode=:templateCode
+			</#if>
+			<#if createTime?exists && createTime != "" >
+			   AND createTime=:createTime
+			</#if>
+			<#if templateName?exists && templateName != "" >
+			   AND templateName like "%":templateName"%"
+			</#if>
+			<#if createUserId?exists && createUserId != "" >
+			   AND createUserId=:createUserId
+			</#if>
+			<#if templateFile?exists && templateFile != "" >
+			   AND templateFile=:templateFile
+			</#if>
+			<#if updateTime?exists && updateTime != "" >
+			   AND updateTime=:updateTime
+			</#if>
+			<#if updateUserId?exists && updateUserId != "" >
+			   AND updateUserId=:updateUserId
+			</#if>
+			<#if isDeleted?exists && isDeleted != "" >
+			   AND isDeleted=:isDeleted
+			</#if>
+			<#if info?exists && info != "" >
+			   AND info=:info
+			</#if>
+	   ]]>
+	</sql>
+
+	<sql id="dynamicUpdate">
+	<![CDATA[ 
+		UPDATE
+			print_template
+		SET
+			updateTime = SYSDATE()
+		<#if updateUserId?exists && updateUserId != "" >
+			,updateUserId = :updateUserId
+		</#if>
+		<#if isDeleted?exists && isDeleted != "" >
+			,isDeleted = :isDeleted
+		</#if>
+		WHERE
+			id = :id
+	]]>
+	</sql>
+	
+	
+	<sql id="update">
+	<![CDATA[ 
+		UPDATE
+			print_template
+		SET
+			templateCode = :templateCode,
+			templateName = :templateName,
+			templateFile = :templateFile,
+			templateUrl = :templateUrl,
+			templateDoc = :templateDoc,
+			info = :info,
+			updateTime = SYSDATE(),
+			updateUserId = :updateUserId
+		WHERE
+			id = :id
+	]]>
+	</sql>
+	
+	<sql id="queryById"> 
+	<![CDATA[ 
+		  SELECT 
+			id,
+			templateCode,
+			templateName,
+			templateFile,
+			templateUrl,
+			isDeleted,
+			info,
+			createUserId,
+			createTime
+		  FROM 
+		  	print_template
+		  WHERE
+		  	id = :id
+	]]>
+	</sql>
+	
+	<sql id="countByTemplateCode"> 
+	<![CDATA[ 
+		SELECT count(1) FROM print_template WHERE templateCode = :templateCode AND isDeleted = 0
+	]]>
+	</sql> 
+	
+	<sql id="countByTemplateName"> 
+	<![CDATA[ 
+		SELECT count(1) FROM print_template WHERE templateName = :templateName AND isDeleted = 0
+	]]>
+	</sql> 
+	
+	<sql id="getTemplateUrl">
+	<![CDATA[ 
+	 SELECT templateUrl FROM print_template WHERE id = :templateId
+	]]>
+	</sql>
+</sqlMap>

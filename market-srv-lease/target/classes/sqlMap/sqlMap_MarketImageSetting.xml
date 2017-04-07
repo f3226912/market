@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<sqlMap namespace="MarketImageSetting"> 
+
+	<!--根据条件查询--> 
+	<sql id="queryByCondition"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,marketId,areaId,buildingId,unitId,floorId,resourceId,imageType,
+			coordinate,createUserId,createTime,updateUserId,updateTime
+		  FROM market_image_setting
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if buildingId?exists && buildingId != "" >
+			   AND buildingId=:buildingId
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if imageType?exists && imageType != "" >
+			   AND imageType=:imageType
+			</#if>
+			LIMIT :startRow,:endRow 
+	   ]]>
+	</sql>
+
+    <sql id="delete">
+	   <![CDATA[
+	     DELETE FROM market_image_setting WHERE 1 = 1
+	     <#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+		 </#if>
+		 <#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+		 </#if>
+		 <#if buildingId?exists && buildingId != "" >
+			   AND buildingId=:buildingId
+		 </#if>
+		 <#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+		 </#if>
+		 <#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+		 </#if>
+		 <#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+		 </#if>
+		 <#if imageType?exists && imageType != "" >
+			   AND imageType=:imageType
+		 </#if>
+		 
+	   ]]>
+    </sql>
+    
+    <!--根据条件统计--> 
+	<sql id="countByCondition"> 
+	   <![CDATA[ 
+		  SELECT count(id) 
+		  FROM market_image_setting
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if buildingId?exists && buildingId != "" >
+			   AND buildingId=:buildingId
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if imageType?exists && imageType != "" >
+			   AND imageType=:imageType
+			</#if>
+	   ]]>
+	</sql>
+	
+	<sql id="updateCoordinate">
+	  <![CDATA[
+	    UPDATE market_image_setting SET
+	       <#if coordinate?exists && coordinate!="" >
+		     coordinate=:coordinate,
+	       </#if>	
+		     updateTime = SYSDATE()
+	    WHERE 1 = 1
+	       <#if marketId?exists && marketId != "" >
+		     AND marketId=:marketId
+	       </#if>
+	       <#if areaId?exists && areaId != "" >
+		     AND areaId=:areaId
+	       </#if>
+	       <#if buildingId?exists && buildingId != "" >
+		     AND buildingId=:buildingId
+	       </#if>
+	       <#if floorId?exists && floorId != "" >
+		     AND floorId=:floorId
+	       </#if>
+	       <#if resourceId?exists && resourceId != "" >
+		     AND resourceId=:resourceId
+	       </#if>
+	       <#if imageType?exists && imageType != "" >
+			 AND imageType=:imageType
+		   </#if>
+	]]>
+</sql>
+
+
+<!--根据条件查询--> 
+	<sql id="queryImageSetting"> 
+	   <![CDATA[ 
+		  SELECT 
+			id,marketId,areaId,buildingId,unitId,floorId,resourceId,imageType,
+			coordinate,createUserId,createTime,updateUserId,updateTime
+		  FROM market_image_setting
+		  WHERE 1=1 
+			<#if marketId?exists && marketId != "" >
+			   AND marketId=:marketId
+			</#if>
+			<#if areaId?exists && areaId != "" >
+			   AND areaId=:areaId
+			</#if>
+			<#if buildingId?exists && buildingId != "" >
+			   AND buildingId=:buildingId
+			</#if>
+			<#if unitId?exists && unitId != "" >
+			   AND unitId=:unitId
+			</#if>
+			<#if floorId?exists && floorId != "" >
+			   AND floorId=:floorId
+			</#if>
+			<#if resourceId?exists && resourceId != "" >
+			   AND resourceId=:resourceId
+			</#if>
+			<#if imageType?exists && imageType != "" >
+			   AND imageType=:imageType
+			</#if>
+			
+	   ]]>
+	</sql>
+
+</sqlMap>

@@ -1,0 +1,35 @@
+
+.contPerson{text-align: center;width: 620px; margin: 0 auto;}
+.resetPerson_bs ,.resetPerson_rt{width: 307px;float: left;}
+.cont_Te{ font-size: 14px; color:#1a1a1a; text-align: left; font-weight: bold; padding-top: 15px}
+.resetPerson_bs .ztree ,.resetPerson_rt .ztree_list{width: 305px; padding-top: 12px; border:solid 1px #d7d7d7; height: 237px; overflow-y: scroll;}
+.resetPerson_rt .ztree_list{ margin-left: 18px; text-align: left; padding-top: 12px;list-style:none;padding-left:0px;}
+.treetitA { left: -17px;}
+.treetitA ,.treetitB{
+	background: #f4f9f6;
+    width: 305px;
+    margin-left: 18px;
+    margin-top: 8px;
+    position: relative;
+    top: 11px;
+    border: solid 1px #ccc;
+    height: 38px;
+    line-height: 38px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+.listName{ height: 33px; line-height: 33px; cursor: pointer; padding-right: 50px; color: #5a5a5a;padding-left:30px;}
+.list_sp{ text-align: left;}
+.list_nm{ text-align: right; float: right;}
+/*已选择用户*/
+.user_sz{ font-size: 14px; float: left;}
+.user_selected{ text-align: left; padding-top: 10px; }
+.user_sz{ font-size: 14px; color: #1A1A1A; font-weight: bold; width: 100%;}
+.user_area{ float: left; border: solid 1px #d7d7d7; width: 636px; height: 80px; overflow-y: scroll; padding:5px!important;}
+.sp_bg{width: auto; padding: 0 10px; height: 20px; cursor: pointer; line-height: 20px; margin: 5px 2.5px; padding-left: 10px; border-radius: 2px; color: #fff; font-size: 12px; background: #6c9fce; display: inline-block;}
+.fa-times{ position: relative; left: 6px; color: #fff;}
+#selectPerson .selected{background:#eee;}
+#selectPerson .singleShow{font-size:14px;font-weight:bold;padding-left:30px;}
+#selectPerson .btn ,#remObsolete .btn ,#selectNt .btn{ width: 120px; height: 40px; color: #fff; text-align: center; font-size: 20px;}
+#selectPerson .btn-primary ,#remObsolete .btn-primary ,#selectNt .btn-primary{ background: #6c9fce; margin-left: 20px;}
